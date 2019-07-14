@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        \SocialiteProviders\Manager\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -220,6 +221,7 @@ return [
         'Route' => Illuminate\Support\Facades\Route::class,
         'Schema' => Illuminate\Support\Facades\Schema::class,
         'Session' => Illuminate\Support\Facades\Session::class,
+        'Socialite' => \SocialiteProviders\Manager\ServiceProvider::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
         'Str' => Illuminate\Support\Str::class,
         'URL' => Illuminate\Support\Facades\URL::class,

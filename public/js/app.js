@@ -14980,10 +14980,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fortawesome_fontawesome_free__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/fontawesome-free */ "./node_modules/@fortawesome/fontawesome-free/js/fontawesome.js");
 /* harmony import */ var _fortawesome_fontawesome_free__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_fortawesome_fontawesome_free__WEBPACK_IMPORTED_MODULE_1__);
 
+ // import { METHODS } from 'http';
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#app'
-});
+  el: '#app',
+  data: {},
+  methods: {}
+}); // reddit api
+// duration=permanent
+//scope=save subreddits edit read
 
 /***/ }),
 

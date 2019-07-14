@@ -44,4 +44,13 @@ return [
         ],
     ],
 
+    'reddit' => [
+        'client_id' => env('REDDIT_KEY'),
+        'client_secret' => env('REDDIT_SECRET'),
+        'redirect' => env('REDDIT_REDIRECT_URI'),
+        'platform' => 'Chrome',
+        'app_id' => 'redditsavemanager.clintgwinter.com',
+        'version_string' => 'v0.0.1 (by u/ClintWinter)',
+    ],
+
 ];

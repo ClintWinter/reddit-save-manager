@@ -7,6 +7,8 @@
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
 
+                <a href="{{ route('reddit.redirect') }}">Or register with reddit!</a>
+
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
