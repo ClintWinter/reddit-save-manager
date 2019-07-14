@@ -16,6 +16,7 @@ class CreateSavesTable extends Migration
         Schema::create('saves', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
+            $table->string('link');
             $table->string('subreddit');
             $table->string('title');
             $table->text('note');

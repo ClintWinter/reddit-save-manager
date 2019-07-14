@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\User;
 use Socialite;
+
 
 class LoginController extends Controller
 {
@@ -46,7 +48,7 @@ class LoginController extends Controller
                 'duration' => 'permanent',
                 'response_type' => 'code'
             ])
-            ->scopes(['identity', 'edit', 'mysubreddits', 'read', 'save'])
+            ->scopes(['identity', 'edit', 'flair', 'history', 'modconfig', 'modflair', 'modlog', 'modposts', 'modwiki', 'mysubreddits', 'privatemessages', 'read', 'report', 'save', 'submit', 'subscribe', 'vote', 'wikiedit', 'wikiread'])
             ->redirect();
     }
 
@@ -58,16 +60,22 @@ class LoginController extends Controller
             return redirect('/login');
         }
 
-        $ourUser = User::where('email', $user->email)->first();
+        $accessTokenResponseBody = $user->accessTokenResponseBody;
 
-        if ( $ourUser ) {
-            auth()->login($ourUser, true);
-        } else {
+        $ourUser = User::where('email', $user->getEmail())->first();
+
+        if ( !$ourUser ) {
             $ourUser = new User;
-            $ourUser->name = $user->getName();
-            $ourUser->email = $user->getEmail();
+            $ourUser->name = $user->nickname;
             $ourUser->reddit_id = $user->getId();
-            $ourUser->refresh_token = $user->refreshToken;
+            $ourUser->reddit_username = $user->nickname;
+            $ourUser->email = $user->getEmail();
+            $ourUser->access_token = $accessTokenResponseBody['access_token'];
+            $ourUser->refresh_token = $accessTokenResponseBody['refresh_token'];
+            $ourUser->save();
+        } else {
+            $ourUser->access_token = $accessTokenResponseBody['access_token'];
+            $ourUser->refresh_token = $accessTokenResponseBody['refresh_token'];
             $ourUser->save();
         }
 

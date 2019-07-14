@@ -11,6 +11,9 @@
                         <i class="fas fa-circle fa-stack-1x leading-none" style="font-size: 95%"></i>
                         <i class="fab fa-reddit fa-stack-1x leading-none" style="color: #FF4500;"></i>
                     </span> Reddit Save Manager!
+                    @auth
+                    <br> Welcome {{ Auth::user()->name }}
+                    @endauth
                 </h3>
             </div>
             <div>
@@ -44,37 +47,12 @@
     <main class="flex justify-center bg-gray-900 flex-grow">
         <div class="container flex flex-col pb-5 pt-16">
             <h1 class="text-xl font-semibold mb-8">Reddit Saves</h1>
-            <section class="cards flex flex-wrap items-stretch -mx-3">
+            <section class="cards flex flex-wrap justify-between items-stretch -mx-3">
                 <card
-                    v-for="save in saves"
-                    :key="save.key"
-                    :title="save.title"
-                    :subreddit="save.subreddit"
-                    :link="save.link"
-                    :description="save.description"
-                    :tags="save.tags"
+                    v-for="(save, index) in saves"
+                    :save="save.data"
+                    :color="index % 3 == 0 ? 'bg-purple-gradient bg-purple-shadow' : index % 2 == 0 ? 'bg-yellow-gradient bg-yellow-shadow' : 'bg-blue-gradient bg-blue-shadow'"
                 ></card>
-                <div class="card max-w-xs m-3 bg-blue-gradient bg-blue-shadow rounded-lg p-3">
-                    <h2 class="text-4xl font-semibold" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);">Card Title</h2>
-                    <p class="text-xl opacity-75 mb-4" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);"><small>r/subreddit</small></p>
-                    <p class="description text-md mb-16" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);">This is where the notes will display</p>
-                    <div class="tags flex flex-wrap">
-                        <div class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md">Tag 1</div>
-                        <div class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md">Tag 2</div>
-                        <div class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md">Tag 3</div>
-                    </div>
-                </div>
-
-                <div class="card max-w-xs m-3 bg-purple-gradient bg-purple-shadow rounded-lg p-3">
-                    <h2 class="text-4xl font-semibold" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);">Card Title</h2>
-                    <p class="text-xl opacity-75 mb-4" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);"><small>r/subreddit</small></p>
-                    <p class="description text-md mb-16" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);">This is where the notes will display</p>
-                    <div class="tags flex flex-wrap">
-                        <div class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md">Tag 1</div>
-                        <div class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md">Tag 2</div>
-                        <div class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md">Tag 3</div>
-                    </div>
-                </div>
             </section>
         </div>
     </main>

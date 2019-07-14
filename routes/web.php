@@ -21,3 +21,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/reddit/redirect', 'Auth\LoginController@redirectToProvider')->name('reddit.redirect');
 Route::get('/reddit/callback', 'Auth\LoginController@handleProviderCallback');
+
+Route::get('/user', function() {
+    if (Auth::user()) {
+        return Auth::user();
+    }
+});
