@@ -32,7 +32,7 @@ class User {
                 this.updated_at = data.updated_at;
 
                 if ( new Date() > new Date(new Date(this.updated_at).getTime() + (3600 * 1000)) ) {
-                    axios.get('/refresh_token', {params: {refresh_token: this.refreshToken}})
+                    axios.get('/refresh_token/' + this.refreshToken)
                         .then(response => {
                             this.accessToken = response.data;
                             this.authString = 'Bearer ' + this.accessToken;
@@ -57,7 +57,7 @@ class User {
                     show: 'all',
                     count: 10,
                     username: this.username,
-                    limit: 10
+                    limit: 11
                 }
             }
         )

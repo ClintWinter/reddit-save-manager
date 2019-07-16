@@ -31,7 +31,7 @@ Route::get('/user', function() {
     }
 })->middleware('auth');
 
-Route::get('/refresh_token', function(Request $request) {
+Route::get('/refresh_token/{token}', function($token) {
     $httpClient = new Client([]);
 
     $response = $httpClient->post('https://www.reddit.com/api/v1/access_token', [
@@ -42,7 +42,7 @@ Route::get('/refresh_token', function(Request $request) {
         'auth' => [config('services.reddit.client_id'), config('services.reddit.client_secret')],
         'form_params' => [
             'grant_type' => 'refresh_token',
-            'refresh_token' => $request->query('refresh_token'),
+            'refresh_token' => $token,
         ],
     ]);
 

@@ -47,11 +47,10 @@
     <main class="flex justify-center bg-gray-900 flex-grow">
         <div class="container flex flex-col pb-5 pt-16">
             <h1 class="text-xl font-semibold mb-8">Reddit Saves</h1>
-            <section class="cards flex flex-wrap justify-between items-stretch">
+            <section class="cards flex flex-wrap justify-start items-stretch">
                 <card
                     v-for="(save, index) in user.get('saves')"
                     :save="save.data"
-                    :color="index % 3 == 0 ? 'bg-purple-gradient bg-purple-shadow' : index % 2 == 0 ? 'bg-yellow-gradient bg-yellow-shadow' : 'bg-blue-gradient bg-blue-shadow'"
                 ></card>
             </section>
         </div>

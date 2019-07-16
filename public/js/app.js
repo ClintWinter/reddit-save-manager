@@ -4269,23 +4269,59 @@ module.exports = {
 //
 //
 module.exports = {
-  props: ['save', 'color'],
+  props: ['save'],
   data: function data() {
-    return {
-      bodyText: ''
-    };
+    return {};
   },
-  methods: {
-    generateBodyText: function generateBodyText() {
-      if (this.save.body_html) {
-        this.bodyText = this.decodeEntities()(this.save.body_html);
-      } else {// this.bodyText = `<a href="${this.save.url}">${this.save.url}</a>`;
-      }
+  computed: {
+    type: function type() {
+      var prefix = this.save.name.split('_')[0];
 
-      if (this.bodyText.length > 300) {
-        this.bodyText = this.bodyText.slice(0, 200) + '...';
+      if (prefix == 't1') {
+        return 'comment';
+      } else if (prefix == 't3') {
+        if (this.save.media) {
+          return 'link';
+        } else {
+          return 'text';
+        }
       }
     },
+    title: function title() {
+      var title = this.type == 'comment' ? this.save.link_title : this.save.title;
+
+      if (title.length > 80) {
+        title = title.slice(0, 75) + '...';
+      }
+
+      return title;
+    },
+    body: function body() {
+      var body = this.type == 'link' ? '' : this.type == 'comment' ? this.save.body_html : this.save.selftext_html;
+
+      if (body) {
+        body = this.decodeEntities()(body);
+      } else {
+        return body;
+      }
+
+      if (body.length > 300) {
+        body = body.slice(0, 300) + '...';
+      }
+
+      return body;
+    },
+    color: function color() {
+      if (this.type == 'comment') {
+        return 'bg-blue-gradient bg-blue-shadow';
+      } else if (this.type == 'link') {
+        return 'bg-yellow-gradient bg-yellow-shadow';
+      } else if (this.type == 'text') {
+        return 'bg-purple-gradient bg-purple-shadow';
+      }
+    }
+  },
+  methods: {
     decodeEntities: function decodeEntities() {
       // this prevents any overhead from creating the object each time
       var element = document.createElement('div');
@@ -4307,7 +4343,7 @@ module.exports = {
     }
   },
   created: function created() {
-    this.generateBodyText();
+    console.log(this.save);
   }
 };
 
@@ -4820,12 +4856,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card rounded-lg p-3 mb-8 mx-1", class: _vm.color },
+    { staticClass: "card rounded-lg p-3 mb-8 mx-2", class: _vm.color },
     [
       _c(
         "h2",
         {
-          staticClass: "text-3xl font-semibold leading-none",
+          staticClass: "text-xl font-semibold leading-tight",
           staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" }
         },
         [
@@ -4839,11 +4875,7 @@ var render = function() {
                 target: "_blank"
               }
             },
-            [
-              _vm._v(
-                _vm._s(_vm.save.title ? _vm.save.title : _vm.save.link_title)
-              )
-            ]
+            [_vm._v(_vm._s(_vm.title))]
           )
         ]
       ),
@@ -4851,17 +4883,19 @@ var render = function() {
       _c(
         "p",
         {
-          staticClass: "text-xl opacity-75 mb-4",
+          staticClass: "text-2xl opacity-75 mb-4",
           staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" }
         },
         [_c("small", [_vm._v(_vm._s(_vm.save.subreddit_name_prefixed))])]
       ),
       _vm._v(" "),
-      _c("div", {
-        staticClass: "description text-sm mb-16",
-        staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" },
-        domProps: { innerHTML: _vm._s(this.bodyText) }
-      })
+      _vm.body
+        ? _c("div", {
+            staticClass: "description text-sm mb-16",
+            staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" },
+            domProps: { innerHTML: _vm._s(_vm.body) }
+          })
+        : _vm._e()
     ]
   )
 }
@@ -17037,11 +17071,7 @@ function () {
         _this.updated_at = data.updated_at;
 
         if (new Date() > new Date(new Date(_this.updated_at).getTime() + 3600 * 1000)) {
-          axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/refresh_token', {
-            params: {
-              refresh_token: _this.refreshToken
-            }
-          }).then(function (response) {
+          axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/refresh_token/' + _this.refreshToken).then(function (response) {
             _this.accessToken = response.data;
             _this.authString = 'Bearer ' + _this.accessToken;
             callback.call(_this);
@@ -17070,7 +17100,7 @@ function () {
           show: 'all',
           count: 10,
           username: this.username,
-          limit: 10
+          limit: 11
         }
       }).then(function (response) {
         _this2.saves = response.data.data.children;
