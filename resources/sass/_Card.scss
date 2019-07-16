@@ -1,0 +1,20 @@
+.card {
+    max-width: 31%;
+    flex-grow: 1;
+}
+
+.description {
+    word-break: break-all;
+
+    a {
+        @apply .text-pink-200 .underline;
+    }
+
+    ul {
+        @apply .list-disc .ml-5;
+    }
+
+    p {
+        @apply .mb-3;
+    }
+}

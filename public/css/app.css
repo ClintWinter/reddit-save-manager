@@ -6485,6 +6485,29 @@ video {
   box-shadow: 5px 5px 10px rgba(255, 0, 153, 0.35);
 }
 
+.card {
+  max-width: 31%;
+  flex-grow: 1;
+}
+
+.description {
+  word-break: break-all;
+}
+
+.description a {
+  color: #fed7e2;
+  text-decoration: underline;
+}
+
+.description ul {
+  list-style-type: disc;
+  margin-left: 1.25rem;
+}
+
+.description p {
+  margin-bottom: 0.75rem;
+}
+
 .appearance-none{
   -webkit-appearance: none;
      -moz-appearance: none;

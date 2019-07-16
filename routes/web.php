@@ -11,6 +11,9 @@
 |
 */
 
+use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -26,4 +29,56 @@ Route::get('/user', function() {
     if (Auth::user()) {
         return Auth::user();
     }
-});
+})->middleware('auth');
+
+Route::get('/refresh_token', function(Request $request) {
+    $httpClient = new Client([]);
+
+    $response = $httpClient->post('https://www.reddit.com/api/v1/access_token', [
+        'headers' => [
+            'Accept' => 'application/json',
+            'User-Agent' => config('services.reddit.platform') . ':' . config('services.reddit.app_id') . ':' . config('services.reddit.version_string'),
+        ],
+        'auth' => [config('services.reddit.client_id'), config('services.reddit.client_secret')],
+        'form_params' => [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $request->query('refresh_token'),
+        ],
+    ]);
+
+    $credentialsResponseBody = json_decode($response->getBody(), true);
+
+    $user = Auth::user();
+    $user->access_token = $credentialsResponseBody['access_token'];
+    $user->save();
+
+    return $user->access_token;
+})->middleware('auth');
+
+/************************************/
+
+
+/*
+$this->getHttpClient()->get(
+    'https://oauth.reddit.com/api/v1/me', [
+    'headers' => [
+        'Authorization' => 'Bearer '.$token,
+        'User-Agent' => $this->getUserAgent(),
+    ],
+]);
+
+return json_decode($response->getBody()->getContents(), true);
+
+$response = $this->getHttpClient()->post($this->getTokenUrl(), [
+    'headers' => [
+        'Accept' => 'application/json',
+        'User-Agent' => $this->getUserAgent(),
+    ],
+    'auth' => [$this->clientId, $this->clientSecret],
+    'form_params' => $this->getTokenFields($code),
+]);
+
+$this->credentialsResponseBody = json_decode($response->getBody(), true);
+
+return $this->credentialsResponseBody;
+*/
