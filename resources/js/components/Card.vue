@@ -98,9 +98,5 @@ module.exports = {
         }
     },
 
-    created() {
-        console.log(this.save);
-    }
-
 };
 </script>

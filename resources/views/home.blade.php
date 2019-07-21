@@ -35,7 +35,6 @@
         <div class="container flex justify-between pt-20 py-5">
             <div class="flex-grow flex align-center">
                 <input type="text" name="search" placeholder="Search..." class="w-1/3 rounded-full px-5 py-2 shadow-md outline-none mr-4 text-gray-700 border-2 border-transparent focus:border-orange-500" />
-                <button class="outline-none focus:shadow-outline text-5xl focus:bg-blue-100 leading-none"><i class="fas fa-plus-circle color-blue-500"></i></button>
             </div>
             <div class="flex items-end">
                 <button><i class="fas fa-filter text-3xl"></i></button>

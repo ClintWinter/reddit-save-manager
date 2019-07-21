@@ -16,13 +16,16 @@ class CreateSavesTable extends Migration
         Schema::create('saves', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedTinyInteger('type_id');
+            $table->unsignedInteger('subreddit_id');
             $table->string('link');
-            $table->string('subreddit');
             $table->string('title');
-            $table->text('note');
+            $table->text('body');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('type_id')->references('id')->on('types');
+            // $table->foreign('subreddit_id')->references('id')->on('subreddits');
         });
     }
 

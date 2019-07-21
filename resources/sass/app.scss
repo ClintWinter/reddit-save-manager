@@ -9,6 +9,11 @@
 
 @tailwind components;
 
+body {
+    background-color: #efeae8;
+    @apply .text-gray-800;
+}
+
 .bg-yellow-gradient {
     background: linear-gradient(to bottom right, #FFCC00, #F8318E);
 }

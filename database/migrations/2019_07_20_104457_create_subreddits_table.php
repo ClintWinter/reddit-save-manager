@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSavesTagsTable extends Migration
+class CreateSubredditsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateSavesTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('saves_tags', function (Blueprint $table) {
+        Schema::create('subreddits', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('tag_id');
+            $table->string('name');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('tag_id')->references('id')->on('tags'); 
         });
     }
 
@@ -31,6 +27,6 @@ class CreateSavesTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('saves_tags');
+        Schema::dropIfExists('subreddits');
     }
 }
