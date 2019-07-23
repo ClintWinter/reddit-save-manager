@@ -6,6 +6,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use GuzzleHttp\Client;
+use App\Type;
+use App\Subreddit;
+use App\Save;
 
 class User extends Authenticatable
 {
@@ -56,6 +59,79 @@ class User extends Authenticatable
     
         $this->access_token = $credentialsResponseBody['access_token'];
         $this->save();
+    }
+
+    public function tokenExpired()
+    {
+        return time() > strtotime($this->updated_at) + 3600;
+    }
+
+    public function newSaves()
+    {
+        $httpClient = new Client([]);
+        $response = $httpClient->get(
+            'https://oauth.reddit.com/user/'.$this->name.'/saved',
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->access_token,
+                    'User-Agent' => config('services.reddit.platform') . ':' . config('services.reddit.app_id') . ':' . config('services.reddit.version_string')
+                ],
+                'query' => [
+                    'after' => null,
+                    'before' => null,
+                    'show' => 'all',
+                    'count' => 10,
+                    'username' => $this->username,
+                    'limit' => 100
+                ]
+            ]
+        );
+        $body = json_decode($response->getBody(), true);
+        $saves = collect($body['data']['children'])->pluck('data');
+
+        $redditIdsArray = $saves->pluck('name')->toArray();
+
+        $saveRecords = $this->saves()->whereIn('reddit_id', $redditIdsArray)->pluck('reddit_id');
+
+        $newSaves = array_diff($redditIdsArray, $saveRecords->toArray());
+        
+        return $saves->filter(function($save) use ($newSaves) {
+            return in_array($save['name'], $newSaves);
+        });
+    }
+
+    public function newSave($save)
+    {
+        $prefix = explode('_', $save['name'])[0];
+        $type = ( $prefix == 't1' ? 'comment' : ( $prefix == 't3' && empty( $save['media'] ) ? 'link' : 'text' ) );
+
+        $newSave = new Save;
+
+        $newSave->user_id = $this->id;
+        $newSave->reddit_id = $save['name'];
+        $newSave->type_id = Type::whereType($type)->first()->id;
+        $newSave->subreddit_id = Subreddit::firstOrCreate(['name' => $save['subreddit']])->id;
+
+        if ( $type == 'comment') {
+            $newSave->link = $save['link_permalink'];
+            $newSave->title = $save['link_title'];
+            $newSave->body = $save['body_html'];
+            
+        } elseif ( $type == 'link' ) {
+            
+            $newSave->link = $save['url'];
+            $newSave->title = $save['title'];
+            $newSave->body = $save['url'];
+            
+        } else {
+            
+            $newSave->link = $save['url'];
+            $newSave->title = $save['title'];
+            $newSave->body = $save['selftext_html'];
+            
+        }
+
+        $newSave->save();
     }
 
     public function saves() 

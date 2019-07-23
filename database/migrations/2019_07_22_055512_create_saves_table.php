@@ -15,6 +15,7 @@ class CreateSavesTable extends Migration
     {
         Schema::create('saves', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('reddit_id', 20);
             $table->unsignedBigInteger('user_id');
             $table->unsignedTinyInteger('type_id');
             $table->unsignedInteger('subreddit_id');
