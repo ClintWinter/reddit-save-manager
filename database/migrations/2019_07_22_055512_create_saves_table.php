@@ -19,13 +19,9 @@ class CreateSavesTable extends Migration
             $table->unsignedTinyInteger('type_id');
             $table->unsignedInteger('subreddit_id');
             $table->string('link');
-            $table->string('title');
-            $table->text('body');
+            $table->string('title', 2000);
+            $table->text('body')->nullable();
             $table->timestamps();
-
-            // $table->foreign('user_id')->references('id')->on('users');
-            // $table->foreign('type_id')->references('id')->on('types');
-            // $table->foreign('subreddit_id')->references('id')->on('subreddits');
         });
     }
 

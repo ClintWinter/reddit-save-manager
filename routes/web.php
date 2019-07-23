@@ -1,43 +1,24 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/reddit/redirect', 'Auth\LoginController@redirectToProvider')->name('reddit.redirect');
 Route::get('/reddit/callback', 'Auth\LoginController@handleProviderCallback');
 
-Route::get('/user', function() {
-    if (Auth::user()) {
-        return Auth::user();
-    }
-})->middleware('auth');
+Auth::routes();
 
+Route::get('/', function () {
+    if (Auth::user()) return redirect('/home');
+    
+    return view('welcome');
+});
 
 Route::get('/saves', function() {
-
     if ( time() > strtotime(Auth::user()->updated_at) + 3600 ) {
         Auth::user()->refreshToken();
     }
-
     $httpClient = new Client([]);
     $response = $httpClient->get(
         'https://oauth.reddit.com/user/'.Auth::user()->name.'/saved',
@@ -56,70 +37,64 @@ Route::get('/saves', function() {
             ]
         ]
     );
-
     $body = json_decode($response->getBody(), true);
     $saves = collect($body['data']['children'])->pluck('data');
 
-    dd($saves);
-
     foreach ($saves as $save) 
     {
-        // TODO: if it exists, continue the loop; otherwise, create it
-        // How to we create it with an association to user?
-        // also with findOrNew: we need a way to split the logic.
-        // $newSave = Auth::user()->saves()->findOrNew([]);
-        $newSave = new App\Save;
-        
+
         $prefix = explode('_', $save['name'])[0];
+        $type = ( $prefix == 't1' ? 'comment' : ( $prefix == 't3' && empty( $save['media'] ) ? 'link' : 'text' ) );
+
+
+        $newSave = Auth::user()
+            ->saves()
+            ->with([
+                'subreddit' => function($query) use ($save) { $query->whereName($save['subreddit'])->get(); },
+                'type' => function($query) use ($type) { $query->whereType($type)->get(); }
+            ])
+            ->firstOrNew([
+                'title' => isset( $save['title'] )  ? $save['title'] : $save['link_title'],
+            ]);
+        
+        $dbType = App\Type::whereType($type)->first();
         $subreddit = App\Subreddit::firstOrCreate(['name' => $save['subreddit']]);
 
-        if ( $prefix == 't1') { // comment
+        $newSave->type()->associate($dbType);
+        $newSave->subreddit()->associate($subreddit);
 
-            $newSave->type()->attach(App\Type::whereType('comment')->firstOrFail());
-            $newSave->subreddit()->attach($subreddit);
+        if ( $type == 'comment') {
             $newSave->link = $save['link_permalink'];
             $newSave->title = $save['link_title'];
             $newSave->body = $save['body_html'];
             
-        } elseif ( $prefix == 't3' && ! empty( $save['media'] ) ) { // link
+        } elseif ( $type == 'link' ) {
             
-            $newSave->type()->attach(App\Type::whereType('link')->firstOrFail());
-            $newSave->subreddit()->attach($subreddit);
             $newSave->link = $save['url'];
             $newSave->title = $save['title'];
-            $newSave->body = '';
+            $newSave->body = $save['url'];
             
-        } else { // text
+        } else {
             
-            $newSave->type()->attach(App\Type::whereType('text')->firstOrFail());
-            $newSave->subreddit()->attach($subreddit);
             $newSave->link = $save['url'];
             $newSave->title = $save['title'];
             $newSave->body = $save['selftext_html'];
             
         }
 
+        $newSave->save();
     }
 
-    return $saves;
-    
+    return Auth::user()->saves()->with(['subreddit', 'tags', 'type'])->get();
 })->middleware('auth');
 
-// axios.get(
-// `https://oauth.reddit.com/user/${this.username}/saved`,
-// { 
-//     headers: { Authorization: this.authString },
-//     params: {
-//         after: null,
-//         before: null,
-//         show: 'all',
-//         count: 10,
-//         username: this.username,
-//         limit: 11
-//     }
-// }
-// )
+Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/user', function() {
+    if (Auth::user()) {
+        return Auth::user();
+    }
+})->middleware('auth');
 
 Route::get('/refresh_token/{token}', function($token) {
     $httpClient = new Client([]);

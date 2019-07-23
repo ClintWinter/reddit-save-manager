@@ -4,8 +4,6 @@ window.axios = axios;
 
 import Vue from 'vue';
 
-import User from './models/User';
-
 import Card from './components/Card';
 
 // import { METHODS } from 'http';
@@ -27,12 +25,22 @@ const app = new Vue({
     el: '#app',
 
     data: {
-        user: new User(),
-
+        saves: [],
+        user: '',
     },
 
     created() {
-        this.user.getUserData(this.user.getSaves);
+        axios.get('/saves')
+        .then((response) => {
+            this.saves = response.data;
+        })
+        .catch(error => console.log(error));
+
+        axios.get('/user')
+        .then((response) => {
+            ;this.user = response.data;
+        })
+        .catch(error => console.log(error));
     },
 
     components: {

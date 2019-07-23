@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'access_token', 'refresh_token'
     ];
 
     /**
@@ -60,7 +60,7 @@ class User extends Authenticatable
 
     public function saves() 
     {
-        return $this->hasMany(Save::class);
+        return $this->hasMany(Save::class)->with(['subreddit', 'type', 'tags']);
     }
 
     public function types() 

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Save extends Model
 {
+    protected $fillable = ['link', 'title', 'body'];
+
     public function tags() 
     {
         return $this->belongsToMany(Tag::class)->withTimestamps();

@@ -12,7 +12,7 @@
                         <i class="fab fa-reddit fa-stack-1x leading-none" style="color: #FF4500;"></i>
                     </span> Reddit Save Manager!
                     @auth
-                    <br> Welcome @{{ user.get('username') }}
+                    <br> Welcome @{{ user.name }}
                     @endauth
                 </h3>
             </div>
@@ -48,8 +48,8 @@
             <h1 class="text-xl font-semibold mb-8">Reddit Saves</h1>
             <section class="cards flex flex-wrap justify-start items-stretch">
                 <card
-                    v-for="(save, index) in user.get('saves')"
-                    :save="save.data"
+                    v-for="(save, index) in saves"
+                    :save="save"
                 ></card>
             </section>
         </div>
