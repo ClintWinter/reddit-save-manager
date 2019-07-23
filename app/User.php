@@ -29,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'access_token', 'refresh_token'
+        'id', 'email', 'email_verified_at', 'password', 'remember_token', 'reddit_id', 'access_token', 'refresh_token'
     ];
 
     /**
@@ -41,7 +41,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function refreshToken() {
+    public function refreshToken() 
+    {
         $httpClient = new Client([]);
         $response = $httpClient->post('https://www.reddit.com/api/v1/access_token', [
             'headers' => [

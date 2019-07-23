@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Save extends Model
 {
-    protected $fillable = ['link', 'title', 'body'];
+    protected $fillable = ['reddit_id', 'link', 'title', 'body'];
 
     public function tags() 
     {

@@ -23,17 +23,19 @@ class SaveController extends Controller
     {
         $user = Auth::user();
 
-        if ( $user->tokenExpired() ) {
+        if ($user->tokenExpired())
             $user->refreshToken();
-        }
 
-        $newSaves = $user->newSaves();
-        foreach ($newSaves as $save) 
-        {
-            $user->newSave($save);
-        }
+        $user
+            ->newSaves()
+            ->each(function($save) use ($user) {
+                $user->newSave($save);
+            });
 
-        return $user->saves()->with(['subreddit', 'tags', 'type'])->get();
+        return $user
+                ->saves()
+                ->with(['subreddit', 'tags', 'type'])
+                ->get();
     }
 
     /**
