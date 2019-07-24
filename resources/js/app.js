@@ -27,12 +27,42 @@ const app = new Vue({
     data: {
         saves: [],
         user: '',
+        isProcessing: false,
+        pagination: {
+            current: null,
+            total_pages: null,
+            next_url: null,
+            previous_url: null,
+            from: null,
+            to: null,
+            total: null,
+        }
+    },
+
+    computed: {
+        prevDisabled() {
+            return this.isProcessing || this.pagination.previous_url == null;
+        },
+
+        nextDisabled() {
+            return this.isProcessing || this.pagination.next_url == null;
+        },
     },
 
     created() {
         axios.get('/saves')
         .then((response) => {
-            this.saves = response.data;
+            this.saves = response.data.data;
+
+            this.pagination.current = response.data.current_page;
+            this.pagination.total_pages = response.data.last_page;
+            this.pagination.next_url = response.data.next_page_url;
+            this.pagination.previous_url = response.data.prev_page_url;
+            this.pagination.from = response.data.from;
+            this.pagination.to = response.data.to;
+            this.pagination.total = response.data.total;
+
+            console.log(this.pagination.previous_url);
         })
         .catch(error => console.log(error));
 
@@ -41,6 +71,47 @@ const app = new Vue({
             ;this.user = response.data;
         })
         .catch(error => console.log(error));
+    },
+
+    methods: {
+        previous() {
+            this.isProcessing = true;
+            axios.get(this.pagination.previous_url)
+            .then((response) => {
+                this.saves = response.data.data;
+
+                this.pagination.current = response.data.current_page;
+                this.pagination.total_pages = response.data.last_page;
+                this.pagination.next_url = response.data.next_page_url;
+                this.pagination.previous_url = response.data.prev_page_url;
+                this.pagination.from = response.data.from;
+                this.pagination.to = response.data.to;
+                this.pagination.total = response.data.total;
+
+                this.isProcessing = false;
+            })
+            .catch(error => console.log(error));
+        },
+
+        next() {
+            this.isProcessing = true;
+
+            axios.get(this.pagination.next_url)
+            .then((response) => {
+                this.saves = response.data.data;
+
+                this.pagination.current = response.data.current_page;
+                this.pagination.total_pages = response.data.last_page;
+                this.pagination.next_url = response.data.next_page_url;
+                this.pagination.previous_url = response.data.prev_page_url;
+                this.pagination.from = response.data.from;
+                this.pagination.to = response.data.to;
+                this.pagination.total = response.data.total;
+
+                this.isProcessing = false;
+            })
+            .catch(error => console.log(error));
+        }
     },
 
     components: {

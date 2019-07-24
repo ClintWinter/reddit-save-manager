@@ -4268,6 +4268,8 @@ module.exports = {
 //
 //
 //
+//
+//
 module.exports = {
   props: ['save'],
   data: function data() {
@@ -4825,37 +4827,43 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card rounded-lg p-3 mb-8 mx-2", class: _vm.color },
+    { staticClass: "card-container w-1/3 py-3 px-2 flex items-stretch" },
     [
       _c(
-        "h2",
-        {
-          staticClass: "text-xl font-semibold leading-tight",
-          staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" }
-        },
+        "div",
+        { staticClass: "card rounded-lg w-full p-2", class: _vm.color },
         [
-          _c("a", { attrs: { href: _vm.save.link, target: "_blank" } }, [
-            _vm._v(_vm._s(_vm.save.title))
-          ])
+          _c(
+            "h2",
+            {
+              staticClass: "text-xl font-semibold leading-tight",
+              staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" }
+            },
+            [
+              _c("a", { attrs: { href: _vm.save.link, target: "_blank" } }, [
+                _vm._v(_vm._s(_vm.save.title))
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "p",
+            {
+              staticClass: "text-2xl opacity-75 mb-4",
+              staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" }
+            },
+            [_c("small", [_vm._v("r/" + _vm._s(_vm.save.subreddit.name))])]
+          ),
+          _vm._v(" "),
+          _vm.body
+            ? _c("div", {
+                staticClass: "description text-sm mb-16",
+                staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" },
+                domProps: { innerHTML: _vm._s(_vm.body) }
+              })
+            : _vm._e()
         ]
-      ),
-      _vm._v(" "),
-      _c(
-        "p",
-        {
-          staticClass: "text-2xl opacity-75 mb-4",
-          staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" }
-        },
-        [_c("small", [_vm._v("r/" + _vm._s(_vm.save.subreddit.name))])]
-      ),
-      _vm._v(" "),
-      _vm.body
-        ? _c("div", {
-            staticClass: "description text-sm mb-16",
-            staticStyle: { "text-shadow": "2px 2px 2px rgba(0,0,0,0.15)" },
-            domProps: { innerHTML: _vm._s(_vm.body) }
-          })
-        : _vm._e()
+      )
     ]
   )
 }
@@ -17006,13 +17014,39 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
   el: '#app',
   data: {
     saves: [],
-    user: ''
+    user: '',
+    isProcessing: false,
+    pagination: {
+      current: null,
+      total_pages: null,
+      next_url: null,
+      previous_url: null,
+      from: null,
+      to: null,
+      total: null
+    }
+  },
+  computed: {
+    prevDisabled: function prevDisabled() {
+      return this.isProcessing || this.pagination.previous_url == null;
+    },
+    nextDisabled: function nextDisabled() {
+      return this.isProcessing || this.pagination.next_url == null;
+    }
   },
   created: function created() {
     var _this = this;
 
     axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves').then(function (response) {
-      _this.saves = response.data;
+      _this.saves = response.data.data;
+      _this.pagination.current = response.data.current_page;
+      _this.pagination.total_pages = response.data.last_page;
+      _this.pagination.next_url = response.data.next_page_url;
+      _this.pagination.previous_url = response.data.prev_page_url;
+      _this.pagination.from = response.data.from;
+      _this.pagination.to = response.data.to;
+      _this.pagination.total = response.data.total;
+      console.log(_this.pagination.previous_url);
     })["catch"](function (error) {
       return console.log(error);
     });
@@ -17022,6 +17056,44 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     })["catch"](function (error) {
       return console.log(error);
     });
+  },
+  methods: {
+    previous: function previous() {
+      var _this2 = this;
+
+      this.isProcessing = true;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.pagination.previous_url).then(function (response) {
+        _this2.saves = response.data.data;
+        _this2.pagination.current = response.data.current_page;
+        _this2.pagination.total_pages = response.data.last_page;
+        _this2.pagination.next_url = response.data.next_page_url;
+        _this2.pagination.previous_url = response.data.prev_page_url;
+        _this2.pagination.from = response.data.from;
+        _this2.pagination.to = response.data.to;
+        _this2.pagination.total = response.data.total;
+        _this2.isProcessing = false;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    next: function next() {
+      var _this3 = this;
+
+      this.isProcessing = true;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.pagination.next_url).then(function (response) {
+        _this3.saves = response.data.data;
+        _this3.pagination.current = response.data.current_page;
+        _this3.pagination.total_pages = response.data.last_page;
+        _this3.pagination.next_url = response.data.next_page_url;
+        _this3.pagination.previous_url = response.data.prev_page_url;
+        _this3.pagination.from = response.data.from;
+        _this3.pagination.to = response.data.to;
+        _this3.pagination.total = response.data.total;
+        _this3.isProcessing = false;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
   },
   components: {
     'card': _components_Card__WEBPACK_IMPORTED_MODULE_3__["default"]
@@ -17120,8 +17192,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\jumpm\Sites\reddit_saver\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\jumpm\Sites\reddit_saver\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/clintwinter/Sites/reddit-save-manager/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/clintwinter/Sites/reddit-save-manager/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

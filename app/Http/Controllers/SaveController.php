@@ -35,7 +35,7 @@ class SaveController extends Controller
         return $user
                 ->saves()
                 ->with(['subreddit', 'tags', 'type'])
-                ->get();
+                ->paginate(request('count', 15));
     }
 
     /**

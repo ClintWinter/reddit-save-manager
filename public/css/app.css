@@ -6490,11 +6490,6 @@ body {
   box-shadow: 5px 5px 10px rgba(255, 0, 153, 0.35);
 }
 
-.card {
-  max-width: 31%;
-  flex-grow: 1;
-}
-
 .description {
   word-break: break-word;
 }

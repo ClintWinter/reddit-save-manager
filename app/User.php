@@ -104,7 +104,7 @@ class User extends Authenticatable
     public function newSave($save)
     {
         $prefix = explode('_', $save['name'])[0];
-        $type = ( $prefix == 't1' ? 'comment' : ( $prefix == 't3' && empty( $save['media'] ) ? 'link' : 'text' ) );
+        $type = ( $prefix == 't1' ? 'comment' : ( $prefix == 't3' && empty( $save['media'] ) ? 'text' : 'link' ) );
 
         $newSave = new Save;
 
@@ -122,7 +122,7 @@ class User extends Authenticatable
             
             $newSave->link = $save['url'];
             $newSave->title = $save['title'];
-            $newSave->body = $save['url'];
+            $newSave->body = '';
             
         } else {
             
