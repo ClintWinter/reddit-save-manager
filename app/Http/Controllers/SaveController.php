@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Auth;
+use App\Save;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 
 class SaveController extends Controller
 {
@@ -19,7 +20,7 @@ class SaveController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
@@ -32,9 +33,19 @@ class SaveController extends Controller
                 $user->newSave($save);
             });
 
+        // if (empty(request('query'))) {
+        //     return $user->saves()->with(['subreddit', 'tags', 'type'])->latest()->paginate(request('count', 15));
+        // }
+
+        $tmp = request('query', '');
+        $query = "%{$tmp}%";
+
         return $user
                 ->saves()
                 ->with(['subreddit', 'tags', 'type'])
+                ->where('title', 'like', $query)
+                ->orWhere('body', 'like', $query)
+                ->latest()
                 ->paginate(request('count', 15));
     }
 

@@ -3,50 +3,29 @@ import axios from 'axios';
 window.axios = axios;
 
 import Vue from 'vue';
-
 import Card from './components/Card';
-
-// import { METHODS } from 'http';
-
-/**
- * TODO:
- * 
- * Hide user data behind API rather than saving it in the state... doesn't make sense.
- * 
- * No user model in JS. '/saves' should just get saves and make a model from that by getting it with guzzle using
- * the Auth::user data rather than waiting for multiple AJAX calls.
- * 
- * We can maybe put a function on the User model to check if the key needs to be refreshed?
- */
-
-
+import Pagination from './components/Pagination';
 
 const app = new Vue({
     el: '#app',
 
     data: {
+        query: '',
         saves: [],
         user: '',
         isProcessing: false,
         pagination: {
             current: null,
             total_pages: null,
-            next_url: null,
+            first_url: null,
             previous_url: null,
+            next_url: null,
+            last_url: null,
             from: null,
             to: null,
             total: null,
+            per_page: null,
         }
-    },
-
-    computed: {
-        prevDisabled() {
-            return this.isProcessing || this.pagination.previous_url == null;
-        },
-
-        nextDisabled() {
-            return this.isProcessing || this.pagination.next_url == null;
-        },
     },
 
     created() {
@@ -57,12 +36,13 @@ const app = new Vue({
             this.pagination.current = response.data.current_page;
             this.pagination.total_pages = response.data.last_page;
             this.pagination.next_url = response.data.next_page_url;
+            this.pagination.first_url = response.data.first_page_url;
+            this.pagination.last_url = response.data.last_page_url;
             this.pagination.previous_url = response.data.prev_page_url;
             this.pagination.from = response.data.from;
             this.pagination.to = response.data.to;
             this.pagination.total = response.data.total;
-
-            console.log(this.pagination.previous_url);
+            this.pagination.per_page = response.data.per_page;
         })
         .catch(error => console.log(error));
 
@@ -74,9 +54,9 @@ const app = new Vue({
     },
 
     methods: {
-        previous() {
+        goToPage(url) {
             this.isProcessing = true;
-            axios.get(this.pagination.previous_url)
+            axios.get(url)
             .then((response) => {
                 this.saves = response.data.data;
 
@@ -87,34 +67,39 @@ const app = new Vue({
                 this.pagination.from = response.data.from;
                 this.pagination.to = response.data.to;
                 this.pagination.total = response.data.total;
+                this.pagination.per_page = response.data.per_page;
 
                 this.isProcessing = false;
             })
             .catch(error => console.log(error));
         },
 
-        next() {
-            this.isProcessing = true;
-
-            axios.get(this.pagination.next_url)
+        filterResults() {
+            axios.get('/saves', {
+                params: {
+                    query: this.query
+                }
+            })
             .then((response) => {
                 this.saves = response.data.data;
 
                 this.pagination.current = response.data.current_page;
                 this.pagination.total_pages = response.data.last_page;
                 this.pagination.next_url = response.data.next_page_url;
+                this.pagination.first_url = response.data.first_page_url;
+                this.pagination.last_url = response.data.last_page_url;
                 this.pagination.previous_url = response.data.prev_page_url;
                 this.pagination.from = response.data.from;
                 this.pagination.to = response.data.to;
                 this.pagination.total = response.data.total;
-
-                this.isProcessing = false;
+                this.pagination.per_page = response.data.per_page;
             })
             .catch(error => console.log(error));
         }
     },
 
     components: {
-        'card': Card
+        'card': Card,
+        'pagination': Pagination,
     }
 });

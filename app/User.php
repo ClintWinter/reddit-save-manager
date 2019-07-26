@@ -2,13 +2,13 @@
 
 namespace App;
 
+use App\Save;
+use App\Type;
+use App\Subreddit;
+use GuzzleHttp\Client;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use GuzzleHttp\Client;
-use App\Type;
-use App\Subreddit;
-use App\Save;
 
 class User extends Authenticatable
 {

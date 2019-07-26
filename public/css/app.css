@@ -6466,6 +6466,11 @@ body {
   color: #2d3748;
 }
 
+button:active,
+button:focus {
+  outline: none;
+}
+
 .bg-yellow-gradient {
   background: linear-gradient(to bottom right, #FFCC00, #F8318E);
 }
