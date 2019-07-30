@@ -4371,8 +4371,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['pagination', 'processing'],
+  data: function data() {
+    return {
+      count: this.pagination.per_page
+    };
+  },
   computed: {
     prevDisabled: function prevDisabled() {
       return this.processing || this.pagination.previous_url == null;
@@ -4384,6 +4397,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     pageClick: function pageClick(url) {
       this.$emit('pageclick', url);
+    },
+    countChanged: function countChanged() {
+      this.$emit('countchange', this.count);
     }
   }
 });
@@ -5040,9 +5056,50 @@ var render = function() {
       _c("strong", [_vm._v(_vm._s(_vm.pagination.to))]),
       _vm._v(" of \n        "),
       _c("strong", [_vm._v(_vm._s(_vm.pagination.total))]),
-      _vm._v("\n        - "),
-      _c("strong", [_vm._v(_vm._s(_vm.pagination.per_page))]),
-      _vm._v(" per page\n    ")
+      _vm._v("\n        - \n        "),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.count,
+              expression: "count"
+            }
+          ],
+          staticClass: "inline-block text-orange-600",
+          on: {
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.count = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              function($event) {
+                return _vm.countChanged()
+              }
+            ]
+          }
+        },
+        [
+          _c("option", { attrs: { selected: "selected" } }, [_vm._v("15")]),
+          _vm._v(" "),
+          _c("option", [_vm._v("25")]),
+          _vm._v(" "),
+          _c("option", [_vm._v("50")])
+        ]
+      ),
+      _vm._v("\n        per page\n    ")
     ])
   ])
 }
@@ -17186,6 +17243,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     saves: [],
     user: '',
     isProcessing: false,
+    showFilters: false,
     pagination: {
       current: null,
       total_pages: null,
@@ -17196,13 +17254,17 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       from: null,
       to: null,
       total: null,
-      per_page: null
+      per_page: 15
     }
   },
   created: function created() {
     var _this = this;
 
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves').then(function (response) {
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves', {
+      params: {
+        count: this.pagination.per_page
+      }
+    }).then(function (response) {
       _this.saves = response.data.data;
       _this.pagination.current = response.data.current_page;
       _this.pagination.total_pages = response.data.last_page;
@@ -17229,7 +17291,11 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       var _this2 = this;
 
       this.isProcessing = true;
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(url).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(url, {
+        params: {
+          count: this.pagination.per_page
+        }
+      }).then(function (response) {
         _this2.saves = response.data.data;
         _this2.pagination.current = response.data.current_page;
         _this2.pagination.total_pages = response.data.last_page;
@@ -17249,7 +17315,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves', {
         params: {
-          query: this.query
+          query: this.query,
+          count: this.pagination.per_page
         }
       }).then(function (response) {
         _this3.saves = response.data.data;
@@ -17266,6 +17333,10 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    updateCount: function updateCount(count) {
+      this.pagination.per_page = count;
+      this.filterResults();
     }
   },
   components: {

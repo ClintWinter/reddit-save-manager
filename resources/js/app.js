@@ -14,6 +14,7 @@ const app = new Vue({
         saves: [],
         user: '',
         isProcessing: false,
+        showFilters: false,
         pagination: {
             current: null,
             total_pages: null,
@@ -24,12 +25,16 @@ const app = new Vue({
             from: null,
             to: null,
             total: null,
-            per_page: null,
+            per_page: 15,
         }
     },
 
     created() {
-        axios.get('/saves')
+        axios.get('/saves', {
+            params: {
+                count: this.pagination.per_page
+            }
+        })
         .then((response) => {
             this.saves = response.data.data;
 
@@ -56,7 +61,11 @@ const app = new Vue({
     methods: {
         goToPage(url) {
             this.isProcessing = true;
-            axios.get(url)
+            axios.get(url, {
+                params: {
+                    count: this.pagination.per_page
+                }
+            })
             .then((response) => {
                 this.saves = response.data.data;
 
@@ -77,7 +86,8 @@ const app = new Vue({
         filterResults() {
             axios.get('/saves', {
                 params: {
-                    query: this.query
+                    query: this.query,
+                    count: this.pagination.per_page
                 }
             })
             .then((response) => {
@@ -95,6 +105,11 @@ const app = new Vue({
                 this.pagination.per_page = response.data.per_page;
             })
             .catch(error => console.log(error));
+        },
+
+        updateCount(count) {
+            this.pagination.per_page = count;
+            this.filterResults();
         }
     },
 
