@@ -3,14 +3,17 @@ import axios from 'axios';
 window.axios = axios;
 
 import Vue from 'vue';
+import Navigation from './components/Nav';
+import Search from './components/Search';
 import Card from './components/Card';
 import Pagination from './components/Pagination';
+import Modal from './components/Modal';
 
 const app = new Vue({
     el: '#app',
 
     data: {
-        query: '',
+        // query: '',
         saves: [],
         user: '',
         isProcessing: false,
@@ -83,10 +86,10 @@ const app = new Vue({
             .catch(error => console.log(error));
         },
 
-        filterResults() {
+        filterResults(query) {
             axios.get('/saves', {
                 params: {
-                    query: this.query,
+                    query: query,
                     count: this.pagination.per_page
                 }
             })
@@ -110,11 +113,18 @@ const app = new Vue({
         updateCount(count) {
             this.pagination.per_page = count;
             this.filterResults();
+        },
+
+        toggleFilters() {
+            this.showFilters = !this.showFilters;
         }
     },
 
     components: {
+        'navigation': Navigation,
+        'search': Search,
         'card': Card,
         'pagination': Pagination,
+        'modal': Modal,
     }
 });
