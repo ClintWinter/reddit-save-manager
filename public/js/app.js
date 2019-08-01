@@ -4369,8 +4369,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['showFilters']
+  props: ['showFilters', 'subreddits', 'tags', 'types']
 });
 
 /***/ }),
@@ -5195,7 +5198,14 @@ var render = function() {
                     staticClass: "w-64 block h-8 my-4",
                     attrs: { id: "subreddit" }
                   },
-                  [_c("option", [_vm._v("Something")])]
+                  [
+                    _c("option", { attrs: { value: "" } }, [_vm._v("--")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.subreddits, function(subreddit) {
+                      return _c("option", [_vm._v(_vm._s(subreddit))])
+                    })
+                  ],
+                  2
                 )
               ]),
               _vm._v(" "),
@@ -5216,7 +5226,14 @@ var render = function() {
                     staticClass: "w-64 block h-8 my-4",
                     attrs: { id: "subreddit" }
                   },
-                  [_c("option", [_vm._v("Something")])]
+                  [
+                    _c("option", { attrs: { value: "" } }, [_vm._v("--")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.tags, function(tag) {
+                      return _c("option", [_vm._v(_vm._s(tag))])
+                    })
+                  ],
+                  2
                 )
               ]),
               _vm._v(" "),
@@ -5237,7 +5254,14 @@ var render = function() {
                     staticClass: "w-64 block h-8 my-4",
                     attrs: { id: "subreddit" }
                   },
-                  [_c("option", [_vm._v("Something")])]
+                  [
+                    _c("option", { attrs: { value: "" } }, [_vm._v("--")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.types, function(type) {
+                      return _c("option", [_vm._v(_vm._s(type))])
+                    })
+                  ],
+                  2
                 )
               ])
             ])
@@ -17689,11 +17713,13 @@ window.axios = axios__WEBPACK_IMPORTED_MODULE_1___default.a;
 var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
   el: '#app',
   data: {
-    // query: '',
     saves: [],
     user: '',
     isProcessing: false,
     showFilters: false,
+    subreddits: [],
+    tags: [],
+    types: [],
     pagination: {
       current: null,
       total_pages: null,
@@ -17789,7 +17815,17 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       this.filterResults();
     },
     toggleFilters: function toggleFilters() {
+      var _this4 = this;
+
       this.showFilters = !this.showFilters;
+
+      if (this.showFilters) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/filters').then(function (response) {
+          _this4.subreddits = response.data.subreddits;
+          _this4.tags = response.data.tags;
+          _this4.types = response.data.types;
+        });
+      }
     }
   },
   components: {

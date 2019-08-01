@@ -17,19 +17,22 @@
                     <div class="flex justify-between items-center">
                         <label class="mr-5 text-gray-600 uppercase text-sm text-right flex-grow" for="subreddit">Subreddit</label>
                         <select id="subreddit" class="w-64 block h-8 my-4">
-                            <option>Something</option>
+                            <option value="">--</option>
+                            <option v-for="subreddit in subreddits">{{ subreddit }}</option>
                         </select>
                     </div>
                     <div class="flex justify-between items-center">
                         <label class="mr-5 text-gray-600 uppercase text-sm text-right flex-grow" for="subreddit">Tag</label>
                         <select id="subreddit" class="w-64 block h-8 my-4">
-                            <option>Something</option>
+                            <option value="">--</option>
+                            <option v-for="tag in tags">{{ tag }}</option>
                         </select>
                     </div>
                     <div class="flex justify-between items-center">
                         <label class="mr-5 text-gray-600 uppercase text-sm text-right flex-grow" for="subreddit">Type</label>
                         <select id="subreddit" class="w-64 block h-8 my-4">
-                            <option>Something</option>
+                            <option value="">--</option>
+                            <option v-for="type in types">{{ type }}</option>
                         </select>
                     </div>
                 </div>
@@ -40,7 +43,7 @@
 
 <script>
 export default {
-    props: ['showFilters']
+    props: ['showFilters', 'subreddits', 'tags', 'types']
 }
 </script>
 

@@ -13,11 +13,13 @@ const app = new Vue({
     el: '#app',
 
     data: {
-        // query: '',
         saves: [],
         user: '',
         isProcessing: false,
         showFilters: false,
+        subreddits: [],
+        tags: [],
+        types: [],
         pagination: {
             current: null,
             total_pages: null,
@@ -117,6 +119,15 @@ const app = new Vue({
 
         toggleFilters() {
             this.showFilters = !this.showFilters;
+
+            if (this.showFilters) {
+                axios.get('/filters')
+                .then((response) => {
+                    this.subreddits = response.data.subreddits;
+                    this.tags = response.data.tags;
+                    this.types = response.data.types;
+                });
+            }
         }
     },
 

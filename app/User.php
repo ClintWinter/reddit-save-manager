@@ -145,8 +145,23 @@ class User extends Authenticatable
         return $this->hasManyThrough(Save::class, 'type_id');
     }
 
-    public function subreddits() 
-    {
-        return $this->hasManyThrough(Subreddit::class, Save::class);
+    public function getFilters() 
+    {        
+        $saves = $this->saves()->with(['subreddit', 'tags', 'type'])->get();
+        
+        $subreddits = $saves->sortBy(function($save) {
+            return strtolower($save['subreddit']['name']);
+        })->pluck('subreddit.name')->unique();
+        $tags = $saves->pluck('tags')->flatten()->sortBy('name')->pluck('name')->unique();
+        $types = $saves->sortBy('type.type')->pluck('type.type')->unique();
+
+        
+
+        return [
+            'subreddits' => $subreddits, 
+            'tags' => $tags, 
+            'types' => $types
+        ];
     }
+    
 }

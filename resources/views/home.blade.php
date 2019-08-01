@@ -5,9 +5,14 @@
 <div id="app" class="text-white min-h-screen flex flex-col">
     <navigation :user="user"></navigation>
 
-    <modal :show-filters="showFilters" @togglefilters="toggleFilters"></modal>
+    <modal 
+        :show-filters="showFilters"
+        :subreddits="subreddits"
+        :tags="tags"
+        :types="types"
+        @togglefilters="toggleFilters"></modal>
 
-    <search @filterresults="filterResults"></search>
+    <search @filterresults="filterResults" @togglefilters="toggleFilters"></search>
 
     <main class="flex justify-center bg-gray-900 flex-grow">
         <div class="w-full flex flex-col px-4 pt-8 pb-40">
