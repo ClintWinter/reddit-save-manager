@@ -4372,8 +4372,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['showFilters', 'subreddits', 'tags', 'types']
+  props: ['showFilters', 'subreddits', 'tags', 'types'],
+  data: function data() {
+    return {
+      subreddit: '',
+      tag: '',
+      type: ''
+    };
+  },
+  methods: {
+    filterSubreddit: function filterSubreddit() {
+      console.log('emit subreddit change', this.subreddit);
+      this.$emit('updatesubreddit', this.subreddit);
+    },
+    filterTag: function filterTag() {
+      this.$emit('updatetag', this.subreddit);
+    },
+    filterType: function filterType() {
+      this.$emit('updatetype', this.subreddit);
+    }
+  }
 });
 
 /***/ }),
@@ -4483,7 +4511,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['pagination', 'processing'],
   data: function data() {
     return {
-      count: this.pagination.per_page
+      count: 15
     };
   },
   computed: {
@@ -5063,7 +5091,9 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card-container w-1/3 py-3 px-2 flex items-stretch" },
+    {
+      staticClass: "card-container w-full md:w-1/2 py-3 px-2 flex items-stretch"
+    },
     [
       _c(
         "div",
@@ -5195,14 +5225,41 @@ var render = function() {
                 _c(
                   "select",
                   {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.subreddit,
+                        expression: "subreddit"
+                      }
+                    ],
                     staticClass: "w-64 block h-8 my-4",
-                    attrs: { id: "subreddit" }
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.subreddit = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        _vm.filterSubreddit
+                      ]
+                    }
                   },
                   [
                     _c("option", { attrs: { value: "" } }, [_vm._v("--")]),
                     _vm._v(" "),
-                    _vm._l(_vm.subreddits, function(subreddit) {
-                      return _c("option", [_vm._v(_vm._s(subreddit))])
+                    _vm._l(_vm.subreddits, function(subreddit, index) {
+                      return _c("option", { key: index }, [
+                        _vm._v(_vm._s(subreddit))
+                      ])
                     })
                   ],
                   2
@@ -5223,14 +5280,39 @@ var render = function() {
                 _c(
                   "select",
                   {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.tag,
+                        expression: "tag"
+                      }
+                    ],
                     staticClass: "w-64 block h-8 my-4",
-                    attrs: { id: "subreddit" }
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.tag = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        _vm.filterTag
+                      ]
+                    }
                   },
                   [
                     _c("option", { attrs: { value: "" } }, [_vm._v("--")]),
                     _vm._v(" "),
-                    _vm._l(_vm.tags, function(tag) {
-                      return _c("option", [_vm._v(_vm._s(tag))])
+                    _vm._l(_vm.tags, function(tag, index) {
+                      return _c("option", { key: index }, [_vm._v(_vm._s(tag))])
                     })
                   ],
                   2
@@ -5251,14 +5333,41 @@ var render = function() {
                 _c(
                   "select",
                   {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.type,
+                        expression: "type"
+                      }
+                    ],
                     staticClass: "w-64 block h-8 my-4",
-                    attrs: { id: "subreddit" }
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.type = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        _vm.filterType
+                      ]
+                    }
                   },
                   [
                     _c("option", { attrs: { value: "" } }, [_vm._v("--")]),
                     _vm._v(" "),
-                    _vm._l(_vm.types, function(type) {
-                      return _c("option", [_vm._v(_vm._s(type))])
+                    _vm._l(_vm.types, function(type, index) {
+                      return _c("option", { key: index }, [
+                        _vm._v(_vm._s(type))
+                      ])
                     })
                   ],
                   2
@@ -17694,13 +17803,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fortawesome_fontawesome_free__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_fortawesome_fontawesome_free__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _components_Nav__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Nav */ "./resources/js/components/Nav.vue");
-/* harmony import */ var _components_Search__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Search */ "./resources/js/components/Search.vue");
-/* harmony import */ var _components_Card__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Card */ "./resources/js/components/Card.vue");
-/* harmony import */ var _components_Pagination__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Pagination */ "./resources/js/components/Pagination.vue");
-/* harmony import */ var _components_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Modal */ "./resources/js/components/Modal.vue");
+/* harmony import */ var _models_Save__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./models/Save */ "./resources/js/models/Save.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _components_Nav__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Nav */ "./resources/js/components/Nav.vue");
+/* harmony import */ var _components_Search__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Search */ "./resources/js/components/Search.vue");
+/* harmony import */ var _components_Card__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Card */ "./resources/js/components/Card.vue");
+/* harmony import */ var _components_Pagination__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Pagination */ "./resources/js/components/Pagination.vue");
+/* harmony import */ var _components_Modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/Modal */ "./resources/js/components/Modal.vue");
 
 
 window.axios = axios__WEBPACK_IMPORTED_MODULE_1___default.a;
@@ -17710,9 +17820,11 @@ window.axios = axios__WEBPACK_IMPORTED_MODULE_1___default.a;
 
 
 
-var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
+
+var app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
   el: '#app',
   data: {
+    // save: new Save(),
     saves: [],
     user: '',
     isProcessing: false,
@@ -17720,6 +17832,12 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     subreddits: [],
     tags: [],
     types: [],
+    filters: {
+      count: 15,
+      subreddit: '',
+      tag: '',
+      type: ''
+    },
     pagination: {
       current: null,
       total_pages: null,
@@ -17729,16 +17847,19 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       last_url: null,
       from: null,
       to: null,
-      total: null,
-      per_page: 15
+      total: null
     }
   },
   created: function created() {
     var _this = this;
 
+    // this.save.all()
+    // .then(function(data) {
+    //     this.saves = data;
+    // }.bind(this));
     axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves', {
       params: {
-        count: this.pagination.per_page
+        count: this.filters.count
       }
     }).then(function (response) {
       _this.saves = response.data.data;
@@ -17751,7 +17872,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       _this.pagination.from = response.data.from;
       _this.pagination.to = response.data.to;
       _this.pagination.total = response.data.total;
-      _this.pagination.per_page = response.data.per_page;
+      _this.filters.count = response.data.per_page;
     })["catch"](function (error) {
       return console.log(error);
     });
@@ -17769,7 +17890,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       this.isProcessing = true;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(url, {
         params: {
-          count: this.pagination.per_page
+          count: this.filters.count
         }
       }).then(function (response) {
         _this2.saves = response.data.data;
@@ -17782,6 +17903,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
         _this2.pagination.total = response.data.total;
         _this2.pagination.per_page = response.data.per_page;
         _this2.isProcessing = false;
+        window.scrollTo(0, 0);
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -17792,7 +17914,10 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves', {
         params: {
           query: query,
-          count: this.pagination.per_page
+          count: this.filters.count,
+          subreddit: this.filters.subreddit,
+          tag: this.filters.tag,
+          type: this.filters.type
         }
       }).then(function (response) {
         _this3.saves = response.data.data;
@@ -17805,13 +17930,26 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
         _this3.pagination.from = response.data.from;
         _this3.pagination.to = response.data.to;
         _this3.pagination.total = response.data.total;
-        _this3.pagination.per_page = response.data.per_page;
+        _this3.filters.count = response.data.per_page;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     updateCount: function updateCount(count) {
-      this.pagination.per_page = count;
+      this.filters.count = count;
+      this.filterResults();
+    },
+    updateSubreddit: function updateSubreddit(subreddit) {
+      console.log('emit captured', subreddit);
+      this.filters.subreddit = subreddit;
+      this.filterResults();
+    },
+    updateTag: function updateTag(tag) {
+      this.filters.tag = tag;
+      this.filterResults();
+    },
+    updateType: function updateType(type) {
+      this.filters.type = type;
       this.filterResults();
     },
     toggleFilters: function toggleFilters() {
@@ -17829,11 +17967,11 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
     }
   },
   components: {
-    'navigation': _components_Nav__WEBPACK_IMPORTED_MODULE_3__["default"],
-    'search': _components_Search__WEBPACK_IMPORTED_MODULE_4__["default"],
-    'card': _components_Card__WEBPACK_IMPORTED_MODULE_5__["default"],
-    'pagination': _components_Pagination__WEBPACK_IMPORTED_MODULE_6__["default"],
-    'modal': _components_Modal__WEBPACK_IMPORTED_MODULE_7__["default"]
+    'navigation': _components_Nav__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'search': _components_Search__WEBPACK_IMPORTED_MODULE_5__["default"],
+    'card': _components_Card__WEBPACK_IMPORTED_MODULE_6__["default"],
+    'pagination': _components_Pagination__WEBPACK_IMPORTED_MODULE_7__["default"],
+    'modal': _components_Modal__WEBPACK_IMPORTED_MODULE_8__["default"]
   }
 });
 
@@ -18184,6 +18322,74 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Search_vue_vue_type_template_id_5026ffd3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/models/Save.js":
+/*!*************************************!*\
+  !*** ./resources/js/models/Save.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Save =
+/*#__PURE__*/
+function () {
+  function Save() {
+    _classCallCheck(this, Save);
+
+    this.saves = [];
+    this.count = 15;
+    this.pagination = {};
+  }
+
+  _createClass(Save, [{
+    key: "all",
+    value: function all() {
+      var _this = this;
+
+      return axios.get('/saves', {
+        params: {
+          count: this.count
+        }
+      }).then(function (response) {
+        _this.saves = response.data.data;
+
+        _this.updatePagination(response);
+
+        return _this.saves;
+      })["catch"](function (error) {
+        return error;
+      });
+    }
+  }, {
+    key: "updatePagination",
+    value: function updatePagination(response) {
+      this.pagination.current = response.data.current_page;
+      this.pagination.total_pages = response.data.last_page;
+      this.pagination.next_url = response.data.next_page_url;
+      this.pagination.first_url = response.data.first_page_url;
+      this.pagination.last_url = response.data.last_page_url;
+      this.pagination.previous_url = response.data.prev_page_url;
+      this.pagination.from = response.data.from;
+      this.pagination.to = response.data.to;
+      this.pagination.total = response.data.total;
+      this.pagination.per_page = response.data.per_page;
+    }
+  }]);
+
+  return Save;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Save);
 
 /***/ }),
 

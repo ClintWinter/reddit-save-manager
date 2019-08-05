@@ -2,6 +2,8 @@ import '@fortawesome/fontawesome-free';
 import axios from 'axios';
 window.axios = axios;
 
+import Save from './models/Save';
+
 import Vue from 'vue';
 import Navigation from './components/Nav';
 import Search from './components/Search';
@@ -13,6 +15,7 @@ const app = new Vue({
     el: '#app',
 
     data: {
+        // save: new Save(),
         saves: [],
         user: '',
         isProcessing: false,
@@ -20,6 +23,12 @@ const app = new Vue({
         subreddits: [],
         tags: [],
         types: [],
+        filters: {
+            count: 15,
+            subreddit: '',
+            tag: '',
+            type: ''
+        },
         pagination: {
             current: null,
             total_pages: null,
@@ -30,14 +39,20 @@ const app = new Vue({
             from: null,
             to: null,
             total: null,
-            per_page: 15,
         }
     },
 
     created() {
+        // this.save.all()
+        // .then(function(data) {
+        //     this.saves = data;
+        // }.bind(this));
+
+
+        
         axios.get('/saves', {
             params: {
-                count: this.pagination.per_page
+                count: this.filters.count
             }
         })
         .then((response) => {
@@ -52,7 +67,7 @@ const app = new Vue({
             this.pagination.from = response.data.from;
             this.pagination.to = response.data.to;
             this.pagination.total = response.data.total;
-            this.pagination.per_page = response.data.per_page;
+            this.filters.count = response.data.per_page;
         })
         .catch(error => console.log(error));
 
@@ -68,7 +83,7 @@ const app = new Vue({
             this.isProcessing = true;
             axios.get(url, {
                 params: {
-                    count: this.pagination.per_page
+                    count: this.filters.count
                 }
             })
             .then((response) => {
@@ -84,6 +99,8 @@ const app = new Vue({
                 this.pagination.per_page = response.data.per_page;
 
                 this.isProcessing = false;
+
+                window.scrollTo(0,0);
             })
             .catch(error => console.log(error));
         },
@@ -92,7 +109,10 @@ const app = new Vue({
             axios.get('/saves', {
                 params: {
                     query: query,
-                    count: this.pagination.per_page
+                    count: this.filters.count,
+                    subreddit: this.filters.subreddit,
+                    tag: this.filters.tag,
+                    type: this.filters.type
                 }
             })
             .then((response) => {
@@ -107,13 +127,29 @@ const app = new Vue({
                 this.pagination.from = response.data.from;
                 this.pagination.to = response.data.to;
                 this.pagination.total = response.data.total;
-                this.pagination.per_page = response.data.per_page;
+                this.filters.count = response.data.per_page;
             })
             .catch(error => console.log(error));
         },
 
         updateCount(count) {
-            this.pagination.per_page = count;
+            this.filters.count = count;
+            this.filterResults();
+        },
+
+        updateSubreddit(subreddit) {
+            console.log('emit captured', subreddit);
+            this.filters.subreddit = subreddit;
+            this.filterResults();
+        },
+
+        updateTag(tag) {
+            this.filters.tag = tag;
+            this.filterResults();
+        },
+
+        updateType(type) {
+            this.filters.type = type;
             this.filterResults();
         },
 

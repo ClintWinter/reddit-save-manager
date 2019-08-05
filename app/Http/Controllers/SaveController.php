@@ -38,13 +38,43 @@ class SaveController extends Controller
         // }
 
         $tmp = request('query', '');
-        $query = "%{$tmp}%";
+        $search = "%{$tmp}%";
 
         return $user
                 ->saves()
                 ->with(['subreddit', 'tags', 'type'])
-                ->where('title', 'like', $query)
-                ->orWhere('body', 'like', $query)
+                // search
+                ->where(function ($query) use ($search) {
+                    $query->where('title', 'like', $search)
+                        ->orWhere('body', 'like', $search);
+                })
+                // filters
+                ->when(request('subreddit', false), function($query, $subreddit) {
+                    $query->whereHas('subreddit', function($q) use ($subreddit) {
+                        $q->where('name', $subreddit);
+                    });
+                })
+                ->when(request('tag', false), function($query, $tag) {
+                    $query->whereHas('tags', function($q) use ($tag) {
+                        $q->where('name', $tag);
+                    });
+                })
+                ->when(request('type', false), function($query, $type) {
+                    $query->whereHas('type', function($q) use ($type) {
+                        $q->where('type', $type);
+                    });
+                })
+                // ->where(function ($query) {
+                //     if (request('subreddit', '')) {
+                //         $query->where('subreddit.name', request('subreddit'));
+                //     }
+                //     if (request('tag', '')) {
+                //         $query->where('tag.name', request('tag'));
+                //     }
+                //     if (request('type', '')) {
+                //         $query->where('type.type', request('type'));
+                //     }
+                // })
                 ->latest()
                 ->paginate(request('count', 15));
     }

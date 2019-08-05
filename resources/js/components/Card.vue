@@ -1,5 +1,5 @@
 <template>
-    <div class="card-container w-1/3 py-3 px-2 flex items-stretch">
+    <div class="card-container w-full md:w-1/2 py-3 px-2 flex items-stretch">
         <div class="card rounded-lg w-full p-2" :class="color">
             <h2 class="text-xl font-semibold leading-tight" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);">
                 <a v-bind:href="save.link" target="_blank">{{ save.title }}</a>

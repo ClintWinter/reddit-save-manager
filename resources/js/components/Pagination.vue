@@ -54,7 +54,7 @@ export default {
 
     data() {
         return {
-            count: this.pagination.per_page
+            count: 15
         };
     },
 
