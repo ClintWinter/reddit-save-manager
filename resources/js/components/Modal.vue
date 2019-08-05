@@ -64,16 +64,15 @@ export default {
 
     methods: {
         filterSubreddit() {
-            console.log('emit subreddit change', this.subreddit);
             this.$emit('updatesubreddit', this.subreddit);
         },
         
         filterTag() {
-            this.$emit('updatetag', this.subreddit);
+            this.$emit('updatetag', this.tag);
         },
 
         filterType() {
-            this.$emit('updatetype', this.subreddit);
+            this.$emit('updatetype', this.type);
         },
 
     }

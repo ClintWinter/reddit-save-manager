@@ -4392,14 +4392,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     filterSubreddit: function filterSubreddit() {
-      console.log('emit subreddit change', this.subreddit);
       this.$emit('updatesubreddit', this.subreddit);
     },
     filterTag: function filterTag() {
-      this.$emit('updatetag', this.subreddit);
+      this.$emit('updatetag', this.tag);
     },
     filterType: function filterType() {
-      this.$emit('updatetype', this.subreddit);
+      this.$emit('updatetype', this.type);
     }
   }
 });
