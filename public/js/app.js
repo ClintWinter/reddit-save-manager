@@ -4286,6 +4286,7 @@ module.exports = {
 //
 //
 //
+//
 module.exports = {
   props: ['save'],
   data: function data() {
@@ -5219,7 +5220,7 @@ var render = function() {
                     {
                       key: tag.name,
                       staticClass:
-                        "tag mx-1 px-1 py-1 rounded-full bg-white opacity-75 text-black shadow-md"
+                        "tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md mb-2 leading-normal"
                     },
                     [_vm._v(_vm._s(tag.name))]
                   )
@@ -5269,7 +5270,8 @@ var render = function() {
                       "button",
                       {
                         staticClass:
-                          "mx-1 px-2 py-2 rounded-full bg-white text-black shadow-md opacity-75 flex justify-center",
+                          "mx-1 px-3 py-2 rounded-full bg-white text-black shadow-md opacity-75 flex justify-center",
+                        staticStyle: { height: "32px" },
                         on: { mouseup: _vm.showAddTag }
                       },
                       [_c("i", { staticClass: "fas fa-plus" })]

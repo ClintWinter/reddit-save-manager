@@ -33,10 +33,6 @@ class SaveController extends Controller
                 $user->newSave($save);
             });
 
-        // if (empty(request('query'))) {
-        //     return $user->saves()->with(['subreddit', 'tags', 'type'])->latest()->paginate(request('count', 15));
-        // }
-
         $tmp = request('query', '');
         $search = "%{$tmp}%";
 
@@ -64,17 +60,6 @@ class SaveController extends Controller
                         $q->where('type', $type);
                     });
                 })
-                // ->where(function ($query) {
-                //     if (request('subreddit', '')) {
-                //         $query->where('subreddit.name', request('subreddit'));
-                //     }
-                //     if (request('tag', '')) {
-                //         $query->where('tag.name', request('tag'));
-                //     }
-                //     if (request('type', '')) {
-                //         $query->where('type.type', request('type'));
-                //     }
-                // })
                 ->latest()
                 ->paginate(request('count', 15));
     }

@@ -11,7 +11,7 @@
             <div>
                 <div class="tags flex flex-wrap">
                     <div 
-                        class="tag mx-1 px-1 py-1 rounded-full bg-white opacity-75 text-black shadow-md"
+                        class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md mb-2 leading-normal"
                         v-for="tag in tags" 
                         :key="tag.name">{{ tag.name }}</div>
                     <input 
@@ -22,7 +22,8 @@
                         ref="taginput"
                         @keyup.enter="addTag">
                     <button
-                        class="mx-1 px-2 py-2 rounded-full bg-white text-black shadow-md opacity-75 flex justify-center"
+                        class="mx-1 px-3 py-2 rounded-full bg-white text-black shadow-md opacity-75 flex justify-center"
+                        style="height: 32px;"
                         v-if="(save.tags.length < 10 && !addInputIsVisible)"
                         @mouseup="showAddTag"><i class="fas fa-plus"></i></button>
                 </div>
