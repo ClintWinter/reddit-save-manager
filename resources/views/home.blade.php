@@ -3,7 +3,14 @@
 @section('content')
 
 <div id="app" class="text-white min-h-screen flex flex-col">
-    <navigation :user="user"></navigation>
+    <navigation :user="user">
+        <a 
+            href="{{ route('logout') }}" 
+            onclick="event.preventDefault();document.getElementById('logout-form').submit();">@{{ user.name }}</a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </navigation>
 
     <error-flash
         :errors="errors"></error-flash>

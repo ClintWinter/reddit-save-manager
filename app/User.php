@@ -4,6 +4,7 @@ namespace App;
 
 use App\Save;
 use App\Type;
+use App\Tag;
 use App\Subreddit;
 use GuzzleHttp\Client;
 use Illuminate\Notifications\Notifiable;
@@ -104,7 +105,7 @@ class User extends Authenticatable
     public function newSave($save)
     {
         $prefix = explode('_', $save['name'])[0];
-        $type = ( $prefix == 't1' ? 'comment' : ( $prefix == 't3' && empty( $save['media'] ) ? 'text' : 'link' ) );
+        $type = ( $prefix == 't1' ? 'comment' : ( $prefix == 't3' && strpos( $save['url'], 'https://www.reddit.com' ) !== false ? 'text' : 'link' ) );
 
         $newSave = new Save;
 
@@ -114,13 +115,13 @@ class User extends Authenticatable
         $newSave->subreddit_id = Subreddit::firstOrCreate(['name' => $save['subreddit']])->id;
 
         if ( $type == 'comment') {
-            $newSave->link = $save['link_permalink'];
+            $newSave->link = 'https://reddit.com' . $save['permalink'];
             $newSave->title = $save['link_title'];
             $newSave->body = $save['body_html'];
             
         } elseif ( $type == 'link' ) {
             
-            $newSave->link = $save['url'];
+            $newSave->link = 'https://reddit.com' . $save['permalink'];
             $newSave->title = $save['title'];
             $newSave->body = '';
             
@@ -133,6 +134,12 @@ class User extends Authenticatable
         }
 
         $newSave->save();
+
+        $tag = Tag::firstOrCreate([
+            'name' => $save['subreddit']
+        ]);
+    
+        $tag->saves()->attach($newSave->id);
     }
 
     public function saves() 

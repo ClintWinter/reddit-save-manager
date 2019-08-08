@@ -4513,15 +4513,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user']
 });
@@ -5617,13 +5608,7 @@ var render = function() {
     _c(
       "div",
       { staticClass: "w-full flex justify-between items-center py-2 px-4" },
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", [
-          _c("a", { attrs: { href: "#" } }, [_vm._v(_vm._s(_vm.user.name))])
-        ])
-      ]
+      [_vm._m(0), _vm._v(" "), _c("div", [_vm._t("default")], 2)]
     )
   ])
 }

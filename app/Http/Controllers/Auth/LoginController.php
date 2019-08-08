@@ -43,11 +43,6 @@ class LoginController extends Controller
     public function redirectToProvider()
     {
         return Socialite::driver('reddit')
-            ->with([
-                'redirect_uri' => 'http://localhost:8000/reddit/callback',
-                'duration' => 'permanent',
-                'response_type' => 'code'
-            ])
             ->scopes(['identity', 'edit', 'flair', 'history', 'modconfig', 'modflair', 'modlog', 'modposts', 'modwiki', 'mysubreddits', 'privatemessages', 'read', 'report', 'save', 'submit', 'subscribe', 'vote', 'wikiedit', 'wikiread'])
             ->redirect();
     }
