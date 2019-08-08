@@ -24,6 +24,8 @@ class SaveController extends Controller
     {
         $user = Auth::user();
 
+        dd($user);
+
         if ($user->tokenExpired())
             $user->refreshToken();
 

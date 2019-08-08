@@ -43,6 +43,10 @@ class LoginController extends Controller
     public function redirectToProvider()
     {
         return Socialite::driver('reddit')
+            ->with([
+                'duration' => 'permanent',
+                'response_type' => 'code'
+            ])
             ->scopes(['identity', 'edit', 'flair', 'history', 'modconfig', 'modflair', 'modlog', 'modposts', 'modwiki', 'mysubreddits', 'privatemessages', 'read', 'report', 'save', 'submit', 'subscribe', 'vote', 'wikiedit', 'wikiread'])
             ->redirect();
     }
@@ -52,12 +56,12 @@ class LoginController extends Controller
         try {
             $user = Socialite::driver('reddit')->user();
         } catch(Exception $e) {
-            return redirect('/login');
+            return redirect('/');
         }
 
         $accessTokenResponseBody = $user->accessTokenResponseBody;
 
-        $ourUser = User::where('email', $user->getEmail())->first();
+        $ourUser = User::where('reddit_id', $user->getID())->first();
 
         if ( !$ourUser ) {
             $ourUser = new User;
