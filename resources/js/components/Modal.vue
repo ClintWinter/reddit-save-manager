@@ -17,32 +17,35 @@
                     <div class="flex justify-between items-center">
                         <label class="mr-5 text-gray-600 uppercase text-sm text-right flex-grow" for="subreddit">Subreddit</label>
                         <select 
-                            class="w-64 block h-8 my-4"
+                            class="w-64 block h-8 my-4 bg-gray-200 rounded"
                             v-model="subreddit"
                             @change="filterSubreddit">
                             <option value="">--</option>
-                            <option :key="index" v-for="(subreddit, index) in subreddits">{{ subreddit }}</option>
+                            <option :key="subreddit" v-for="subreddit in subreddits">{{ subreddit }}</option>
                         </select>
                     </div>
                     <div class="flex justify-between items-center">
                         <label class="mr-5 text-gray-600 uppercase text-sm text-right flex-grow" for="subreddit">Tag</label>
                         <select 
-                            class="w-64 block h-8 my-4"
+                            class="w-64 block h-8 my-4 bg-gray-200 rounded"
                             v-model="tag"
                             @change="filterTag">
                             <option value="">--</option>
-                            <option :key="index" v-for="(tag, index) in tags">{{ tag }}</option>
+                            <option :key="tag" v-for="tag in tags">{{ tag }}</option>
                         </select>
                     </div>
                     <div class="flex justify-between items-center">
                         <label class="mr-5 text-gray-600 uppercase text-sm text-right flex-grow" for="subreddit">Type</label>
                         <select 
-                            class="w-64 block h-8 my-4"
+                            class="w-64 block h-8 my-4 bg-gray-200 rounded"
                             v-model="type"
                             @change="filterType">
                             <option value="">--</option>
-                            <option :key="index" v-for="(type, index) in types">{{ type }}</option>
+                            <option :key="type" v-for="type in types">{{ type }}</option>
                         </select>
+                    </div>
+                    <div class="block flex justify-end">
+                        <button class="p-0 m-0 underline text-blue-500" @click="clearFilters">Clear Filters</button>
                     </div>
                 </div>
             </div>
@@ -75,6 +78,12 @@ export default {
             this.$emit('updatetype', this.type);
         },
 
+        clearFilters() {
+            this.subreddit = '';
+            this.tag = '';
+            this.type = '';
+            this.$emit('clearfilters');
+        }
     }
 }
 </script>

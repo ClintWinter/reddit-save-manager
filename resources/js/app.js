@@ -130,6 +130,7 @@ const app = new Vue({
                 this.pagination.from = response.data.from;
                 this.pagination.to = response.data.to;
                 this.pagination.total = response.data.total;
+                this.pagination.per_page = response.data.per_page;
                 this.filters.count = response.data.per_page;
             })
             .catch(error => console.log(error));
@@ -166,6 +167,13 @@ const app = new Vue({
                     this.types = response.data.types;
                 });
             }
+        },
+
+        clearFilters() {
+            this.filters.subreddit = '';
+            this.filters.tag = '';
+            this.filters.type = '';
+            this.filterResults();
         },
 
         displayErrors(errors) {

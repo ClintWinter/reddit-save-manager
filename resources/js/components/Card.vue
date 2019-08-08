@@ -12,7 +12,8 @@
                 <div class="tags flex flex-wrap">
                     <div 
                         class="tag mx-1 px-1 py-1 rounded-full bg-white opacity-75 text-black shadow-md"
-                        v-for="(tag, index) in tags" :key="index">{{ tag.name }}</div>
+                        v-for="tag in tags" 
+                        :key="tag.name">{{ tag.name }}</div>
                     <input 
                         type="text"
                         class="block rounded px-3 py-1 bg-white text-black opacity-75"

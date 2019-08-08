@@ -16,7 +16,8 @@
         @togglefilters="toggleFilters"
         @updatesubreddit="updateSubreddit"
         @updatetag="updateTag"
-        @updatetype="updateType"></modal>
+        @updatetype="updateType"
+        @clearfilters="clearFilters"></modal>
 
     <search @filterresults="filterResults" @togglefilters="toggleFilters"></search>
 
@@ -30,9 +31,9 @@
                 :processing="isProcessing"></pagination>
             <section class="cards flex flex-wrap justify-start items-stretch">
                 <card 
-                    v-for="(save, index) in saves" 
+                    v-for="save in saves" 
                     :save="save" 
-                    :key="index"
+                    :key="save.reddit_id"
                     @throwerror="displayErrors"></card>
             </section>
             <pagination 

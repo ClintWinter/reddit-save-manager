@@ -4285,6 +4285,7 @@ module.exports = {
 //
 //
 //
+//
 module.exports = {
   props: ['save'],
   data: function data() {
@@ -4452,6 +4453,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['showFilters', 'subreddits', 'tags', 'types'],
   data: function data() {
@@ -4470,6 +4474,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     filterType: function filterType() {
       this.$emit('updatetype', this.type);
+    },
+    clearFilters: function clearFilters() {
+      this.subreddit = '';
+      this.tag = '';
+      this.type = '';
+      this.$emit('clearfilters');
     }
   }
 });
@@ -5212,11 +5222,11 @@ var render = function() {
               "div",
               { staticClass: "tags flex flex-wrap" },
               [
-                _vm._l(_vm.tags, function(tag, index) {
+                _vm._l(_vm.tags, function(tag) {
                   return _c(
                     "div",
                     {
-                      key: index,
+                      key: tag.name,
                       staticClass:
                         "tag mx-1 px-1 py-1 rounded-full bg-white opacity-75 text-black shadow-md"
                     },
@@ -5425,7 +5435,7 @@ var render = function() {
                         expression: "subreddit"
                       }
                     ],
-                    staticClass: "w-64 block h-8 my-4",
+                    staticClass: "w-64 block h-8 my-4 bg-gray-200 rounded",
                     on: {
                       change: [
                         function($event) {
@@ -5448,8 +5458,8 @@ var render = function() {
                   [
                     _c("option", { attrs: { value: "" } }, [_vm._v("--")]),
                     _vm._v(" "),
-                    _vm._l(_vm.subreddits, function(subreddit, index) {
-                      return _c("option", { key: index }, [
+                    _vm._l(_vm.subreddits, function(subreddit) {
+                      return _c("option", { key: subreddit }, [
                         _vm._v(_vm._s(subreddit))
                       ])
                     })
@@ -5480,7 +5490,7 @@ var render = function() {
                         expression: "tag"
                       }
                     ],
-                    staticClass: "w-64 block h-8 my-4",
+                    staticClass: "w-64 block h-8 my-4 bg-gray-200 rounded",
                     on: {
                       change: [
                         function($event) {
@@ -5503,8 +5513,8 @@ var render = function() {
                   [
                     _c("option", { attrs: { value: "" } }, [_vm._v("--")]),
                     _vm._v(" "),
-                    _vm._l(_vm.tags, function(tag, index) {
-                      return _c("option", { key: index }, [_vm._v(_vm._s(tag))])
+                    _vm._l(_vm.tags, function(tag) {
+                      return _c("option", { key: tag }, [_vm._v(_vm._s(tag))])
                     })
                   ],
                   2
@@ -5533,7 +5543,7 @@ var render = function() {
                         expression: "type"
                       }
                     ],
-                    staticClass: "w-64 block h-8 my-4",
+                    staticClass: "w-64 block h-8 my-4 bg-gray-200 rounded",
                     on: {
                       change: [
                         function($event) {
@@ -5556,13 +5566,22 @@ var render = function() {
                   [
                     _c("option", { attrs: { value: "" } }, [_vm._v("--")]),
                     _vm._v(" "),
-                    _vm._l(_vm.types, function(type, index) {
-                      return _c("option", { key: index }, [
-                        _vm._v(_vm._s(type))
-                      ])
+                    _vm._l(_vm.types, function(type) {
+                      return _c("option", { key: type }, [_vm._v(_vm._s(type))])
                     })
                   ],
                   2
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "block flex justify-end" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "p-0 m-0 underline text-blue-500",
+                    on: { click: _vm.clearFilters }
+                  },
+                  [_vm._v("Clear Filters")]
                 )
               ])
             ])
@@ -18126,6 +18145,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
         _this3.pagination.from = response.data.from;
         _this3.pagination.to = response.data.to;
         _this3.pagination.total = response.data.total;
+        _this3.pagination.per_page = response.data.per_page;
         _this3.filters.count = response.data.per_page;
       })["catch"](function (error) {
         return console.log(error);
@@ -18159,6 +18179,12 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
           _this4.types = response.data.types;
         });
       }
+    },
+    clearFilters: function clearFilters() {
+      this.filters.subreddit = '';
+      this.filters.tag = '';
+      this.filters.type = '';
+      this.filterResults();
     },
     displayErrors: function displayErrors(errors) {
       if (this.timeout != null) {
@@ -18693,8 +18719,8 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/clintwinter/Sites/reddit-save-manager/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/clintwinter/Sites/reddit-save-manager/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\jumpm\Sites\reddit_saver\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\jumpm\Sites\reddit_saver\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
