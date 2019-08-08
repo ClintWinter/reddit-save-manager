@@ -6,6 +6,7 @@ import Save from './models/Save';
 
 import Vue from 'vue';
 import Navigation from './components/Nav';
+import ErrorFlash from './components/ErrorFlash.vue';
 import Search from './components/Search';
 import Card from './components/Card';
 import Pagination from './components/Pagination';
@@ -39,7 +40,9 @@ const app = new Vue({
             from: null,
             to: null,
             total: null,
-        }
+        },
+        errors: [],
+        timeout: null,
     },
 
     created() {
@@ -138,7 +141,6 @@ const app = new Vue({
         },
 
         updateSubreddit(subreddit) {
-            console.log('emit captured', subreddit);
             this.filters.subreddit = subreddit;
             this.filterResults();
         },
@@ -164,11 +166,30 @@ const app = new Vue({
                     this.types = response.data.types;
                 });
             }
+        },
+
+        displayErrors(errors) {
+            if (this.timeout != null) {
+                clearTimeout(this.timeout);
+                this.timeout = null;
+            }
+
+            for (let error in errors) {
+                this.errors.push({
+                    'key': error, 
+                    'message': errors[error][0]
+                });
+            }
+
+            this.timeout = setTimeout(function() {
+                this.errors = [];
+            }.bind(this), 4000);
         }
     },
 
     components: {
         'navigation': Navigation,
+        'error-flash': ErrorFlash,
         'search': Search,
         'card': Card,
         'pagination': Pagination,

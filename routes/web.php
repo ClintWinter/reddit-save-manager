@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Request;
 
 Auth::routes();
 
@@ -12,6 +13,20 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/saves', 'SaveController@index');
+
+Route::post('/tags', function(Request $request) {
+    request()->validate([
+        'tag' => 'required'
+    ]);
+
+    $tag = App\Tag::firstOrCreate([
+        'name' => request('tag')
+    ]);
+
+    $tag->saves()->attach(request('save_id'));
+    
+    return $tag;
+});
 
 Route::get('/filters', function() {
     return Auth::user()->getFilters();

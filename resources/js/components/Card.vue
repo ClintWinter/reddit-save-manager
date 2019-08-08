@@ -1,16 +1,31 @@
 <template>
     <div class="card-container w-full md:w-1/2 py-3 px-2 flex items-stretch">
-        <div class="card rounded-lg w-full p-2" :class="color">
-            <h2 class="text-xl font-semibold leading-tight" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);">
-                <a v-bind:href="save.link" target="_blank">{{ save.title }}</a>
-            </h2>
-            <p class="text-2xl opacity-75 mb-4" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);"><small>r/{{ save.subreddit.name }}</small></p>
-            <div class="description text-sm mb-16" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);" v-if="body" v-html="body"></div>
-            <!-- <div class="tags flex flex-wrap">
-                <div class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md">Tag 1</div>
-                <div class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md">Tag 2</div>
-                <div class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md">Tag 3</div>
-            </div> -->
+        <div class="card rounded-lg w-full p-2 flex flex-col justify-between" :class="color">
+            <div>
+                <h2 class="text-xl font-semibold leading-tight" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);">
+                    <a v-bind:href="save.link" target="_blank">{{ save.title }}</a>
+                </h2>
+                <p class="text-2xl opacity-75 mb-4" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);"><small>r/{{ save.subreddit.name }}</small></p>
+                <div class="description text-sm mb-16" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);" v-if="body" v-html="body"></div>
+            </div>
+            <div>
+                <div class="tags flex flex-wrap">
+                    <div 
+                        class="tag mx-1 px-1 py-1 rounded-full bg-white opacity-75 text-black shadow-md"
+                        v-for="(tag, index) in tags" :key="index">{{ tag.name }}</div>
+                    <input 
+                        type="text"
+                        class="block rounded px-3 py-1 bg-white text-black opacity-75"
+                        v-show="addInputIsVisible"
+                        v-model="tag"
+                        ref="taginput"
+                        @keyup.enter="addTag">
+                    <button
+                        class="mx-1 px-2 py-2 rounded-full bg-white text-black shadow-md opacity-75 flex justify-center"
+                        v-if="(save.tags.length < 10 && !addInputIsVisible)"
+                        @mouseup="showAddTag"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -22,6 +37,9 @@ module.exports = {
 
     data() {
         return {
+            addInputIsVisible: false,
+            tag: '',
+            tags: this.save.tags
         };
     },
 
@@ -67,7 +85,32 @@ module.exports = {
             }
 
             return decodeHTMLEntities;
+        },
+
+        addTag() {
+            axios.post('/tags', {
+                tag: this.tag,
+                save_id: this.save.id
+            })
+            .then((response) => {
+                this.tags.push(response.data);
+                this.tag = '';
+                this.addInputIsVisible = false;
+            })
+            .catch(error => {
+                this.$emit('throwerror', error.response.data.errors);
+                this.tag = '';
+                this.addInputIsVisible = false;
+            });
+        },
+
+        showAddTag() {
+            this.addInputIsVisible = true;
+            this.$nextTick(function() {
+                this.$refs.taginput.focus();
+            });
         }
+
     },
 
 };

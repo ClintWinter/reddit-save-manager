@@ -5,6 +5,9 @@
 <div id="app" class="text-white min-h-screen flex flex-col">
     <navigation :user="user"></navigation>
 
+    <error-flash
+        :errors="errors"></error-flash>
+
     <modal 
         :show-filters="showFilters"
         :subreddits="subreddits"
@@ -26,7 +29,11 @@
                 :pagination="pagination"
                 :processing="isProcessing"></pagination>
             <section class="cards flex flex-wrap justify-start items-stretch">
-                <card v-for="(save, index) in saves" :save="save" :key="index"></card>
+                <card 
+                    v-for="(save, index) in saves" 
+                    :save="save" 
+                    :key="index"
+                    @throwerror="displayErrors"></card>
             </section>
             <pagination 
                 @pageclick="goToPage" 
