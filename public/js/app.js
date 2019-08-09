@@ -4287,6 +4287,8 @@ module.exports = {
 //
 //
 //
+//
+//
 module.exports = {
   props: ['save'],
   data: function data() {
@@ -4529,6 +4531,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -5163,15 +5167,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {
-      staticClass: "card-container w-full md:w-1/2 py-3 px-2 flex items-stretch"
-    },
+    { staticClass: "card-container w-full flex items-stretch" },
     [
       _c(
         "div",
         {
-          staticClass:
-            "card rounded-lg w-full p-2 flex flex-col justify-between",
+          staticClass: "card w-full p-2 flex flex-col justify-between",
           class: _vm.color
         },
         [
@@ -5362,7 +5363,7 @@ var render = function() {
             expression: "showFilters"
           }
         ],
-        staticClass: "fixed inset-0 flex justify-center items-center z-10",
+        staticClass: "fixed inset-0 flex justify-center items-center z-50",
         attrs: { id: "modal" }
       },
       [
@@ -5377,7 +5378,10 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "z-20 bg-white shadow-2xl rounded text-black p-2" },
+          {
+            staticClass:
+              "z-20 bg-white shadow-2xl rounded text-black p-2 mx-2 md:mx-5"
+          },
           [
             _c(
               "div",
@@ -5670,131 +5674,157 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "flex justify-between items-center p-2" }, [
-    _c("div", [
-      _c(
-        "button",
-        {
-          staticClass: "px-4 outline-none hover:text-orange-500",
-          class: { "opacity-25": _vm.prevDisabled },
-          staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
-          attrs: { disabled: _vm.pagination.current == 1 },
-          on: {
-            click: function($event) {
-              return _vm.pageClick(_vm.pagination.first_url)
-            }
-          }
-        },
-        [_c("i", { staticClass: "fas fa-angle-double-left" })]
-      ),
-      _c(
-        "button",
-        {
-          staticClass: "px-4 outline-none hover:text-orange-500",
-          class: { "opacity-25": _vm.prevDisabled },
-          staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
-          attrs: { disabled: _vm.prevDisabled },
-          on: {
-            click: function($event) {
-              return _vm.pageClick(_vm.pagination.previous_url)
-            }
-          }
-        },
-        [_c("i", { staticClass: "fas fa-angle-left" })]
-      ),
-      _c(
-        "button",
-        {
-          staticClass: "h-10 px-4 cursor-default font-black text-xl",
-          staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
-          attrs: { disabled: "" }
-        },
-        [_vm._v(_vm._s(_vm.pagination.current))]
-      ),
-      _c(
-        "button",
-        {
-          staticClass: "px-4 outline-none hover:text-orange-500",
-          class: { "opacity-25": _vm.nextDisabled },
-          staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
-          attrs: { disabled: _vm.nextDisabled },
-          on: {
-            click: function($event) {
-              return _vm.pageClick(_vm.pagination.next_url)
-            }
-          }
-        },
-        [_c("i", { staticClass: "fas fa-angle-right" })]
-      ),
-      _c(
-        "button",
-        {
-          staticClass: "px-4 outline-none hover:text-orange-500",
-          class: { "opacity-25": _vm.nextDisabled },
-          staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
-          attrs: {
-            disabled: _vm.pagination.current == _vm.pagination.total_pages
-          },
-          on: {
-            click: function($event) {
-              return _vm.pageClick(_vm.pagination.last_url)
-            }
-          }
-        },
-        [_c("i", { staticClass: "fas fa-angle-double-right" })]
-      )
-    ]),
-    _vm._v(" "),
-    _c("p", [
-      _c("strong", [_vm._v(_vm._s(_vm.pagination.from))]),
-      _vm._v(" to \n        "),
-      _c("strong", [_vm._v(_vm._s(_vm.pagination.to))]),
-      _vm._v(" of \n        "),
-      _c("strong", [_vm._v(_vm._s(_vm.pagination.total))]),
-      _vm._v("\n        - \n        "),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.count,
-              expression: "count"
-            }
-          ],
-          staticClass: "inline-block text-orange-600",
-          on: {
-            change: [
-              function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.count = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-              function($event) {
-                return _vm.countChanged()
+    _c(
+      "div",
+      {
+        staticClass:
+          "flex justify-around fixed inset-x-0 bottom-0 bg-gray-900 md:inline-block md:static md:inset-x-auto md:bottom-auto z-10"
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass:
+              "text-3xl md:text-lg px-4 outline-none hover:text-orange-500",
+            class: { "opacity-25": _vm.prevDisabled },
+            staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
+            attrs: { disabled: _vm.pagination.current == 1 },
+            on: {
+              click: function($event) {
+                return _vm.pageClick(_vm.pagination.first_url)
               }
+            }
+          },
+          [_c("i", { staticClass: "fas fa-angle-double-left" })]
+        ),
+        _c(
+          "button",
+          {
+            staticClass:
+              "text-3xl md:text-lg px-4 outline-none hover:text-orange-500",
+            class: { "opacity-25": _vm.prevDisabled },
+            staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
+            attrs: { disabled: _vm.prevDisabled },
+            on: {
+              click: function($event) {
+                return _vm.pageClick(_vm.pagination.previous_url)
+              }
+            }
+          },
+          [_c("i", { staticClass: "fas fa-angle-left" })]
+        ),
+        _c(
+          "button",
+          {
+            staticClass:
+              "text-3xl md:text-xl h-10 px-4 cursor-default font-black",
+            staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
+            attrs: { disabled: "" }
+          },
+          [_vm._v(_vm._s(_vm.pagination.current))]
+        ),
+        _c(
+          "button",
+          {
+            staticClass:
+              "text-3xl md:text-lg px-4 outline-none hover:text-orange-500",
+            class: { "opacity-25": _vm.nextDisabled },
+            staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
+            attrs: { disabled: _vm.nextDisabled },
+            on: {
+              click: function($event) {
+                return _vm.pageClick(_vm.pagination.next_url)
+              }
+            }
+          },
+          [_c("i", { staticClass: "fas fa-angle-right" })]
+        ),
+        _c(
+          "button",
+          {
+            staticClass:
+              "text-3xl md:text-lg px-4 outline-none hover:text-orange-500",
+            class: { "opacity-25": _vm.nextDisabled },
+            staticStyle: { "text-shadow": "2px 2px 4px rgba(0,0,0,.2)" },
+            attrs: {
+              disabled: _vm.pagination.current == _vm.pagination.total_pages
+            },
+            on: {
+              click: function($event) {
+                return _vm.pageClick(_vm.pagination.last_url)
+              }
+            }
+          },
+          [_c("i", { staticClass: "fas fa-angle-double-right" })]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "w-full flex justify-between md:w-auto md:inline-block" },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "block md:inline md:border-r-2 md:border-white md:pr-3 md:mr-2"
+          },
+          [
+            _c("strong", [_vm._v(_vm._s(_vm.pagination.from))]),
+            _vm._v(" to \n            "),
+            _c("strong", [_vm._v(_vm._s(_vm.pagination.to))]),
+            _vm._v(" of \n            "),
+            _c("strong", [_vm._v(_vm._s(_vm.pagination.total))])
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "block md:inline" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.count,
+                  expression: "count"
+                }
+              ],
+              staticClass: "inline-block text-orange-600",
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.count = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  },
+                  function($event) {
+                    return _vm.countChanged()
+                  }
+                ]
+              }
+            },
+            [
+              _c("option", { attrs: { selected: "selected" } }, [_vm._v("15")]),
+              _vm._v(" "),
+              _c("option", [_vm._v("25")]),
+              _vm._v(" "),
+              _c("option", [_vm._v("50")])
             ]
-          }
-        },
-        [
-          _c("option", { attrs: { selected: "selected" } }, [_vm._v("15")]),
-          _vm._v(" "),
-          _c("option", [_vm._v("25")]),
-          _vm._v(" "),
-          _c("option", [_vm._v("50")])
-        ]
-      ),
-      _vm._v("\n        per page\n    ")
-    ])
+          ),
+          _vm._v("\n            per page\n        ")
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = []
@@ -5832,7 +5862,7 @@ var render = function() {
             }
           ],
           staticClass:
-            "w-1/3 rounded-full px-5 py-2 shadow-lg outline-none mr-4 text-gray-700 border-2 border-transparent focus:border-orange-500",
+            "w-full md:w-1/2 lg:w-1/3 rounded-full px-5 py-2 shadow-lg outline-none mr-4 text-gray-700 border-2 border-transparent focus:border-orange-500",
           attrs: { type: "text", name: "query", placeholder: "Search..." },
           domProps: { value: _vm.thisQuery },
           on: {

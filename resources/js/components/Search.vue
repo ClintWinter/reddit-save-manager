@@ -8,7 +8,7 @@
                     type="text" 
                     name="query" 
                     placeholder="Search..." 
-                    class="w-1/3 rounded-full px-5 py-2 shadow-lg outline-none mr-4 text-gray-700 border-2 border-transparent focus:border-orange-500" />
+                    class="w-full md:w-1/2 lg:w-1/3 rounded-full px-5 py-2 shadow-lg outline-none mr-4 text-gray-700 border-2 border-transparent focus:border-orange-500" />
             </div>
             <div class="flex items-center">
                 <button 

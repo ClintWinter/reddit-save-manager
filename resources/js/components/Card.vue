@@ -1,6 +1,8 @@
 <template>
-    <div class="card-container w-full md:w-1/2 py-3 px-2 flex items-stretch">
-        <div class="card rounded-lg w-full p-2 flex flex-col justify-between" :class="color">
+    <!-- md:w-1/2 py-3 px-2 -->
+    <div class="card-container w-full flex items-stretch">
+        <!-- rounded-lg -->
+        <div class="card w-full p-2 flex flex-col justify-between" :class="color">
             <div>
                 <h2 class="text-xl font-semibold leading-tight" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);">
                     <a v-bind:href="save.link" target="_blank">{{ save.title }}</a>
