@@ -18,7 +18,9 @@
                         :key="tag.name">{{ tag.name }}</div>
                     <input 
                         type="text"
-                        class="block rounded px-3 py-1 bg-white text-black opacity-75"
+                        class="block px-3 py-1 mx-1 opacity-75 bg-transparent border-b-2 border-white outline-none"
+                        style="height: 32px;"
+                        placeholder="Tag Name..."
                         v-show="addInputIsVisible"
                         v-model="tag"
                         ref="taginput"
@@ -34,7 +36,6 @@
     </div>
 </template>
 
-// TODO: Different types of posts have different data to work with: need to find a reliable way to get a video/img post, text post, or a comment and render them the right way.
 <script>
 module.exports = {
     props: ['save'],

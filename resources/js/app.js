@@ -4,13 +4,17 @@ window.axios = axios;
 
 import Save from './models/Save';
 
+// Components
 import Vue from 'vue';
 import Navigation from './components/Nav';
-import ErrorFlash from './components/ErrorFlash.vue';
+import ErrorFlash from './components/ErrorFlash';
 import Search from './components/Search';
 import Card from './components/Card';
 import Pagination from './components/Pagination';
 import Modal from './components/Modal';
+
+// Directives
+import Closable from './directives/Closable';
 
 const app = new Vue({
     el: '#app',
@@ -21,6 +25,7 @@ const app = new Vue({
         user: '',
         isProcessing: false,
         showFilters: false,
+        showNavDropdown: false,
         subreddits: [],
         tags: [],
         types: [],
@@ -192,6 +197,10 @@ const app = new Vue({
             this.timeout = setTimeout(function() {
                 this.errors = [];
             }.bind(this), 4000);
+        },
+
+        hideNav() {
+            this.showNavDropdown = false;
         }
     },
 

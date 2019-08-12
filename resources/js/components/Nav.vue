@@ -6,7 +6,7 @@
                     <span class="fa-stack font-normal fa-3x mr-3" style="height: 60px; width: 60px;">
                         <i class="fas fa-circle fa-stack-1x leading-none" style="font-size: 95%"></i>
                         <i class="fab fa-reddit fa-stack-1x leading-none" style="color: #FF4500;"></i>
-                    </span> Reddit Save Manager!
+                    </span> Resavma
                 </h3>
             </div>
             <div>
