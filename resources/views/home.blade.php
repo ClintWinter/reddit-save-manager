@@ -7,7 +7,7 @@
         <div class="w-full flex justify-between items-center py-2 px-4">
             <div class="flex items-center">
                 <div class="mr-2" style="height: 50px; width: 50px;">
-                    {{-- @svg('images/Resavma-logo.svg', 'w-full h-full shadow-lg rounded-full') --}}
+                    @svg('Resavma-logo', 'w-full h-full shadow-lg rounded-full')
                 </div>
                 <h2 class="font-bold text-2xl">Resavma</h2>
                 {{-- <h3 class="logo font-black text-xl flex items-center p-1">

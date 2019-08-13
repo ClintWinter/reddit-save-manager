@@ -1,46 +1,14 @@
 @import "variables";
-
 @import "scss/fontawesome";
-
 @import "scss/solid";
 @import "scss/brands";
 
 @tailwind base;
-
 @tailwind components;
 
 body {
     background-color: #efeae8;
-    @apply .text-gray-800;
-}
-
-button:active,
-button:focus {
-    outline: none;
-}
-
-.bg-yellow-gradient {
-    background: linear-gradient(to bottom right, #FFCC00, #F8318E);
-}
-
-.bg-blue-gradient {
-    background: linear-gradient(to bottom right, #00FFCB, #317AF8);
-}
-
-.bg-purple-gradient {
-    background: linear-gradient(to bottom right, #FF0099, #7A31F8);
-}
-
-.bg-yellow-shadow {
-    box-shadow: 5px 5px 10px rgba(248, 66, 126, 0.35);
-}
-
-.bg-blue-shadow {
-    box-shadow: 5px 5px 10px rgba(45, 131, 245, 0.35);
-}
-
-.bg-purple-shadow {
-    box-shadow: 5px 5px 10px rgba(255, 0, 153, 0.35);
+    @apply .text-gray-700;
 }
 
 @import 'Animations';
@@ -48,3 +16,4 @@ button:focus {
 @import 'Card';
 
 @tailwind utilities;
+@import 'custom-utilities';

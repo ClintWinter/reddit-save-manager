@@ -6463,36 +6463,7 @@ video {
 
 body {
   background-color: #efeae8;
-  color: #2d3748;
-}
-
-button:active,
-button:focus {
-  outline: none;
-}
-
-.bg-yellow-gradient {
-  background: linear-gradient(to bottom right, #FFCC00, #F8318E);
-}
-
-.bg-blue-gradient {
-  background: linear-gradient(to bottom right, #00FFCB, #317AF8);
-}
-
-.bg-purple-gradient {
-  background: linear-gradient(to bottom right, #FF0099, #7A31F8);
-}
-
-.bg-yellow-shadow {
-  box-shadow: 5px 5px 10px rgba(248, 66, 126, 0.35);
-}
-
-.bg-blue-shadow {
-  box-shadow: 5px 5px 10px rgba(45, 131, 245, 0.35);
-}
-
-.bg-purple-shadow {
-  box-shadow: 5px 5px 10px rgba(255, 0, 153, 0.35);
+  color: #4a5568;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -9467,7 +9438,7 @@ button:focus {
 }
 
 .font-display{
-  font-family: Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
+  font-family: Expletus Sans, Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
 }
 
 .font-body{
@@ -13656,6 +13627,34 @@ button:focus {
   z-index: auto;
 }
 
+.bg-yellow-gradient {
+  background: linear-gradient(to bottom right, #FFCC00, #F8318E);
+}
+
+.bg-blue-gradient {
+  background: linear-gradient(to bottom right, #00FFCB, #317AF8);
+}
+
+.bg-purple-gradient {
+  background: linear-gradient(to bottom right, #FF0099, #7A31F8);
+}
+
+.bg-yellow-shadow {
+  box-shadow: 5px 5px 10px rgba(248, 66, 126, 0.35);
+}
+
+.bg-blue-shadow {
+  box-shadow: 5px 5px 10px rgba(45, 131, 245, 0.35);
+}
+
+.bg-purple-shadow {
+  box-shadow: 5px 5px 10px rgba(255, 0, 153, 0.35);
+}
+
+.text-shadow {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
 @media (min-width: 640px){
   .sm\:appearance-none{
     -webkit-appearance: none;
@@ -16586,7 +16585,7 @@ button:focus {
   }
 
   .sm\:font-display{
-    font-family: Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
+    font-family: Expletus Sans, Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
   }
 
   .sm\:font-body{
@@ -20774,6 +20773,34 @@ button:focus {
   .sm\:z-auto{
     z-index: auto;
   }
+
+  .sm\:bg-yellow-gradient {
+    background: linear-gradient(to bottom right, #FFCC00, #F8318E);
+  }
+
+  .sm\:bg-blue-gradient {
+    background: linear-gradient(to bottom right, #00FFCB, #317AF8);
+  }
+
+  .sm\:bg-purple-gradient {
+    background: linear-gradient(to bottom right, #FF0099, #7A31F8);
+  }
+
+  .sm\:bg-yellow-shadow {
+    box-shadow: 5px 5px 10px rgba(248, 66, 126, 0.35);
+  }
+
+  .sm\:bg-blue-shadow {
+    box-shadow: 5px 5px 10px rgba(45, 131, 245, 0.35);
+  }
+
+  .sm\:bg-purple-shadow {
+    box-shadow: 5px 5px 10px rgba(255, 0, 153, 0.35);
+  }
+
+  .sm\:text-shadow {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+  }
 }
 
 @media (min-width: 768px){
@@ -23706,7 +23733,7 @@ button:focus {
   }
 
   .md\:font-display{
-    font-family: Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
+    font-family: Expletus Sans, Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
   }
 
   .md\:font-body{
@@ -27894,6 +27921,34 @@ button:focus {
   .md\:z-auto{
     z-index: auto;
   }
+
+  .md\:bg-yellow-gradient {
+    background: linear-gradient(to bottom right, #FFCC00, #F8318E);
+  }
+
+  .md\:bg-blue-gradient {
+    background: linear-gradient(to bottom right, #00FFCB, #317AF8);
+  }
+
+  .md\:bg-purple-gradient {
+    background: linear-gradient(to bottom right, #FF0099, #7A31F8);
+  }
+
+  .md\:bg-yellow-shadow {
+    box-shadow: 5px 5px 10px rgba(248, 66, 126, 0.35);
+  }
+
+  .md\:bg-blue-shadow {
+    box-shadow: 5px 5px 10px rgba(45, 131, 245, 0.35);
+  }
+
+  .md\:bg-purple-shadow {
+    box-shadow: 5px 5px 10px rgba(255, 0, 153, 0.35);
+  }
+
+  .md\:text-shadow {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+  }
 }
 
 @media (min-width: 1024px){
@@ -30826,7 +30881,7 @@ button:focus {
   }
 
   .lg\:font-display{
-    font-family: Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
+    font-family: Expletus Sans, Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
   }
 
   .lg\:font-body{
@@ -35014,6 +35069,34 @@ button:focus {
   .lg\:z-auto{
     z-index: auto;
   }
+
+  .lg\:bg-yellow-gradient {
+    background: linear-gradient(to bottom right, #FFCC00, #F8318E);
+  }
+
+  .lg\:bg-blue-gradient {
+    background: linear-gradient(to bottom right, #00FFCB, #317AF8);
+  }
+
+  .lg\:bg-purple-gradient {
+    background: linear-gradient(to bottom right, #FF0099, #7A31F8);
+  }
+
+  .lg\:bg-yellow-shadow {
+    box-shadow: 5px 5px 10px rgba(248, 66, 126, 0.35);
+  }
+
+  .lg\:bg-blue-shadow {
+    box-shadow: 5px 5px 10px rgba(45, 131, 245, 0.35);
+  }
+
+  .lg\:bg-purple-shadow {
+    box-shadow: 5px 5px 10px rgba(255, 0, 153, 0.35);
+  }
+
+  .lg\:text-shadow {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+  }
 }
 
 @media (min-width: 1280px){
@@ -37946,7 +38029,7 @@ button:focus {
   }
 
   .xl\:font-display{
-    font-family: Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
+    font-family: Expletus Sans, Blinker, Segoe UI, Helvetica Neue, Arial, sans-serif;
   }
 
   .xl\:font-body{
@@ -42133,5 +42216,33 @@ button:focus {
 
   .xl\:z-auto{
     z-index: auto;
+  }
+
+  .xl\:bg-yellow-gradient {
+    background: linear-gradient(to bottom right, #FFCC00, #F8318E);
+  }
+
+  .xl\:bg-blue-gradient {
+    background: linear-gradient(to bottom right, #00FFCB, #317AF8);
+  }
+
+  .xl\:bg-purple-gradient {
+    background: linear-gradient(to bottom right, #FF0099, #7A31F8);
+  }
+
+  .xl\:bg-yellow-shadow {
+    box-shadow: 5px 5px 10px rgba(248, 66, 126, 0.35);
+  }
+
+  .xl\:bg-blue-shadow {
+    box-shadow: 5px 5px 10px rgba(45, 131, 245, 0.35);
+  }
+
+  .xl\:bg-purple-shadow {
+    box-shadow: 5px 5px 10px rgba(255, 0, 153, 0.35);
+  }
+
+  .xl\:text-shadow {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
   }
 }

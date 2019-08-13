@@ -1,7 +1,7 @@
 module.exports = {
   theme: {
     fontFamily: {
-      display: ['Blinker', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      display: ['Expletus Sans', 'Blinker', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
       body: ['Blinker', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
     },
     inset: {
