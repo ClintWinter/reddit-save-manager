@@ -11,6 +11,28 @@ body {
     @apply .text-gray-700;
 }
 
+main.hero:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -460px;
+    height: 900px;
+    transform: skew(0, -11deg);
+    @apply .bg-light-200;
+}
+
+.white-2 {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -650px;
+    height: 900px;
+    transform: skew(0, 30deg);
+    @apply .bg-light-100;
+}
+
 @import 'Animations';
 
 @import 'Card';
