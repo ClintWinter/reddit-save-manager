@@ -1,35 +1,41 @@
 <template>
-    <!-- md:w-1/2 py-3 px-2 -->
     <div class="card-container w-full flex items-stretch">
-        <!-- rounded-lg -->
-        <div class="card w-full p-2 flex flex-col justify-between" :class="color">
-            <div>
-                <h2 class="text-xl font-semibold leading-tight" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);">
-                    <a v-bind:href="save.link" target="_blank">{{ save.title }}</a>
-                </h2>
-                <p class="text-2xl opacity-75 mb-4" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);"><small>r/{{ save.subreddit.name }}</small></p>
-                <div class="description text-sm mb-16" style="text-shadow: 2px 2px 2px rgba(0,0,0,0.15);" v-if="body" v-html="body"></div>
+        <div class="card w-full flex flex-col justify-between" :class="color">
+            <div class="flex flex-col sm:flex-row p-2">
+                <div class="pl-2 pr-8 text-lg text-shadow hidden sm:block">
+                    <span class="fa-stack fa-2x">
+                        <i class="fas fa-circle fa-stack-2x text-black"></i>
+                        <i class="fa-stack-1x" :class="{'fas fa-comments text-teal-300': save.type.type == 'comment', 'fas fa-quote-left text-pink-500': save.type.type == 'text', 'fas fa-link text-orange-500': save.type.type == 'link'}"></i>
+                        <!-- <i class="fas fa-flag fa-stack-1x fa-inverse"></i> -->
+                    </span>
+                </div>
+                <div class="flex-grow">
+                    <h2 class="text-xl font-semibold leading-tight text-shadow">
+                        <a v-bind:href="save.link" target="_blank">{{ save.title }}</a>
+                    </h2>
+                    <p class="text-2xl opacity-75 mb-4 text-shadow"><small>r/{{ save.subreddit.name }}</small></p>
+                    <div class="description text-sm mb-6 text-shadow" v-if="body" v-html="body"></div>
+                </div>
             </div>
-            <div>
-                <div class="tags flex flex-wrap">
-                    <div 
-                        class="tag mx-1 px-3 py-1 rounded-full bg-white opacity-75 text-black shadow-md mb-2 leading-normal"
-                        v-for="tag in tags" 
-                        :key="tag.name">{{ tag.name }}</div>
+            <div class="py-4 p-2 flex" style="background-color: hsla(0, 100%, 0%, 15%)">
+                <div class="hidden sm:block" style="width: 130px;"></div>
+                <div>
+                    <div class="tags flex flex-wrap mb-2">
+                        <div 
+                            class="tag mr-2 px-3 py-1 rounded-full text-black shadow-md mb-2 leading-normal cursor-pointer hover:bg-red-600"
+                            :class="{'bg-teal-300': save.type.type == 'comment', 'bg-pink-500': save.type.type == 'text', 'bg-orange-500': save.type.type == 'link'}"
+                            v-for="tag in tags" 
+                            :key="tag.name"
+                            @click="deleteTag(tag.id, tag.name)"
+                        >{{ tag.name }}</div>
+                    </div>
                     <input 
                         type="text"
-                        class="block px-3 py-1 mx-1 opacity-75 bg-transparent border-b-2 border-white outline-none"
-                        style="height: 32px;"
-                        placeholder="Tag Name..."
-                        v-show="addInputIsVisible"
+                        class="text-black block px-3 py-1 rounded border-2 border-gray-200 outline-none focus:border-orange-500"
                         v-model="tag"
                         ref="taginput"
-                        @keyup.enter="addTag">
-                    <button
-                        class="mx-1 px-3 py-2 rounded-full bg-white text-black shadow-md opacity-75 flex justify-center"
-                        style="height: 32px;"
-                        v-if="(save.tags.length < 10 && !addInputIsVisible)"
-                        @mouseup="showAddTag"><i class="fas fa-plus"></i></button>
+                        @keyup.enter="addTag"
+                        placeholder="Add a Tag">
                 </div>
             </div>
         </div>
@@ -42,7 +48,6 @@ module.exports = {
 
     data() {
         return {
-            addInputIsVisible: false,
             tag: '',
             tags: this.save.tags
         };
@@ -100,21 +105,29 @@ module.exports = {
             .then((response) => {
                 this.tags.push(response.data);
                 this.tag = '';
-                this.addInputIsVisible = false;
             })
             .catch(error => {
                 this.$emit('throwerror', error.response.data.errors);
                 this.tag = '';
-                this.addInputIsVisible = false;
             });
         },
 
-        showAddTag() {
-            this.addInputIsVisible = true;
-            this.$nextTick(function() {
-                this.$refs.taginput.focus();
+        deleteTag(id, name) {
+            axios.delete('/saves/' + this.save.id + '/tags/' + id)
+            .then((response) => {
+                this.tags = this.tags.filter(v => v.id != id);
+            })
+            .catch(error => {
+                this.$emit('throwerror', error.response.data.errors);
             });
-        }
+        },
+
+        // showAddTag() {
+        //     this.addInputIsVisible = true;
+        //     this.$nextTick(function() {
+        //         this.$refs.taginput.focus();
+        //     });
+        // }
 
     },
 
