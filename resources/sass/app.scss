@@ -20,6 +20,11 @@ main.hero:before {
     bottom: -460px;
     height: 900px;
     transform: skew(0, -11deg);
+    animation-name: organic;
+    animation-duration: 60s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(.07,.07,.77,1.17);
     @apply .bg-light-200;
 }
 
@@ -31,8 +36,43 @@ main.hero:before {
     bottom: -650px;
     height: 900px;
     transform: skew(0, 30deg);
+    animation-name: organic2;
+    animation-duration: 70s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
+    animation-timing-function: cubic-bezier(.07,.07,.77,1.17);
     @apply .bg-light-100;
 }
+
+@keyframes organic {
+    0% {
+       transform: translateY(0) skew(0, -11deg);
+    }
+    30% {
+       transform: translateY(-50px) skew(0, -11deg);
+    }
+    60% {
+       transform: translateY(75px) skew(0, -11deg);
+    }
+    100% {
+       transform: translateY(-25px) skew(0, -11deg);
+    }
+ }
+ 
+ @keyframes organic2 {
+    0% {
+       transform: translateY(0) skew(0, 30deg);
+    }
+    32% {
+       transform: translateY(-75px) skew(0, 30deg);
+    }
+    65% {
+       transform: translateY(50px) skew(0, 30deg);
+    }
+    100% {
+       transform: translateY(-50px) skew(0, 30deg);
+    }
+ }
 
 @import 'Animations';
 
