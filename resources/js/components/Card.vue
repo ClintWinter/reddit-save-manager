@@ -22,7 +22,7 @@
                 <div>
                     <div class="tags flex flex-wrap mb-2">
                         <div 
-                            class="tag mr-2 px-3 py-1 rounded-full text-black shadow-md mb-2 leading-normal cursor-pointer hover:bg-red-600"
+                            class="tag mr-2 px-3 py-1 rounded-full text-black shadow-md mb-2 leading-normal cursor-pointer hover:bg-gray-200 hover:text-gray-600 hover:line-through"
                             :class="{'bg-teal-300': save.type.type == 'comment', 'bg-pink-500': save.type.type == 'text', 'bg-orange-500': save.type.type == 'link'}"
                             v-for="tag in tags" 
                             :key="tag.name"
@@ -98,7 +98,7 @@ module.exports = {
         },
 
         addTag() {
-            axios.post('/tags', {
+            axios.post('/saves/' + this.save.id + '/tags', {
                 tag: this.tag,
                 save_id: this.save.id
             })
@@ -113,6 +113,8 @@ module.exports = {
         },
 
         deleteTag(id, name) {
+            // axios.get('/saves/' + this.save.id);
+            // return;
             axios.delete('/saves/' + this.save.id + '/tags/' + id)
             .then((response) => {
                 this.tags = this.tags.filter(v => v.id != id);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Save;
 use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -86,13 +87,12 @@ class SaveTagController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Save $save
+     * @param  Tag $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy($save_id, $tag_id)
+    public function destroy(Save $save, Tag $tag)
     {
-        dd($save_id, $tag_id);
-        dd(Auth::user()->tags());
-        return Auth::user()->tags;
+        $save->tags()->detach($tag);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Save;
+
 Auth::routes();
 
 // UnAuth App Page
@@ -14,13 +16,20 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Saves
-Route::get('/saves', 'SaveController@index');
 
 // Tags
-// TODO: Figure this out!!! needs save and tag ids
-Route::prefix('/saves/{save_id}', function() {
-    Route::post('/tags', 'SaveTagController@store');
-    Route::delete('/tags/{tag_id}', 'SaveTagController@destroy');
+Route::middleware('auth')->group(function() {
+
+    Route::get('/saves', 'SaveController@index');
+
+    Route::prefix('/saves/{save}')->group(function() {
+        Route::get('/', function(Save $save) {
+            return $save;
+        });
+        Route::post('/tags', 'SaveTagController@store');
+        Route::delete('/tags/{tag}', 'SaveTagController@destroy');
+    });
+
 });
 
 // Filters

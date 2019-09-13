@@ -4347,7 +4347,7 @@ module.exports = {
     addTag: function addTag() {
       var _this = this;
 
-      axios.post('/tags', {
+      axios.post('/saves/' + this.save.id + '/tags', {
         tag: this.tag,
         save_id: this.save.id
       }).then(function (response) {
@@ -4363,6 +4363,8 @@ module.exports = {
     deleteTag: function deleteTag(id, name) {
       var _this2 = this;
 
+      // axios.get('/saves/' + this.save.id);
+      // return;
       axios["delete"]('/saves/' + this.save.id + '/tags/' + id).then(function (response) {
         _this2.tags = _this2.tags.filter(function (v) {
           return v.id != id;
@@ -5260,7 +5262,7 @@ var render = function() {
                       {
                         key: tag.name,
                         staticClass:
-                          "tag mr-2 px-3 py-1 rounded-full text-black shadow-md mb-2 leading-normal cursor-pointer hover:bg-red-600",
+                          "tag mr-2 px-3 py-1 rounded-full text-black shadow-md mb-2 leading-normal cursor-pointer hover:bg-gray-200 hover:text-gray-600 hover:line-through",
                         class: {
                           "bg-teal-300": _vm.save.type.type == "comment",
                           "bg-pink-500": _vm.save.type.type == "text",

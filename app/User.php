@@ -134,12 +134,6 @@ class User extends Authenticatable
         }
 
         $newSave->save();
-
-        $tag = Tag::firstOrCreate([
-            'name' => $save['subreddit']
-        ]);
-    
-        $tag->saves()->attach($newSave->id);
     }
 
     public function saves() 
