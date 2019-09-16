@@ -21,11 +21,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware('auth')->group(function() {
 
     Route::get('/saves', 'SaveController@index');
+    Route::post('/saves', 'SaveController@store');
 
     Route::prefix('/saves/{save}')->group(function() {
-        Route::get('/', function(Save $save) {
-            return $save;
-        });
+        Route::delete('/', 'SaveController@destroy');
         Route::post('/tags', 'SaveTagController@store');
         Route::delete('/tags/{tag}', 'SaveTagController@destroy');
     });

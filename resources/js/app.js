@@ -31,6 +31,7 @@ const app = new Vue({
         types: [],
         filters: {
             count: 15,
+            searchQuery: '',
             subreddit: '',
             tag: '',
             type: ''
@@ -87,6 +88,24 @@ const app = new Vue({
     },
 
     methods: {
+        unsave(save) {
+            axios.delete('/saves/' + save.id)
+            .then((response) => {
+                this.saves = this.saves.filter(s => s.id != save.id);
+                this.pagination.from = this.pagination.from - 1;
+                this.pagination.total = this.pagination.total - 1;
+            })
+            .catch(error => console.log(error));
+        },
+
+        getNewSaves() {
+            axios.post('/saves', {})
+            .then((response) => {
+                this.filterResults(this.filters.searchQuery);
+            })
+            .catch(error => console.log(error));
+        },
+
         goToPage(url) {
             this.isProcessing = true;
             axios.get(url, {
@@ -114,9 +133,10 @@ const app = new Vue({
         },
 
         filterResults(query) {
+            this.filters.searchQuery = query;
             axios.get('/saves', {
                 params: {
-                    query: query,
+                    query: this.filters.Searchquery,
                     count: this.filters.count,
                     subreddit: this.filters.subreddit,
                     tag: this.filters.tag,
@@ -175,6 +195,7 @@ const app = new Vue({
         },
 
         clearFilters() {
+            this.filters.searchQuery = '';
             this.filters.subreddit = '';
             this.filters.tag = '';
             this.filters.type = '';

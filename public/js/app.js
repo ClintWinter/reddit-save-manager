@@ -4296,6 +4296,14 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 module.exports = {
   props: ['save'],
   data: function data() {
@@ -4372,7 +4380,16 @@ module.exports = {
       })["catch"](function (error) {
         _this2.$emit('throwerror', error.response.data.errors);
       });
-    }
+    },
+    unsave: function unsave() {
+      this.$emit('unsave', this.save);
+    } // showAddTag() {
+    //     this.addInputIsVisible = true;
+    //     this.$nextTick(function() {
+    //         this.$refs.taginput.focus();
+    //     });
+    // }
+
   }
 };
 
@@ -5221,7 +5238,13 @@ var render = function() {
                 [
                   _c(
                     "a",
-                    { attrs: { href: _vm.save.link, target: "_blank" } },
+                    {
+                      attrs: {
+                        href: _vm.save.link,
+                        target: "_blank",
+                        rel: "noreferrer noopener"
+                      }
+                    },
                     [_vm._v(_vm._s(_vm.save.title))]
                   )
                 ]
@@ -5252,7 +5275,7 @@ var render = function() {
                 staticStyle: { width: "130px" }
               }),
               _vm._v(" "),
-              _c("div", [
+              _c("div", { staticClass: "w-full" }, [
                 _c(
                   "div",
                   { staticClass: "tags flex flex-wrap mb-2" },
@@ -5280,38 +5303,60 @@ var render = function() {
                   0
                 ),
                 _vm._v(" "),
-                _c("input", {
-                  directives: [
+                _c("div", { staticClass: "w-full flex justify-between" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.tag,
+                        expression: "tag"
+                      }
+                    ],
+                    ref: "taginput",
+                    staticClass:
+                      "text-black block px-3 py-1 rounded border-2 border-gray-200 outline-none focus:border-orange-500",
+                    attrs: { type: "text", placeholder: "Add a Tag" },
+                    domProps: { value: _vm.tag },
+                    on: {
+                      keyup: function($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
+                          )
+                        ) {
+                          return null
+                        }
+                        return _vm.addTag($event)
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.tag = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "button",
                     {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.tag,
-                      expression: "tag"
-                    }
-                  ],
-                  ref: "taginput",
-                  staticClass:
-                    "text-black block px-3 py-1 rounded border-2 border-gray-200 outline-none focus:border-orange-500",
-                  attrs: { type: "text", placeholder: "Add a Tag" },
-                  domProps: { value: _vm.tag },
-                  on: {
-                    keyup: function($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                      ) {
-                        return null
-                      }
-                      return _vm.addTag($event)
+                      staticClass:
+                        "px-3 py-1 rounded text-white hover:text-yellow-400 font-bold underline",
+                      on: { click: _vm.unsave }
                     },
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.tag = $event.target.value
-                    }
-                  }
-                })
+                    [
+                      _vm._v(
+                        "\n                        UNSAVE\n                    "
+                      )
+                    ]
+                  )
+                ])
               ])
             ]
           )
@@ -18102,6 +18147,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
     types: [],
     filters: {
       count: 15,
+      searchQuery: '',
       subreddit: '',
       tag: '',
       type: ''
@@ -18154,8 +18200,30 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
     });
   },
   methods: {
-    goToPage: function goToPage(url) {
+    unsave: function unsave(save) {
       var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a["delete"]('/saves/' + save.id).then(function (response) {
+        _this2.saves = _this2.saves.filter(function (s) {
+          return s.id != save.id;
+        });
+        _this2.pagination.from = _this2.pagination.from - 1;
+        _this2.pagination.total = _this2.pagination.total - 1;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    getNewSaves: function getNewSaves() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/saves', {}).then(function (response) {
+        _this3.filterResults(_this3.filters.searchQuery);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    goToPage: function goToPage(url) {
+      var _this4 = this;
 
       this.isProcessing = true;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(url, {
@@ -18163,45 +18231,46 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
           count: this.filters.count
         }
       }).then(function (response) {
-        _this2.saves = response.data.data;
-        _this2.pagination.current = response.data.current_page;
-        _this2.pagination.total_pages = response.data.last_page;
-        _this2.pagination.next_url = response.data.next_page_url;
-        _this2.pagination.previous_url = response.data.prev_page_url;
-        _this2.pagination.from = response.data.from;
-        _this2.pagination.to = response.data.to;
-        _this2.pagination.total = response.data.total;
-        _this2.pagination.per_page = response.data.per_page;
-        _this2.isProcessing = false;
+        _this4.saves = response.data.data;
+        _this4.pagination.current = response.data.current_page;
+        _this4.pagination.total_pages = response.data.last_page;
+        _this4.pagination.next_url = response.data.next_page_url;
+        _this4.pagination.previous_url = response.data.prev_page_url;
+        _this4.pagination.from = response.data.from;
+        _this4.pagination.to = response.data.to;
+        _this4.pagination.total = response.data.total;
+        _this4.pagination.per_page = response.data.per_page;
+        _this4.isProcessing = false;
         window.scrollTo(0, 0);
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     filterResults: function filterResults(query) {
-      var _this3 = this;
+      var _this5 = this;
 
+      this.filters.searchQuery = query;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves', {
         params: {
-          query: query,
+          query: this.filters.Searchquery,
           count: this.filters.count,
           subreddit: this.filters.subreddit,
           tag: this.filters.tag,
           type: this.filters.type
         }
       }).then(function (response) {
-        _this3.saves = response.data.data;
-        _this3.pagination.current = response.data.current_page;
-        _this3.pagination.total_pages = response.data.last_page;
-        _this3.pagination.next_url = response.data.next_page_url;
-        _this3.pagination.first_url = response.data.first_page_url;
-        _this3.pagination.last_url = response.data.last_page_url;
-        _this3.pagination.previous_url = response.data.prev_page_url;
-        _this3.pagination.from = response.data.from;
-        _this3.pagination.to = response.data.to;
-        _this3.pagination.total = response.data.total;
-        _this3.pagination.per_page = response.data.per_page;
-        _this3.filters.count = response.data.per_page;
+        _this5.saves = response.data.data;
+        _this5.pagination.current = response.data.current_page;
+        _this5.pagination.total_pages = response.data.last_page;
+        _this5.pagination.next_url = response.data.next_page_url;
+        _this5.pagination.first_url = response.data.first_page_url;
+        _this5.pagination.last_url = response.data.last_page_url;
+        _this5.pagination.previous_url = response.data.prev_page_url;
+        _this5.pagination.from = response.data.from;
+        _this5.pagination.to = response.data.to;
+        _this5.pagination.total = response.data.total;
+        _this5.pagination.per_page = response.data.per_page;
+        _this5.filters.count = response.data.per_page;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -18223,19 +18292,20 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
       this.filterResults();
     },
     toggleFilters: function toggleFilters() {
-      var _this4 = this;
+      var _this6 = this;
 
       this.showFilters = !this.showFilters;
 
       if (this.showFilters) {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/filters').then(function (response) {
-          _this4.subreddits = response.data.subreddits;
-          _this4.tags = response.data.tags;
-          _this4.types = response.data.types;
+          _this6.subreddits = response.data.subreddits;
+          _this6.tags = response.data.tags;
+          _this6.types = response.data.types;
         });
       }
     },
     clearFilters: function clearFilters() {
+      this.filters.searchQuery = '';
       this.filters.subreddit = '';
       this.filters.tag = '';
       this.filters.type = '';

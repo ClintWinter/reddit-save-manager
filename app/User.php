@@ -42,6 +42,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function handleToken()
+    {
+        if ($this->tokenExpired()) {
+            $this->refreshToken();
+        }
+    }
+
     public function refreshToken() 
     {
         $httpClient = new Client([]);
@@ -68,28 +75,48 @@ class User extends Authenticatable
         return time() > strtotime($this->updated_at) + 3600;
     }
 
+    public function handleNewSaves()
+    {
+        $this
+            ->newSaves()
+            ->each(function($save) {
+                $this->newSave($save);
+            });
+    }
+
     public function newSaves()
     {
         $httpClient = new Client([]);
-        $response = $httpClient->get(
-            'https://oauth.reddit.com/user/'.$this->name.'/saved',
-            [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $this->access_token,
-                    'User-Agent' => config('services.reddit.platform') . ':' . config('services.reddit.app_id') . ':' . config('services.reddit.version_string')
-                ],
-                'query' => [
-                    'after' => null,
-                    'before' => null,
-                    'show' => 'all',
-                    'count' => 10,
-                    'username' => $this->username,
-                    'limit' => 100
+        $saves = collect([]);
+        $after = null;
+        for ($i = 1; $i <= 10; $i++) {
+
+            if ( $saves->count() ) {
+                $after = $saves->last()['data']['name'];
+            }
+
+            $response = $httpClient->get(
+                'https://oauth.reddit.com/user/'.$this->name.'/saved',
+                [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $this->access_token,
+                        'User-Agent' => config('services.reddit.platform') . ':' . config('services.reddit.app_id') . ':' . config('services.reddit.version_string')
+                    ],
+                    'query' => [
+                        'after' => $after,
+                        'before' => null,
+                        'show' => 'all',
+                        'username' => $this->username,
+                        'limit' => 100
+                    ]
                 ]
-            ]
-        );
-        $body = json_decode($response->getBody(), true);
-        $saves = collect($body['data']['children'])->pluck('data');
+            );
+
+            $body = json_decode($response->getBody(), true);
+            $saves = $saves->merge(collect($body['data']['children']));
+        }
+
+        $saves = $saves->pluck('data');
 
         $redditIdsArray = $saves->pluck('name')->toArray();
 

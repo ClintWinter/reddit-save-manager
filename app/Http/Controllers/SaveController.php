@@ -24,17 +24,9 @@ class SaveController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->tokenExpired())
-            $user->refreshToken();
+        $user->handleToken();
 
-        $user
-            ->newSaves()
-            ->each(function($save) use ($user) {
-                $user->newSave($save);
-            });
-
-        $tmp = request('query', '');
-        $search = "%{$tmp}%";
+        $search = '%' . request('query', '') . '%';
 
         return $user
                 ->saves()
@@ -82,7 +74,9 @@ class SaveController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Auth::user()->handleNewSaves();
+
+        return 0;
     }
 
     /**
@@ -125,8 +119,31 @@ class SaveController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Save $save)
     {
-        //
+        $user = Auth::user();
+
+        $user->handleToken();
+
+        $httpClient = new Client([]);
+        $response = $httpClient->post('https://oauth.reddit.com/api/unsave', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $user->access_token,
+                'User-Agent' => config('services.reddit.platform') . ':' . config('services.reddit.app_id') . ':' . config('services.reddit.version_string')
+            ],
+            'body' => 'id=' . $save->reddit_id,
+            'form_params' => [
+                'id' => $save->reddit_id
+            ]
+        ]);
+
+        $body = json_decode($response->getBody(), true);
+    
+        $save->user()->dissociate();
+        $save->tags()->detach();
+        $save->delete();
+
+        return 0;
     }
 }

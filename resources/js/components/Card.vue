@@ -11,7 +11,7 @@
                 </div>
                 <div class="flex-grow">
                     <h2 class="text-xl font-semibold leading-tight text-shadow">
-                        <a v-bind:href="save.link" target="_blank">{{ save.title }}</a>
+                        <a v-bind:href="save.link" target="_blank" rel="noreferrer noopener">{{ save.title }}</a>
                     </h2>
                     <p class="text-2xl opacity-75 mb-4 text-shadow"><small>r/{{ save.subreddit.name }}</small></p>
                     <div class="description text-sm mb-6 text-shadow" v-if="body" v-html="body"></div>
@@ -19,7 +19,7 @@
             </div>
             <div class="py-4 p-2 flex" style="background-color: hsla(0, 100%, 0%, 15%)">
                 <div class="hidden sm:block" style="width: 130px;"></div>
-                <div>
+                <div class="w-full">
                     <div class="tags flex flex-wrap mb-2">
                         <div 
                             class="tag mr-2 px-3 py-1 rounded-full text-black shadow-md mb-2 leading-normal cursor-pointer hover:bg-gray-200 hover:text-gray-600 hover:line-through"
@@ -29,13 +29,21 @@
                             @click="deleteTag(tag.id, tag.name)"
                         >{{ tag.name }}</div>
                     </div>
-                    <input 
-                        type="text"
-                        class="text-black block px-3 py-1 rounded border-2 border-gray-200 outline-none focus:border-orange-500"
-                        v-model="tag"
-                        ref="taginput"
-                        @keyup.enter="addTag"
-                        placeholder="Add a Tag">
+                    <div class="w-full flex justify-between">
+                        <input 
+                            type="text"
+                            class="text-black block px-3 py-1 rounded border-2 border-gray-200 outline-none focus:border-orange-500"
+                            v-model="tag"
+                            ref="taginput"
+                            @keyup.enter="addTag"
+                            placeholder="Add a Tag">
+                        <button 
+                            class="px-3 py-1 rounded text-white hover:text-yellow-400 font-bold underline"
+                            @click="unsave"
+                        >
+                            UNSAVE
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,6 +132,9 @@ module.exports = {
             });
         },
 
+        unsave() {
+            this.$emit('unsave', this.save);
+        }
         // showAddTag() {
         //     this.addInputIsVisible = true;
         //     this.$nextTick(function() {
