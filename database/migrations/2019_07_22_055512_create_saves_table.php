@@ -21,7 +21,7 @@ class CreateSavesTable extends Migration
             $table->unsignedInteger('subreddit_id');
             $table->string('link');
             $table->string('title', 2000);
-            $table->mediumText('body')->nullable();
+            $table->text('body')->nullable();
             $table->timestamps();
         });
     }
