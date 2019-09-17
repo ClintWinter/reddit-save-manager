@@ -137,8 +137,6 @@ class SaveController extends Controller
                 'id' => $save->reddit_id
             ]
         ]);
-
-        $body = json_decode($response->getBody(), true);
     
         $save->user()->dissociate();
         $save->tags()->detach();

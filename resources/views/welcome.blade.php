@@ -25,10 +25,10 @@
         </div>
         <div class="pr-12">
             <a 
-                class="flex-grow-0 inline-flex text-lg py-2 px-4 text-white flex items-center bg-orange-600 hover:bg-orange-500 shadow-md hover:shadow tracking-wider rounded" 
+                class="flex-grow-0 inline-flex text-lg py-2 px-4 text-white flex items-center bg-blue-700 hover:bg-blue-600 shadow-md hover:shadow tracking-wider rounded" 
                 href="{{ route('reddit.redirect') }}"
             >
-                <span class="font-bold text-shadow">Log In</span>
+                <span class="font-bold text-shadow">SIGN IN</span>
             </a>
         </div>
     </nav>
@@ -43,33 +43,50 @@
                     href="{{ route('reddit.redirect') }}"
                 >
                     <i class="fab fa-reddit-alien text-3xl pr-3 text-white text-shadow"></i>
-                    <span class="font-bold text-shadow">AUTHORIZE</span>
+                    <span class="font-bold text-shadow">SIGN IN</span>
                 </a>
             </div>
         </div>
     </main>
     <article class="pt-32 pb-16 container mx-auto">
-        <div class="flex flex-wrap">
-            <div class="w-full md:w-1/3 px-5 mb-16 flex flex-col items-center">
-                <div class="text-4xl text-orange-500 w-16 py-1 bg-gray-300 rounded-full text-center">
-                    <i class="leading-loose fas fa-bookmark"></i>
+        <div class="flex justify-around flex-wrap">
+            <div class="w-full sm:w-1/2 lg:w-1/3 px-5 mb-16 flex items-start">
+                <div class="text-4xl text-orange-500 w-16 rounded-full py-1 pr-6">
+                    <i class="fas fa-bookmark"></i>
                 </div>
-                <h2 class="font-bold text-2xl text-orange-500 mb-2">Keep your saves</h2>
-                <p class="text-center text-gray-700">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat, expedita necessitatibus nulla iure perferendis dolorum recusandae, quo amet nobis eos nisi unde libero modi sit quisquam quasi illum iste adipisci.</p>
+                <div>
+                    <h2 class="font-bold text-2xl text-gray-600 mb-2">Keep your saves</h2>
+                    <p class="text-gray-700">Reddit only allows a max of 1,000 saves. We will keep the older saves you would normally lose in addition to your newer ones, making your max saves uncapped. </p>
+                </div>
             </div>
-            <div class="w-full md:w-1/3 px-5 mb-16 flex flex-col items-center">
-                <div class="text-4xl text-orange-500 w-16 py-1 bg-gray-300 rounded-full text-center">
-                    <i class="leading-loose fas fa-pen"></i>
+            <div class="w-full sm:w-1/2 lg:w-1/3 px-5 mb-16 flex">
+                <div class="text-4xl text-orange-500 w-16 py-1 rounded-full py-1 pr-6">
+                    <i class="fas fa-tags"></i>
                 </div>
-                <h2 class="font-bold text-2xl text-orange-500 mb-2">Manage &amp; edit</h2>
-                <p class="text-center text-gray-700">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat, expedita necessitatibus nulla iure perferendis dolorum recusandae, quo amet nobis eos nisi unde libero modi sit quisquam quasi illum iste adipisci.</p>
+                <div>
+                    <h2 class="font-bold text-2xl text-gray-600 mb-2">Tag your saves</h2>
+                    <p class="text-gray-700">Use custom tags to group and classify your saves. No more endless manual searching through page after page to find what you're looking for.</p>
+                </div>
             </div>
-            <div class="w-full md:w-1/3 px-5 mb-16 flex flex-col items-center">
-                <div class="text-4xl text-orange-500 w-16 py-1 bg-gray-300 rounded-full text-center">
-                    <i class="leading-loose fas fa-dollar-sign"></i>
+        </div>
+        <div class="flex justify-around flex-wrap">
+            <div class="w-full sm:w-1/2 lg:w-1/3 px-5 mb-16 flex">
+                <div class="text-4xl text-orange-500 w-16 py-1 rounded-full py-1 pr-6">
+                    <i class="fas fa-handshake"></i>
                 </div>
-                <h2 class="font-bold text-2xl text-orange-500 mb-2">It's free</h2>
-                <p class="text-center text-gray-700">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat, expedita necessitatibus nulla iure perferendis dolorum recusandae, quo amet nobis eos nisi unde libero modi sit quisquam quasi illum iste adipisci.</p>
+                <div>
+                    <h2 class="font-bold text-2xl text-gray-600 mb-2">No sign up required</h2>
+                    <p class="text-gray-700">No need to worry about security or remembering another password. Use your already existing Reddit account to log in and get started in 5 seconds!</p>
+                </div>
+            </div>
+            <div class="w-full sm:w-1/2 lg:w-1/3 px-5 mb-16 flex">
+                <div class="text-4xl text-orange-500 w-16 py-1 rounded-full py-1 pr-6">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-2xl text-gray-600 mb-2">Searching &amp; Filtering</h2>
+                    <p class="text-gray-700">Easily narrow down your saves by subreddit, tag, or type. Find exactly what you need with a fully compliant text search.</p>
+                </div>
             </div>
         </div>
     </article>
