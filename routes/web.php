@@ -1,14 +1,13 @@
 <?php
 
-use App\Save;
-
 Auth::routes();
 
 // UnAuth App Page
-Route::get('/', function () {
+Route::get('/', function() {
     if (Auth::check()) {
         return redirect('/home');
     }
+
     return view('welcome');
 });
 
@@ -37,7 +36,9 @@ Route::get('/filters', function() {
 })->middleware('auth');
 
 // User
-Route::get('/user', function() { return Auth::user(); })->middleware('auth');
+Route::get('/user', function() {
+    return Auth::user();
+})->middleware('auth');
 
 // Reddit OAuth
 Route::get('/reddit/redirect', 'Auth\LoginController@redirectToProvider')->name('reddit.redirect');

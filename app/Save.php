@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Filters\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 class Save extends Model
 {    
+    use Filterable;
+
     protected $fillable = ['reddit_id', 'link', 'title', 'body'];
 
     public function tags() 
