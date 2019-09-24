@@ -51,32 +51,32 @@ const app = new Vue({
         timeout: null,
     },
 
-    created() {
-        // this.save.all()
-        // .then(function(data) {
-        //     this.saves = data;
-        // }.bind(this));
+    mounted() {
 
+        this.filterResults();
 
-        
-        axios.get('/saves', {
-            params: {
-                count: this.filters.count
-            }
-        })
-        .then((response) => {
-            this.saves = response.data.data;
+        axios.post('/saves', {})
+        .then(() => {
+            axios.get('/saves', {
+                params: {
+                    count: this.filters.count
+                }
+            })
+            .then((response) => {
+                this.saves = response.data.data;
 
-            this.pagination.current = response.data.current_page;
-            this.pagination.total_pages = response.data.last_page;
-            this.pagination.next_url = response.data.next_page_url;
-            this.pagination.first_url = response.data.first_page_url;
-            this.pagination.last_url = response.data.last_page_url;
-            this.pagination.previous_url = response.data.prev_page_url;
-            this.pagination.from = response.data.from;
-            this.pagination.to = response.data.to;
-            this.pagination.total = response.data.total;
-            this.filters.count = response.data.per_page;
+                this.pagination.current = response.data.current_page;
+                this.pagination.total_pages = response.data.last_page;
+                this.pagination.next_url = response.data.next_page_url;
+                this.pagination.first_url = response.data.first_page_url;
+                this.pagination.last_url = response.data.last_page_url;
+                this.pagination.previous_url = response.data.prev_page_url;
+                this.pagination.from = response.data.from;
+                this.pagination.to = response.data.to;
+                this.pagination.total = response.data.total;
+                this.filters.count = response.data.per_page;
+            })
+            .catch(error => console.log(error));
         })
         .catch(error => console.log(error));
 
@@ -136,7 +136,7 @@ const app = new Vue({
             this.filters.searchQuery = query;
             axios.get('/saves', {
                 params: {
-                    query: this.filters.Searchquery,
+                    query: this.filters.searchQuery,
                     count: this.filters.count,
                     subreddit: this.filters.subreddit,
                     tag: this.filters.tag,

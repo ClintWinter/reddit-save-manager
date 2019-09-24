@@ -30,7 +30,7 @@
                                     class="block text-gray-900 hover:bg-gray-300 px-8 py-2"
                                     href="javascript:;"
                                     @click="getNewSaves"
-                                >Load New Saves</a>
+                                >Import New Saves</a>
                             </li>
                             <li>
                                 <a 

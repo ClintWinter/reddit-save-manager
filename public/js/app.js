@@ -18166,29 +18166,30 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
     errors: [],
     timeout: null
   },
-  created: function created() {
+  mounted: function mounted() {
     var _this = this;
 
-    // this.save.all()
-    // .then(function(data) {
-    //     this.saves = data;
-    // }.bind(this));
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves', {
-      params: {
-        count: this.filters.count
-      }
-    }).then(function (response) {
-      _this.saves = response.data.data;
-      _this.pagination.current = response.data.current_page;
-      _this.pagination.total_pages = response.data.last_page;
-      _this.pagination.next_url = response.data.next_page_url;
-      _this.pagination.first_url = response.data.first_page_url;
-      _this.pagination.last_url = response.data.last_page_url;
-      _this.pagination.previous_url = response.data.prev_page_url;
-      _this.pagination.from = response.data.from;
-      _this.pagination.to = response.data.to;
-      _this.pagination.total = response.data.total;
-      _this.filters.count = response.data.per_page;
+    this.filterResults();
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/saves', {}).then(function () {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves', {
+        params: {
+          count: _this.filters.count
+        }
+      }).then(function (response) {
+        _this.saves = response.data.data;
+        _this.pagination.current = response.data.current_page;
+        _this.pagination.total_pages = response.data.last_page;
+        _this.pagination.next_url = response.data.next_page_url;
+        _this.pagination.first_url = response.data.first_page_url;
+        _this.pagination.last_url = response.data.last_page_url;
+        _this.pagination.previous_url = response.data.prev_page_url;
+        _this.pagination.from = response.data.from;
+        _this.pagination.to = response.data.to;
+        _this.pagination.total = response.data.total;
+        _this.filters.count = response.data.per_page;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     })["catch"](function (error) {
       return console.log(error);
     });
@@ -18252,7 +18253,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_3___default.a({
       this.filters.searchQuery = query;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/saves', {
         params: {
-          query: this.filters.Searchquery,
+          query: this.filters.searchQuery,
           count: this.filters.count,
           subreddit: this.filters.subreddit,
           tag: this.filters.tag,
