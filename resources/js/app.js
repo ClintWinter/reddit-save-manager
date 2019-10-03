@@ -12,6 +12,7 @@ import Search from './components/Search';
 import Card from './components/Card';
 import Pagination from './components/Pagination';
 import Modal from './components/Modal';
+import PubSub from './pubsub';
 
 // Directives
 import Closable from './directives/Closable';
