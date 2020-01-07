@@ -8,6 +8,7 @@ import Save from './models/Save';
 import Vue from 'vue';
 import Navigation from './components/Nav';
 import ErrorFlash from './components/ErrorFlash';
+import NotificationFlash from './components/NotificationFlash';
 import Search from './components/Search';
 import Card from './components/Card';
 import Pagination from './components/Pagination';
@@ -49,6 +50,10 @@ const app = new Vue({
             total: null,
         },
         errors: [],
+        notification: {
+            status: '',
+            message: '',
+        },
         timeout: null,
     },
 
@@ -100,11 +105,17 @@ const app = new Vue({
         },
 
         getNewSaves() {
+            this.notification.status = 'neutral';
+            this.notification.message = 'Your saves are being imported.'
             axios.post('/saves', {})
             .then((response) => {
                 this.filterResults(this.filters.searchQuery);
+                this.notification.message = '';
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.log(error);
+                this.notification.message = '';
+            });
         },
 
         goToPage(url) {
@@ -140,7 +151,7 @@ const app = new Vue({
                     query: this.filters.searchQuery,
                     count: this.filters.count,
                     subreddit: this.filters.subreddit,
-                    tag: this.filters.tag,
+                    tags: this.filters.tag,
                     type: this.filters.type
                 }
             })
@@ -229,6 +240,7 @@ const app = new Vue({
     components: {
         'navigation': Navigation,
         'error-flash': ErrorFlash,
+        'notification-flash': NotificationFlash,
         'search': Search,
         'card': Card,
         'pagination': Pagination,

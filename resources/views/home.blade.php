@@ -51,6 +51,9 @@
 
     <error-flash
         :errors="errors"></error-flash>
+    <notification-flash
+        :status="notification.status"
+        :message="notification.message"></notification-flash>
 
     <modal
         :show-filters="showFilters"

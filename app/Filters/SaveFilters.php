@@ -28,14 +28,14 @@ class SaveFilters extends QueryFilters {
         });
     }
 
-    public function tag($term = null)
+    public function tags($term = null)
     {
         if (! $term) {
             return $this->builder;
         }
 
         return $this->builder->when($term, function($query, $tag) {
-            $query->whereHas('tag', function($q) use ($tag) {
+            $query->whereHas('tags', function($q) use ($tag) {
                 $q->where('name', $tag);
             });
         });
@@ -49,7 +49,7 @@ class SaveFilters extends QueryFilters {
 
         return $this->builder->when($term, function($query, $type) {
             $query->whereHas('type', function($q) use ($type) {
-                $q->where('name', $type);
+                $q->where('type', $type);
             });
         });
     }
