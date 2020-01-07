@@ -211,7 +211,7 @@ const app = new Vue({
 
             for (let error in errors) {
                 this.errors.push({
-                    'key': error, 
+                    'key': error,
                     'message': errors[error][0]
                 });
             }

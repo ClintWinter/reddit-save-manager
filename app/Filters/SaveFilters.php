@@ -14,7 +14,7 @@ class SaveFilters extends QueryFilters {
 
         parent::__construct($request);
     }
-    
+
     public function subreddit($term = null)
     {
         if (! $term) {
@@ -54,7 +54,7 @@ class SaveFilters extends QueryFilters {
         });
     }
 
-    public function search($term = null)
+    public function query($term = null)
     {
         if (! $term) {
             return $this->builder;

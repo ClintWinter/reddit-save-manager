@@ -12,12 +12,12 @@
                 <h2 class="text-gray-500 text-4xl font-display">RESAVMA</h2>
             </div>
             <div>
-                <button 
+                <button
                     class="m-0 p-0 text-white"
                     @click="showNavDropdown = !showNavDropdown"
                     ref="navDropdown">@{{ user.name }} <i class="fas fa-cog"></i></button>
                 <transition name="fade">
-                    <div 
+                    <div
                         class="bg-white rounded border-1 bg-gray-100 py-5 absolute top-3 right-0 mr-4 shadow-lg"
                         v-show="showNavDropdown"
                         v-closable="{
@@ -26,16 +26,16 @@
                         }">
                         <ul>
                             <li>
-                                <a 
+                                <a
                                     class="block text-gray-900 hover:bg-gray-300 px-8 py-2"
                                     href="javascript:;"
                                     @click="getNewSaves"
                                 >Import New Saves</a>
                             </li>
                             <li>
-                                <a 
+                                <a
                                     class="block text-gray-900 hover:bg-gray-300 px-8 py-2"
-                                    href="{{ route('logout') }}" 
+                                    href="{{ route('logout') }}"
                                     onclick="event.preventDefault();document.getElementById('logout-form').submit();"
                                 >Sign Out</a>
                             </li>
@@ -48,19 +48,11 @@
             </div>
         </div>
     </nav>
-    {{-- <navigation :user="user">
-        <a 
-            href="{{ route('logout') }}" 
-            onclick="event.preventDefault();document.getElementById('logout-form').submit();">@{{ user.name }}</a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
-    </navigation> --}}
 
     <error-flash
         :errors="errors"></error-flash>
 
-    <modal 
+    <modal
         :show-filters="showFilters"
         :subreddits="subreddits"
         :tags="tags"
@@ -76,23 +68,23 @@
     <main class="flex justify-center bg-gray-900 flex-grow">
         <div class="container">
             <div class="w-full flex flex-col pt-8 pb-20">
-                <pagination 
+                <pagination
                     @pageclick="goToPage"
                     @countchange="updateCount"
                     v-show="pagination.from"
                     :pagination="pagination"
                     :processing="isProcessing"></pagination>
                 <section class="cards flex flex-wrap justify-start items-stretch">
-                    <card 
-                    v-for="save in saves" 
-                    :save="save" 
+                    <card
+                    v-for="save in saves"
+                    :save="save"
                     :key="save.reddit_id"
                     @throwerror="displayErrors"
                     @unsave="unsave"></card>
                 </section>
-                <pagination 
+                <pagination
                     class="hidden md:flex"
-                    @pageclick="goToPage" 
+                    @pageclick="goToPage"
                     @countchange="updateCount"
                     v-show="pagination.from"
                     :pagination="pagination"
