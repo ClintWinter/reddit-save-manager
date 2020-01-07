@@ -88,7 +88,7 @@ const app = new Vue({
 
         axios.get('/user')
         .then((response) => {
-            ;this.user = response.data;
+            this.user = response.data;
         })
         .catch(error => console.log(error));
     },

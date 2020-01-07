@@ -29,14 +29,20 @@
                                 <a
                                     class="block text-gray-900 hover:bg-gray-300 px-8 py-2"
                                     href="javascript:;"
-                                    @click="getNewSaves"
+                                    @click="
+                                        getNewSaves();
+                                        hideNav();
+                                    "
                                 >Import New Saves</a>
                             </li>
                             <li>
                                 <a
                                     class="block text-gray-900 hover:bg-gray-300 px-8 py-2"
                                     href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+                                    onclick="
+                                        event.preventDefault();
+                                        document.getElementById('logout-form').submit();
+                                    "
                                 >Sign Out</a>
                             </li>
                         </ul>
