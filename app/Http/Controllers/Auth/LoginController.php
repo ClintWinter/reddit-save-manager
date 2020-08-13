@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
-use Socialite;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Auth;
 
 
 class LoginController extends Controller
@@ -55,7 +56,8 @@ class LoginController extends Controller
     {
         try {
             $user = Socialite::driver('reddit')->user();
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
+            dd($e);
             return redirect('/');
         }
 
@@ -78,7 +80,7 @@ class LoginController extends Controller
             $ourUser->save();
         }
 
-        auth()->login($ourUser, true);
+        Auth::login($ourUser, true);
 
         return redirect()->to('/home');
     }
