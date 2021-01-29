@@ -3,100 +3,252 @@
 @section('content')
 
 <div id="app" class="text-white min-h-screen flex flex-col font-body">
-    <nav class="bg-gray-800 flex justify-center">
-        <div class="w-full flex justify-between items-center py-2 px-4">
-            <div class="flex items-center">
-                <div class="mr-2" style="height: 50px; width: 50px;">
-                    <svg class="w-full h-full shadow-lg rounded-full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="460" height="460" viewBox="0 0 460 460"><defs><clipPath id="a"><rect width="460" height="460" fill="none"/></clipPath><linearGradient id="b" x1="0.5" x2="0.5" y2="1.132" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ff7d14"/><stop offset="1" stop-color="#ed041d"/></linearGradient><linearGradient id="c" y1="-7.618" y2="5.882" xlink:href="#b"/><clipPath id="d"><rect width="80" height="80" fill="none"/></clipPath><linearGradient id="e" y1="-3.353" y2="4.733" xlink:href="#b"/></defs><g clip-path="url(#a)"><circle cx="230" cy="230" r="230" fill="url(#b)"/><ellipse cx="161.5" cy="99" rx="161.5" ry="99" transform="translate(69 195.023)" fill="#fff"/><circle cx="37.5" cy="37.5" r="37.5" transform="translate(48 212.023)" fill="#fff"/><circle cx="37.5" cy="37.5" r="37.5" transform="translate(337 212.023)" fill="#fff"/><circle cx="30" cy="30" r="30" transform="translate(315 77.023)" fill="#fff"/><path d="M7393,576.181s92.437,100.634,185,0" transform="translate(-7255.005 -253.119)" fill="url(#c)"/><path d="M7436.5,453l22.28-132.023,69.72,21.048" transform="translate(-7206 -244.977)" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="20"/><g transform="translate(253 224.496)" clip-path="url(#d)"><path d="M7397.183,49.935l9.173,29.4h29.36l-23.685,18.184,9.222,29.625-24.07-18.321s-23.635,19.052-23.635,18.321,9.277-29.625,9.277-29.625L7358.8,79.337h29.286Z" transform="translate(-7357.25 -48.328)" fill="url(#e)"/></g><g transform="translate(128 224.496)" clip-path="url(#d)"><path d="M7397.183,49.935l9.173,29.4h29.36l-23.685,18.184,9.222,29.625-24.07-18.321s-23.635,19.052-23.635,18.321,9.277-29.625,9.277-29.625L7358.8,79.337h29.286Z" transform="translate(-7357.25 -48.328)" fill="url(#e)"/></g></g></svg>
+
+    <x-nav />
+
+    {{-- error flash --}}
+    @if($errors->any())
+        <div
+            v-if="errors.length > 0"
+            class="px-5 py-2 bg-red-800 fixed shadow-md inset-x-0 top-0 z-20">
+            <p
+                class="text-lg font-bold color-white"
+                v-for="(error, index) in errors"
+                :key="index">{{ $errors->first() }}</p>
+        </div>
+    @endif
+
+    {{-- filters modal --}}
+    {{-- <section
+        id="modal"
+        class="fixed inset-0 flex justify-center items-center z-50"
+        v-show="showFilters">
+            <div @click="$emit('togglefilters')" class="absolute inset-0 bg-black opacity-50"></div>
+            <div class="z-20 bg-white shadow-2xl rounded text-black p-2 mx-2 md:mx-5">
+                <div class="flex justify-between items-center mb-10 leading-none">
+                    <h4 class="text-gray-700 font-bold text-xl">Filters</h4>
+                    <button @click="$emit('togglefilters')" class="text-gray-500 hover:text-gray-700 text-4xl">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
                 </div>
-                <h2 class="text-gray-500 text-4xl font-display">RESAVMA</h2>
-            </div>
-            <div>
-                <button 
-                    class="m-0 p-0 text-white"
-                    @click="showNavDropdown = !showNavDropdown"
-                    ref="navDropdown">@{{ user.name }} <i class="fas fa-cog"></i></button>
-                <transition name="fade">
-                    <div 
-                        class="bg-white rounded border-1 bg-gray-100 py-5 absolute top-3 right-0 mr-4 shadow-lg"
-                        v-show="showNavDropdown"
-                        v-closable="{
-                            exclude: ['navDropdown'],
-                            handler: 'hideNav'
-                        }">
-                        <ul>
-                            <li>
-                                <a 
-                                    class="block text-gray-900 hover:bg-gray-300 px-8 py-2"
-                                    href="javascript:;"
-                                    @click="getNewSaves"
-                                >Load New Saves</a>
-                            </li>
-                            <li>
-                                <a 
-                                    class="block text-gray-900 hover:bg-gray-300 px-8 py-2"
-                                    href="{{ route('logout') }}" 
-                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                                >Sign Out</a>
-                            </li>
-                        </ul>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
+
+                <div class="p-5">
+                    <div class="flex justify-between items-center">
+                        <label class="mr-5 text-gray-600 uppercase text-sm text-right flex-grow" for="subreddit">Subreddit</label>
+                        <select
+                            class="w-64 block h-8 my-4 bg-gray-200 rounded"
+                            v-model="subreddit"
+                            @change="filterSubreddit">
+                            <option value="">--</option>
+                            <option key="subreddit" v-for="subreddit in subreddits">{{ subreddit }}</option>
+                        </select>
                     </div>
-                </transition>
+                    <div class="flex justify-between items-center">
+                        <label class="mr-5 text-gray-600 uppercase text-sm text-right flex-grow" for="subreddit">Tag</label>
+                        <select
+                            class="w-64 block h-8 my-4 bg-gray-200 rounded"
+                            v-model="tag"
+                            @change="filterTag">
+                            <option value="">--</option>
+                            <option :key="tag" v-for="tag in tags">{{ tag }}</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <label class="mr-5 text-gray-600 uppercase text-sm text-right flex-grow" for="subreddit">Type</label>
+                        <select
+                            class="w-64 block h-8 my-4 bg-gray-200 rounded"
+                            v-model="type"
+                            @change="filterType">
+                            <option value="">--</option>
+                            <option :key="type" v-for="type in types">{{ type }}</option>
+                        </select>
+                    </div>
+                    <div class="block flex justify-end">
+                        <button class="p-0 m-0 underline text-blue-500" @click="clearFilters">Clear Filters</button>
+                    </div>
+                </div>
+            </div>
+    </section> --}}
+
+    {{-- search --}}
+    {{-- <header class="flex justify-center bg-gray-700">
+        <div class="w-full flex justify-between py-2 px-4">
+            <div class="flex-grow flex align-center">
+                <input
+                    v-model="thisQuery"
+                    @keyup.enter="search"
+                    type="text"
+                    name="query"
+                    placeholder="Search..."
+                    class="w-full md:w-1/2 lg:w-1/3 rounded-full px-5 py-2 shadow-lg outline-none mr-4 text-gray-700 border-2 border-transparent focus:border-orange-500" />
+            </div>
+            <div class="flex items-center">
+                <button
+                    class="bg-gray-300 text-gray-700 px-4 py-2 rounded shadow-inner hover:bg-orange-500 hover:text-white"
+                    @click="$emit('togglefilters')">
+                    <i
+                        class="fas fa-filter text-3xl"
+                        style="text-shadow: 0 0 4px rgba(0,0,0,.15)"></i>
+                </button>
             </div>
         </div>
-    </nav>
-    {{-- <navigation :user="user">
-        <a 
-            href="{{ route('logout') }}" 
-            onclick="event.preventDefault();document.getElementById('logout-form').submit();">@{{ user.name }}</a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
-    </navigation> --}}
-
-    <error-flash
-        :errors="errors"></error-flash>
-
-    <modal 
-        :show-filters="showFilters"
-        :subreddits="subreddits"
-        :tags="tags"
-        :types="types"
-        @togglefilters="toggleFilters"
-        @updatesubreddit="updateSubreddit"
-        @updatetag="updateTag"
-        @updatetype="updateType"
-        @clearfilters="clearFilters"></modal>
-
-    <search @filterresults="filterResults" @togglefilters="toggleFilters"></search>
+    </header> --}}
 
     <main class="flex justify-center bg-gray-900 flex-grow">
         <div class="container">
             <div class="w-full flex flex-col pt-8 pb-20">
-                <pagination 
-                    @pageclick="goToPage"
-                    @countchange="updateCount"
-                    v-show="pagination.from"
-                    :pagination="pagination"
-                    :processing="isProcessing"></pagination>
+
+                {{-- pagination --}}
+                {{-- <div class="flex justify-between items-center p-2">
+                    <div class="flex justify-around fixed inset-x-0 bottom-0 bg-gray-900 md:inline-block md:static md:inset-x-auto md:bottom-auto z-10">
+                        <button
+                            :disabled="pagination.current == 1"
+                            :class="{'opacity-25': prevDisabled}"
+                            class="text-3xl md:text-lg px-4 outline-none hover:text-orange-500"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);"
+                            @click="pageClick(pagination.first_url)"><i class="fas fa-angle-double-left"></i></button
+                        ><button
+                            :disabled="prevDisabled"
+                            :class="{'opacity-25': prevDisabled}"
+                            class="text-3xl md:text-lg px-4 outline-none hover:text-orange-500"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);"
+                            @click="pageClick(pagination.previous_url)"><i class="fas fa-angle-left"></i></button
+                        ><button
+                            disabled
+                            class="text-3xl md:text-xl h-10 px-4 cursor-default font-black"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);">{{ pagination.current }}</button
+                        ><button
+                            :disabled="nextDisabled"
+                            :class="{'opacity-25': nextDisabled}"
+                            class="text-3xl md:text-lg px-4 outline-none hover:text-orange-500"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);"
+                            @click="pageClick(pagination.next_url)"><i class="fas fa-angle-right"></i></button
+                        ><button
+                            :disabled="pagination.current == pagination.total_pages"
+                            :class="{'opacity-25': nextDisabled}"
+                            class="text-3xl md:text-lg px-4 outline-none hover:text-orange-500"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);"
+                            @click="pageClick(pagination.last_url)"><i class="fas fa-angle-double-right"></i></button>
+                    </div>
+                    <div class="w-full flex justify-between md:w-auto md:inline-block">
+                        <div class="block md:inline md:border-r-2 md:border-white md:pr-3 md:mr-2">
+                            <strong>{{ pagination.from }}</strong> to
+                            <strong>{{ pagination.to }}</strong> of
+                            <strong>{{ pagination.total }}</strong>
+                        </div>
+                        <!-- <span class="hidden md:inline"> | </span> -->
+                        <div class="block md:inline">
+                            <select class="inline-block text-orange-600" v-model="count" @change="countChanged()">
+                                <option selected="selected">15</option>
+                                <option>25</option>
+                                <option>50</option>
+                            </select>
+                            per page
+                        </div>
+                    </div>
+                </div> --}}
+
+                {{-- cards --}}
                 <section class="cards flex flex-wrap justify-start items-stretch">
-                    <card 
-                    v-for="save in saves" 
-                    :save="save" 
-                    :key="save.reddit_id"
-                    @throwerror="displayErrors"
-                    @unsave="unsave"></card>
+                    @foreach($saves as $save)
+                        <div class="card-container w-full flex items-stretch">
+                            <div class="card w-full flex flex-col justify-between @if($save->type_id === 1)bg-blue-gradient bg-blue-shadow @elseif($save->type_id === 2) bg-yellow-gradient bg-yellow-shadow @else bg-purple-gradient bg-purple-shadow @endif">
+                                <div class="flex flex-col sm:flex-row p-2">
+                                    <div class="pl-2 pr-8 text-lg text-shadow hidden sm:block">
+                                        <span class="fa-stack fa-2x">
+                                            <i class="fas fa-circle fa-stack-2x text-black"></i>
+                                            <i class="fa-stack-1x @if($save->type_id === 1) fas fa-comments text-teal-300 @elseif($save->type_id === 3) fas fa-quote-left text-pink-500 @else fas fa-link text-orange-500 @endif"></i>
+                                        </span>
+                                    </div>
+
+                                    <div class="flex-grow">
+                                        <h2 class="text-xl font-semibold leading-tight text-shadow">
+                                            {{ $save->title }}
+                                            {{-- <a v-bind:href="save.link" target="_blank" rel="noreferrer noopener">{{ save.title }}</a> --}}
+                                        </h2>
+
+                                        <p class="text-2xl opacity-75 mb-4 text-shadow">
+                                            <small>r/{{ $save->subreddit->name }}</small>
+                                        </p>
+
+                                        @if($save->body)
+                                            <div class="description text-sm mb-6 text-shadow">{!! html_entity_decode($save->body) !!}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="py-4 p-2 flex" style="background-color: hsla(0, 100%, 0%, 15%)">
+                                    <div class="hidden sm:block" style="width: 130px;"></div>
+                                    <div class="w-full">
+                                        <div class="tags flex flex-wrap mb-2">
+                                            @foreach($save->tags as $tag)
+                                                <div class="tag mr-2 px-3 py-1 rounded-full text-black shadow-md mb-2 leading-normal cursor-pointer hover:bg-gray-200 hover:text-gray-600 hover:line-through @if($save->type_id === 1) bg-teal-300 @elseif($save->type_id === 3) bg-pink-500 @else bg-orange-500 @endif"
+                                                    {{-- v-for="tag in tags"
+                                                    :key="tag.name"
+                                                    @click="deleteTag(tag.id, tag.name)" --}}
+                                                >{{ $tag->name }}</div>
+                                            @endforeach
+                                        </div>
+                                        <div class="w-full flex justify-between">
+                                            <input type="text" class="text-black block px-3 py-1 rounded border-2 border-gray-200 outline-none focus:border-orange-500">
+                                            {{-- v-model="tag" ref="taginput" @keyup.enter="addTag" placeholder="Add a Tag" --}}
+                                            <button class="px-3 py-1 rounded text-white hover:text-yellow-400 font-bold underline" @click="unsave">Unsave</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </section>
-                <pagination 
-                    class="hidden md:flex"
-                    @pageclick="goToPage" 
-                    @countchange="updateCount"
-                    v-show="pagination.from"
-                    :pagination="pagination"
-                    :processing="isProcessing"></pagination>
+
+                {{-- pagination --}}
+                {{-- <div class="flex justify-between items-center p-2">
+                    <div class="flex justify-around fixed inset-x-0 bottom-0 bg-gray-900 md:inline-block md:static md:inset-x-auto md:bottom-auto z-10">
+                        <button
+                            :disabled="pagination.current == 1"
+                            :class="{'opacity-25': prevDisabled}"
+                            class="text-3xl md:text-lg px-4 outline-none hover:text-orange-500"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);"
+                            @click="pageClick(pagination.first_url)"><i class="fas fa-angle-double-left"></i></button
+                        ><button
+                            :disabled="prevDisabled"
+                            :class="{'opacity-25': prevDisabled}"
+                            class="text-3xl md:text-lg px-4 outline-none hover:text-orange-500"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);"
+                            @click="pageClick(pagination.previous_url)"><i class="fas fa-angle-left"></i></button
+                        ><button
+                            disabled
+                            class="text-3xl md:text-xl h-10 px-4 cursor-default font-black"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);">{{ pagination.current }}</button
+                        ><button
+                            :disabled="nextDisabled"
+                            :class="{'opacity-25': nextDisabled}"
+                            class="text-3xl md:text-lg px-4 outline-none hover:text-orange-500"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);"
+                            @click="pageClick(pagination.next_url)"><i class="fas fa-angle-right"></i></button
+                        ><button
+                            :disabled="pagination.current == pagination.total_pages"
+                            :class="{'opacity-25': nextDisabled}"
+                            class="text-3xl md:text-lg px-4 outline-none hover:text-orange-500"
+                            style="text-shadow: 2px 2px 4px rgba(0,0,0,.2);"
+                            @click="pageClick(pagination.last_url)"><i class="fas fa-angle-double-right"></i></button>
+                    </div>
+                    <div class="w-full flex justify-between md:w-auto md:inline-block">
+                        <div class="block md:inline md:border-r-2 md:border-white md:pr-3 md:mr-2">
+                            <strong>{{ pagination.from }}</strong> to
+                            <strong>{{ pagination.to }}</strong> of
+                            <strong>{{ pagination.total }}</strong>
+                        </div>
+                        <!-- <span class="hidden md:inline"> | </span> -->
+                        <div class="block md:inline">
+                            <select class="inline-block text-orange-600" v-model="count" @change="countChanged()">
+                                <option selected="selected">15</option>
+                                <option>25</option>
+                                <option>50</option>
+                            </select>
+                            per page
+                        </div>
+                    </div>
+                </div> --}}
             </div>
         </div>
     </main>

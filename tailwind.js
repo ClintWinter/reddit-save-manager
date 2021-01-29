@@ -1,4 +1,10 @@
 module.exports = {
+    purge: [
+        './storage/framework/views/*.php',
+        './resources/**/*.blade.php',
+        './resources/**/*.js',
+        './resources/**/*.vue',
+    ],
   theme: {
     fontFamily: {
       display: ['Expletus Sans', 'Blinker', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],

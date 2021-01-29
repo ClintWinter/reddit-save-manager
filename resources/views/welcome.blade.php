@@ -14,7 +14,7 @@
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 </head>
 <body class="font-body">
-        
+
 <div id="app">
     <nav class="flex justify-between items-center shadow fixed inset-x-0 z-10" style="background-color: hsla(0, 100%, 100%, 92%)">
         <div class="flex items-center px-2 md:px-6 py-3">
@@ -24,8 +24,8 @@
             <h2 class="text-gray-500 text-4xl font-display">RESAVMA</h2>
         </div>
         <div class="pr-12">
-            <a 
-                class="flex-grow-0 inline-flex text-lg py-2 px-4 text-white flex items-center bg-blue-700 hover:bg-blue-600 shadow-md hover:shadow tracking-wider rounded" 
+            <a
+                class="flex-grow-0 inline-flex text-lg py-2 px-4 text-white flex items-center bg-blue-700 hover:bg-blue-600 shadow-md hover:shadow tracking-wider rounded"
                 href="{{ route('reddit.redirect') }}"
             >
                 <span class="font-bold text-shadow">SIGN IN</span>
@@ -38,10 +38,7 @@
         <div class="container relative mx-auto px-2 px-6 flex flex-col justify-center h-screen">
             <h1 class="text-2xl leading-tight mb-12 w-full md:w-2/3 text-white text-shadow"><span class="font-display text-6xl leading-none">RESAVMA</span><br><br>Designed for you to save, manage and organize your saved posts and comments from Reddit <strong>without them disappearing</strong>.</h1>
             <div>
-                <a 
-                    class="flex-grow-0 inline-flex text-lg py-2 px-4 text-white flex items-center bg-dark-200 hover:bg-dark-300 shadow-md hover:shadow tracking-wider rounded" 
-                    href="{{ route('reddit.redirect') }}"
-                >
+                <a class="flex-grow-0 inline-flex text-lg py-2 px-4 text-white flex items-center bg-dark-200 hover:bg-dark-300 shadow-md hover:shadow tracking-wider rounded" href="{{ route('reddit.redirect') }}">
                     <i class="fab fa-reddit-alien text-3xl pr-3 text-white text-shadow"></i>
                     <span class="font-bold text-shadow">SIGN IN</span>
                 </a>
@@ -91,7 +88,7 @@
         </div>
     </article>
     <footer class="bg-blue-900 h-20">
-  
+
     </footer>
 </div>
 

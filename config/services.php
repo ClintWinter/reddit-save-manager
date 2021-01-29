@@ -49,7 +49,7 @@ return [
         'client_secret' => env('REDDIT_SECRET'),
         'redirect' => env('REDDIT_REDIRECT_URI'),
         'platform' => 'Chrome',
-        'app_id' => 'redditsm.clintgwinter.com',
+        'app_id' => 'reddit-save-manager.test',
         'version_string' => 'v0.0.1 (by u/ClintWinter)',
     ],
 

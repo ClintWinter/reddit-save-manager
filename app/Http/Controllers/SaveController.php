@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Save;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Saves\Actions\SyncSavesAction;
 
 class SaveController extends Controller
 {
-    
-    public function __construct() 
+
+    public function __construct()
     {
         $this->middleware('auth');
     }
@@ -28,8 +29,7 @@ class SaveController extends Controller
 
         $search = '%' . request('query', '') . '%';
 
-        return $user
-                ->saves()
+        return $user->saves()
                 ->with(['subreddit', 'tags', 'type'])
                 // search
                 ->where(function ($query) use ($search) {
@@ -72,9 +72,9 @@ class SaveController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, SyncSavesAction $syncSavesAction)
     {
-        Auth::user()->handleNewSaves();
+        $syncSavesAction(Auth::user());
 
         return 0;
     }
@@ -137,7 +137,7 @@ class SaveController extends Controller
                 'id' => $save->reddit_id
             ]
         ]);
-    
+
         $save->user()->dissociate();
         $save->tags()->detach();
         $save->delete();

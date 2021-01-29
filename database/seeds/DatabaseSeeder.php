@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\Type;
 
@@ -13,13 +15,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
-        factory(Type::class)->create([
-            'type' => 'comment'
+        Type::factory()->create([
+            'type' => 'comment',
         ]);
-        factory(Type::class)->create([
+
+        Type::factory()->create([
             'type' => 'link'
         ]);
-        factory(Type::class)->create([
+
+        Type::factory()->create([
             'type' => 'text'
         ]);
     }

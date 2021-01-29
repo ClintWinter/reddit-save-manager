@@ -1,44 +1,37 @@
 <?php
 
-use App\Save;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SaveController;
+use App\Http\Controllers\SaveTagController;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\Auth\LoginController;
 
 Auth::routes();
 
-// UnAuth App Page
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('/home');
-    }
-    return view('welcome');
+Route::get('/', [WelcomeController::class, 'index']);
+
+Route::get('/home', [HomeController::class, 'index'])->middleware('auth')->name('home');
+
+Route::group(['prefix' => 'saves', 'middleware' => 'auth'], function () {
+    Route::get('/', [SaveController::class, 'index']);
+    Route::post('/', [SaveController::class, 'store']);
 });
 
-// Auth App Page
-Route::get('/home', 'HomeController@index')->name('home');
-
-// Saves
-
-// Tags
-Route::middleware('auth')->group(function() {
-
-    Route::get('/saves', 'SaveController@index');
-    Route::post('/saves', 'SaveController@store');
-
-    Route::prefix('/saves/{save}')->group(function() {
-        Route::delete('/', 'SaveController@destroy');
-        Route::post('/tags', 'SaveTagController@store');
-        Route::delete('/tags/{tag}', 'SaveTagController@destroy');
-    });
-
+Route::group(['prefix' => 'saves/{save}', 'middleware' => 'auth'], function () {
+    Route::delete('/', [SaveController::class, 'destroy']);
+    Route::post('/tags', [SaveTagController::class, 'store']);
+    Route::delete('/tags/{tag}', [SaveTagController::class, 'destroy']);
 });
 
 // Filters
-Route::get('/filters', function() {
-    return Auth::user()->getFilters();
-})->middleware('auth');
+Route::get('/filters', [FilterController::class, 'index'])->middleware('auth');
 
 // User
-Route::get('/user', function() { return Auth::user(); })->middleware('auth');
+// Route::get('/user', function() { return Auth::user(); })->middleware('auth');
 
 // Reddit OAuth
-Route::get('/reddit/redirect', 'Auth\LoginController@redirectToProvider')->name('reddit.redirect');
-Route::get('/reddit/callback', 'Auth\LoginController@handleProviderCallback');
+Route::group(['prefix' => 'reddit'], function () {
+    Route::get('redirect', [LoginController::class, 'redirectToProvider'])->name('reddit.redirect');
+    Route::get('callback', [LoginController::class, 'handleProviderCallback']);
+});

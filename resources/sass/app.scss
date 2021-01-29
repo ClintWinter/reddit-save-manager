@@ -9,7 +9,7 @@
 
 body {
     background-color: #efeae8;
-    @apply .text-gray-700;
+    @apply text-gray-700;
 }
 
 main.hero:before {
@@ -25,7 +25,7 @@ main.hero:before {
     animation-iteration-count: infinite;
     animation-direction: alternate;
     animation-timing-function: cubic-bezier(.07,.07,.77,1.17);
-    @apply .bg-light-200;
+    @apply bg-light-200;
 }
 
 .white-2 {
@@ -41,7 +41,7 @@ main.hero:before {
     animation-iteration-count: infinite;
     animation-direction: alternate-reverse;
     animation-timing-function: cubic-bezier(.07,.07,.77,1.17);
-    @apply .bg-light-100;
+    @apply bg-light-100;
 }
 
 @keyframes organic {
@@ -58,7 +58,7 @@ main.hero:before {
        transform: translateY(-25px) skew(0, -11deg);
     }
  }
- 
+
  @keyframes organic2 {
     0% {
        transform: translateY(0) skew(0, 30deg);

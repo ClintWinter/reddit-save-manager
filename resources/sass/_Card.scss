@@ -2,14 +2,14 @@
     word-break: break-word;
 
     a {
-        @apply .text-pink-200 .underline;
+        @apply text-pink-200 underline;
     }
 
     ul {
-        @apply .list-disc .ml-5;
+        @apply list-disc ml-5;
     }
 
     p {
-        @apply .mb-3;
+        @apply mb-3;
     }
 }
