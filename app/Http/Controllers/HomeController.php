@@ -15,11 +15,9 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $saves = $user->saves()->orderBy('created_at')->paginate();
 
         return view('home', [
             'user' => $user,
-            'saves' => $saves,
         ]);
     }
 }

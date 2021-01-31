@@ -6443,6 +6443,10 @@ body {
   color: rgba(55, 65, 81, var(--tw-text-opacity));
 }
 
+[x-cloak] {
+  display: none;
+}
+
 main.hero:before {
   content: "";
   position: absolute;

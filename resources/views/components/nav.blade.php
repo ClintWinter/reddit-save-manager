@@ -9,12 +9,13 @@
         </div>
 
         {{-- right --}}
-        <div x-data="{open:false}">
+        <div x-data="{open:false}" x-cloak>
             <button class="m-0 p-0 text-white text-2xl" @click="open=true">
+                <span class="text-lg">{{ $user->name }}</span>
                 <i class="fas fa-cog"></i>
             </button>
 
-            <div x-cloak x-show="open" @click.away="open=false" class="bg-white rounded border-1 bg-gray-100 absolute top-3 right-0 mr-4 shadow-lg"
+            <div x-show="open" @click.away="open=false" class="bg-white rounded border-1 bg-gray-100 absolute top-3 right-0 mr-4 shadow-lg"
                 x-transition:enter="transition ease-out duration-150"
                 x-transition:enter-start="opacity-0 transform scale-90"
                 x-transition:enter-end="opacity-100 transform scale-100"

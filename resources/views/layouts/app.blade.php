@@ -18,7 +18,7 @@
 
     @yield('content')
 
+    @livewireScripts
     <script src="{{ asset('js/app.js') }}"></script>
-    @livewireScipts
 </body>
 </html>
