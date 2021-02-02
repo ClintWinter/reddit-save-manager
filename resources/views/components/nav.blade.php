@@ -1,21 +1,21 @@
-<nav class="bg-gray-800 flex justify-center">
+<nav class="flex justify-center">
     <div class="w-full flex justify-between items-center py-2 px-4">
         {{-- left --}}
-        <div class="flex items-center">
-            <div class="mr-2" style="height: 50px; width: 50px;">
+        <div class="flex items-center text-xl">
+            <div class="mr-2" style="height: 40px; width: 40px;">
                 <x-logo />
             </div>
-            <h2 class="text-gray-500 text-4xl font-display">RESAVMA</h2>
+            <h2 class="text-gray-500 font-display leading-none pt-2 uppercase">Resavma</h2>
         </div>
 
         {{-- right --}}
-        <div x-data="{open:false}" x-cloak>
-            <button class="m-0 p-0 text-white text-2xl" @click="open=true">
-                <span class="text-lg">{{ $user->name }}</span>
-                <i class="fas fa-cog"></i>
+        <div x-data="{open:false}">
+            <button class="rounded border border-white m-0 px-6 py-1 text-white flex items-center outline-none" @click="open=true">
+                <span class="text-base pr-4">{{ $user->name }}</span>
+                <i class="fas fa-cog text-xl"></i>
             </button>
 
-            <div x-show="open" @click.away="open=false" class="bg-white rounded border-1 bg-gray-100 absolute top-3 right-0 mr-4 shadow-lg"
+            <div x-show="open" @click.away="open=false" class="bg-white rounded border-1 bg-gray-100 absolute top-3 right-0 mr-4 shadow-lg" x-cloak
                 x-transition:enter="transition ease-out duration-150"
                 x-transition:enter-start="opacity-0 transform scale-90"
                 x-transition:enter-end="opacity-100 transform scale-100"

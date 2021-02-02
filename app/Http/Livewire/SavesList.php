@@ -5,22 +5,27 @@ namespace App\Http\Livewire;
 use App\Save;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 
 class SavesList extends Component
 {
     use WithPagination;
 
-    public $saves;
+    public $perPage = 15;
 
-    public $user;
+    public $listeners = [
+        'setPerPage' => 'setPerPage',
+    ];
 
-    public function mount()
+    public function setPerPage($perPage)
     {
-        $this->saves = $this->user->saves()->orderBy('created_at')->get();
+        $this->perPage = $perPage;
     }
 
     public function render()
     {
-        return view('livewire.saves-list');
+        return view('livewire.saves-list', [
+            'saves' => Auth::user()->saves()->orderBy('created_at')->paginate($this->perPage),
+        ]);
     }
 }
