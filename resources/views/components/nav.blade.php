@@ -10,7 +10,7 @@
 
         {{-- right --}}
         <div x-data="{open:false}">
-            <button class="rounded border border-white m-0 px-6 py-1 text-white flex items-center outline-none" @click="open=true">
+            <button class="rounded border border-white m-0 px-6 py-1 text-white flex items-center focus:outline-none focus:border-yellow-500" @click="open=true">
                 <span class="text-base pr-4">{{ $user->name }}</span>
                 <i class="fas fa-cog text-xl"></i>
             </button>
@@ -24,8 +24,8 @@
                 x-transition:leave-end="opacity-0 transform scale-90"
             >
                 <ul>
-                    <li><a class="block rounded-t text-gray-900 hover:bg-gray-300 px-8 py-2" onclick="event.preventDefault();document.getElementById('sync-form').submit();">Sync saves</a></li>
-                    <li><a class="block rounded-b text-gray-900 hover:bg-gray-300 px-8 py-2" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Sign Out</a></li>
+                    <li><a class="block rounded-t text-gray-900 hover:bg-yellow-300 px-8 py-2" href="javascript:;" onclick="event.preventDefault();document.getElementById('sync-form').submit();">Sync saves</a></li>
+                    <li><a class="block rounded-b text-gray-900 hover:bg-yellow-300 px-8 py-2" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Sign Out</a></li>
                 </ul>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                 <form id="sync-form" action="/saves" method="POST" style="display: none;">@csrf</form>

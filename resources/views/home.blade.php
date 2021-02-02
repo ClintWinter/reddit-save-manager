@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div id="app" class="bg-gray-900 text-white min-h-screen flex flex-col font-body">
+<div id="app" class="text-gray-100 bg-gray-900 text-white min-h-screen flex flex-col font-body">
     <x-nav :user="$user" />
 
     {{-- error flash --}}
@@ -18,9 +18,9 @@
 
     <header class="flex justify-center">
         <div class="w-full flex justify-center items-center py-2 px-4">
-            <input placeholder="Search..." class="w-full md:w-1/2 lg:w-1/3 rounded px-5 py-2 shadow-lg outline-none mr-4 text-gray-700 border-2 border-transparent focus:border-orange-500">
+            <input id="search" placeholder="Search - Press / to focus" class="bg-transparent w-full md:w-1/2 lg:w-1/3 px-5 py-2 mr-4 rounded text-gray-100 focus:outline-none ring-2 ring-transparent focus:ring-yellow-500">
 
-            <button class="text-white border border-white px-4 py-1 rounded" @click="$emit('togglefilters')">
+            <button class="px-4 py-1 rounded focus:outline-none ring-2 ring-transparent focus:ring-yellow-500" @click="$emit('togglefilters')">
                 <i class="fas fa-filter text-3xl" style="text-shadow: 0 0 4px rgba(0,0,0,.15)"></i>
             </button>
         </div>

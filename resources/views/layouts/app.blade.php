@@ -12,13 +12,11 @@
 
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    @livewireStyles
 </head>
 <body class="font-body">
 
     @yield('content')
 
-    @livewireScripts
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
