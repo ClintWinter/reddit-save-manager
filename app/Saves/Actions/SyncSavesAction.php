@@ -19,7 +19,7 @@ class SyncSavesAction
         $getOlderSaves = true;
 
         // if the last one exists in the DB, we have overlap and can stop syncing
-        while (true) {
+        while ($getOlderSaves) {
             $response = Http::timeout(10)->withHeaders([
                 'Authorization' => "bearer {$user->access_token}",
                 'User-Agent' => sprintf('%s:%s:%s', config('services.reddit.platform'), config('services.reddit.app_id'), config('services.reddit.version_string')),
