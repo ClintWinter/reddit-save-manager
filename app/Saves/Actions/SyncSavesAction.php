@@ -43,7 +43,7 @@ class SyncSavesAction
 
             $saves = $this->mapSaves($savesCollection, $user);
 
-            $user->saves()->upsert($saves, ['reddit_id'], array_keys($saves[0]));
+            $user->saves()->upsert($saves, ['user_id', 'reddit_id'], array_keys($saves[0]));
         }
     }
 
