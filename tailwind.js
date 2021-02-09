@@ -7,8 +7,8 @@ module.exports = {
     ],
   theme: {
     fontFamily: {
-      display: ['Expletus Sans', 'Blinker', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
-      body: ['Blinker', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+    //   display: ['Expletus Sans', 'Blinker', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      body: ['Lato', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
     },
     inset: {
       '0': '0',
@@ -46,6 +46,11 @@ module.exports = {
           900: 'rgba(255,255,255,0.9)'
         }
       },
+      spacing: {
+          '32rem': '32rem',
+          '36rem': '36rem',
+          '40rem': '40rem',
+      }
     }
   },
   variants: {},

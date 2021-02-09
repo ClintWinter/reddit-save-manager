@@ -8,10 +8,10 @@ class Search {
 
     public function handle(array $data, Closure $next)
     {
-        [$request, $saves] = $data;
+        [$saves, $data] = $data;
 
-        if ($request->has('query')) {
-            $search = sprintf('%%s%', $request->query('query'));
+        if (array_key_exists('search', $data) && ! empty($data['search'])) {
+            $search = "%{$data['search']}%";
 
             $saves = $saves->where(function ($query) use ($search) {
                 $query->where('title', 'like', $search)
@@ -19,6 +19,6 @@ class Search {
             });
         }
 
-        return $next([$request, $saves]);
+        return $next([$saves, $data]);
     }
 }

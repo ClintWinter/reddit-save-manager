@@ -2,10 +2,11 @@
 
 namespace App\Saves\Actions;
 
+use App\Save;
 use App\User;
 use App\Subreddit;
-use App\Support\TypeEnum;
 use Carbon\Carbon;
+use App\Support\TypeEnum;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
@@ -15,18 +16,35 @@ class SyncSavesAction
     {
         $user->handleToken();
 
-        $response = Http::withHeaders([
-            'Authorization' => "bearer {$user->access_token}",
-            'User-Agent' => sprintf('%s:%s:%s', config('services.reddit.platform'), config('services.reddit.app_id'), config('services.reddit.version_string')),
-        ])->get(
-            "https://oauth.reddit.com/user/{$user->name}/saved",
-            ['after' => null, 'before' => null, 'show' => 'all', 'username' => $user->username, 'limit' => 'none']
-        );
+        $getOlderSaves = true;
 
-        $saves = collect(json_decode($response->body(), true)['data']['children'])->pluck('data');
-        $saveData = $this->mapSaves($saves, $user);
+        // if the last one exists in the DB, we have overlap and can stop syncing
+        while (true) {
+            $response = Http::timeout(10)->withHeaders([
+                'Authorization' => "bearer {$user->access_token}",
+                'User-Agent' => sprintf('%s:%s:%s', config('services.reddit.platform'), config('services.reddit.app_id'), config('services.reddit.version_string')),
+            ])->get("https://oauth.reddit.com/user/{$user->name}/saved", [
+                'after' => $reddit_id ?? null,
+                'before' => null,
+                'show' => 'all',
+                'username' => $user->username,
+                'limit' => 100,
+            ]);
 
-        $user->saves()->upsert($saveData->toArray(), ['reddit_id'], []);
+            $savesCollection = collect(json_decode($response->body(), true)['data']['children'])->pluck('data');
+
+            if ($savesCollection->isEmpty()) {
+                break;
+            }
+
+            $reddit_id = $savesCollection->last()['name'];
+
+            $getOlderSaves = ! Save::where('reddit_id', $reddit_id)->exists();
+
+            $saves = $this->mapSaves($savesCollection, $user);
+
+            $user->saves()->upsert($saves, ['reddit_id'], array_keys($saves[0]));
+        }
     }
 
     private function mapSaves(Collection $saves, User $user)
@@ -47,20 +65,26 @@ class SyncSavesAction
             $result['created_at'] = new Carbon($save['created']);
 
             if ($result['type_id'] === TypeEnum::COMMENT) {
-                $result['link'] = 'https://reddit.com' . $save['permalink'];
+                $result['reddit_url'] = 'https://reddit.com' . $save['permalink'];
+                $result['thumbnail_url'] = null;
+                $result['media_url'] = null;
                 $result['title'] = $save['link_title'];
                 $result['body'] = $save['body_html'];
             } elseif ($result['type_id'] === TypeEnum::LINK) {
-                $result['link'] = 'https://reddit.com' . $save['permalink'];
+                $result['reddit_url'] = 'https://reddit.com' . $save['permalink'];
+                $result['thumbnail_url'] = $save['thumbnail'] ?? null;
+                $result['media_url'] = $save['url_overriden_by_dest'] ?? $save['url'] ?? null;
                 $result['title'] = $save['title'];
                 $result['body'] = '';
             } else {
-                $result['link'] = $save['url'];
+                $result['reddit_url'] = $save['url'];
+                $result['thumbnail_url'] = null;
+                $result['media_url'] = null;
                 $result['title'] = $save['title'];
                 $result['body'] = $save['selftext_html'];
             }
 
             return $result;
-        });
+        })->toArray();
     }
 }

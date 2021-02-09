@@ -49,7 +49,7 @@ class User extends Authenticatable
         }
     }
 
-    public function refreshToken() 
+    public function refreshToken()
     {
         $httpClient = new Client([]);
         $response = $httpClient->post('https://www.reddit.com/api/v1/access_token', [
@@ -63,9 +63,9 @@ class User extends Authenticatable
                 'refresh_token' => $this->refresh_token,
             ],
         ]);
-    
+
         $credentialsResponseBody = json_decode($response->getBody(), true);
-    
+
         $this->access_token = $credentialsResponseBody['access_token'];
         $this->save();
     }
@@ -75,121 +75,35 @@ class User extends Authenticatable
         return time() > strtotime($this->updated_at) + 3600;
     }
 
-    public function handleNewSaves()
-    {
-        $this
-            ->newSaves()
-            ->each(function($save) {
-                $this->newSave($save);
-            });
-    }
-
-    public function newSaves()
-    {
-        $httpClient = new Client([]);
-        $saves = collect([]);
-        $after = null;
-        for ($i = 1; $i <= 10; $i++) {
-
-            if ( $saves->count() ) {
-                $after = $saves->last()['data']['name'];
-            }
-
-            $response = $httpClient->get(
-                'https://oauth.reddit.com/user/'.$this->name.'/saved',
-                [
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $this->access_token,
-                        'User-Agent' => config('services.reddit.platform') . ':' . config('services.reddit.app_id') . ':' . config('services.reddit.version_string')
-                    ],
-                    'query' => [
-                        'after' => $after,
-                        'before' => null,
-                        'show' => 'all',
-                        'username' => $this->username,
-                        'limit' => 100
-                    ]
-                ]
-            );
-
-            $body = json_decode($response->getBody(), true);
-            $saves = $saves->merge(collect($body['data']['children']));
-        }
-
-        $saves = $saves->pluck('data');
-
-        $redditIdsArray = $saves->pluck('name')->toArray();
-
-        $saveRecords = $this->saves()->whereIn('reddit_id', $redditIdsArray)->pluck('reddit_id');
-
-        $newSaves = array_diff($redditIdsArray, $saveRecords->toArray());
-        
-        return $saves->filter(function($save) use ($newSaves) {
-            return in_array($save['name'], $newSaves);
-        });
-    }
-
-    public function newSave($save)
-    {
-        $prefix = explode('_', $save['name'])[0];
-        $type = ( $prefix == 't1' ? 'comment' : ( $prefix == 't3' && strpos( $save['url'], 'https://www.reddit.com' ) !== false ? 'text' : 'link' ) );
-
-        $newSave = new Save;
-
-        $newSave->user_id = $this->id;
-        $newSave->reddit_id = $save['name'];
-        $newSave->type_id = Type::whereType($type)->first()->id;
-        $newSave->subreddit_id = Subreddit::firstOrCreate(['name' => $save['subreddit']])->id;
-
-        if ( $type == 'comment') {
-            $newSave->link = 'https://reddit.com' . $save['permalink'];
-            $newSave->title = $save['link_title'];
-            $newSave->body = $save['body_html'];
-            
-        } elseif ( $type == 'link' ) {
-            
-            $newSave->link = 'https://reddit.com' . $save['permalink'];
-            $newSave->title = $save['title'];
-            $newSave->body = '';
-            
-        } else {
-            
-            $newSave->link = $save['url'];
-            $newSave->title = $save['title'];
-            $newSave->body = $save['selftext_html'];
-            
-        }
-
-        $newSave->save();
-    }
-
-    public function saves() 
+    public function saves()
     {
         return $this->hasMany(Save::class)->with(['subreddit', 'type', 'tags']);
     }
 
-    public function types() 
+    public function getFilters()
     {
-        return $this->hasManyThrough(Save::class, 'type_id');
-    }
-
-    public function getFilters() 
-    {        
         $saves = $this->saves()->with(['subreddit', 'tags', 'type'])->get();
-        
+
         $subreddits = $saves->sortBy(function($save) {
             return strtolower($save['subreddit']['name']);
         })->pluck('subreddit.name')->unique();
         $tags = $saves->pluck('tags')->flatten()->sortBy('name')->pluck('name')->unique();
         $types = $saves->sortBy('type.type')->pluck('type.type')->unique();
 
-        
-
         return [
-            'subreddits' => $subreddits, 
-            'tags' => $tags, 
+            'subreddits' => $subreddits,
+            'tags' => $tags,
             'types' => $types
         ];
     }
-    
+
+    public function getSubredditsWithCount($orderBy = 'subreddits.name')
+    {
+        return $this->saves()
+                ->select(['subreddits.*', \DB::raw('count(1) as count')])
+                ->join('subreddits', 'saves.subreddit_id', 'subreddits.id')
+                ->groupBy('subreddit_id')
+                ->orderBy($orderBy)
+                ->get();
+    }
 }

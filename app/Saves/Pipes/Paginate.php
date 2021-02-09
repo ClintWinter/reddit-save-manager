@@ -8,10 +8,10 @@ class Paginate {
 
     public function handle(array $data, Closure $next)
     {
-        [$request, $saves] = $data;
+        [$saves, $data] = $data;
 
-        $saves = $saves->paginate(session('perPage', 15));
+        $saves = $saves->paginate($data['perPage']);
 
-        return $next([$request, $saves]);
+        return $next([$saves, $data]);
     }
 }

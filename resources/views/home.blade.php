@@ -1,27 +1,24 @@
 @extends('layouts.app')
-
 @section('content')
 
-<div id="app" class="text-gray-100 bg-gray-900 text-white min-h-screen flex flex-col font-body">
+<div id="app" class="text-gray-100 bg-gray-800 text-white min-h-screen flex flex-col font-body">
     <x-nav :user="$user" />
 
     {{-- error flash --}}
     @if($errors->any())
-        <div v-if="errors.length > 0" class="px-5 py-2 bg-red-800 fixed shadow-md inset-x-0 top-0 z-20">
-            <p class="text-lg font-bold color-white" v-for="(error, index) in errors" :key="index">
-                {{ $errors->first() }}
-            </p>
+        <div class="px-5 py-2 bg-red-800 fixed shadow-md inset-x-0 top-0 z-20">
+            <p class="text-lg font-bold color-white">{{ $errors->first() }}</p>
         </div>
     @endif
 
     {{-- <livewire:save-filters-modal /> --}}
 
     <header class="flex justify-center">
-        <div class="w-full flex justify-center items-center py-2 px-4">
-            <input id="search" placeholder="Search - Press / to focus" class="bg-transparent w-full md:w-1/2 lg:w-1/3 px-5 py-2 mr-4 rounded text-gray-100 focus:outline-none ring-2 ring-transparent focus:ring-yellow-500">
+        <div class="w-full flex justify-center items-center py-2 px-4 bg-gray-900 shadow-inner">
+            <input id="search" placeholder="Search - Press / to focus" class="w-full px-5 py-2 mr-4 rounded bg-transparent text-gray-100 focus:outline-none ring-2 ring-transparent focus:ring-yellow-500" @keydown.enter="">
 
             <button class="px-4 py-1 rounded focus:outline-none ring-2 ring-transparent focus:ring-yellow-500" @click="$emit('togglefilters')">
-                <i class="fas fa-filter text-3xl" style="text-shadow: 0 0 4px rgba(0,0,0,.15)"></i>
+                <i class="fas fa-filter text-3xl text-shadow-dark-bg"></i>
             </button>
         </div>
     </header>
