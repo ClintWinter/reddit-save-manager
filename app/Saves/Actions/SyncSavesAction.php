@@ -16,6 +16,8 @@ class SyncSavesAction
     {
         $user->handleToken();
 
+        dd($user);
+
         $getOlderSaves = true;
 
         // if the last one exists in the DB, we have overlap and can stop syncing
