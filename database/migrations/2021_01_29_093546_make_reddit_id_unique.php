@@ -14,8 +14,7 @@ class MakeRedditIdUnique extends Migration
     public function up()
     {
         Schema::table('saves', function (Blueprint $table) {
-            $table->string('reddit_id', 20)->nullable()->change();
-            $table->unique(['reddit_id'], 'saves_reddit_id_unique');
+            $table->string('reddit_id', 20)->nullable()->unique('saves_reddit_id_unique')->change();
         });
     }
 
@@ -27,8 +26,8 @@ class MakeRedditIdUnique extends Migration
     public function down()
     {
         Schema::table('saves', function (Blueprint $table) {
-            $table->string('reddit_id', 20)->nullable(false)->change();
             $table->dropUnique('saves_reddit_id_unique');
+            $table->string('reddit_id', 20)->nullable(false)->change();
         });
     }
 }
