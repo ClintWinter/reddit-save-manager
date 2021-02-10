@@ -22,13 +22,48 @@
             height: 60%;
             top: 33%;
             left: 0;
-            background: linear-gradient(to bottom right, #FFCC00, #F8318E);
+            background: rgb(124, 58, 237);
             z-index: 0;
         }
 
         span {
             position: relative;
             z-index: 10;
+        }
+    }
+
+    .bubbles-left {
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background-image: url('/images/bubbles-left.png');
+            background-position: top left;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.75;
+            z-index: -1;
+
+            @media (min-width: 768px) {
+                background-position: left;
+            }
+        }
+    }
+
+    .bubbles-bottom {
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background-image: url('/images/bubbles-bottom.png');
+            background-position: bottom center;
+            background-size: auto 50%;
+            background-repeat: repeat-x;
+            z-index: -1;
         }
     }
 }

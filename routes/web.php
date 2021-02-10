@@ -17,7 +17,6 @@ Route::get('/home', Saves::class)->middleware('auth')->name('home');
 
 Route::post('/subscribe', [NewsletterController::class, 'subscribe']);
 
-
 // Reddit OAuth
 Route::group(['prefix' => 'reddit'], function () {
     Route::get('redirect', [LoginController::class, 'redirectToProvider'])->name('reddit.redirect');
