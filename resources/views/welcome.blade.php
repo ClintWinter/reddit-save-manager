@@ -33,7 +33,7 @@
             </a>
         </div>
 
-        <div class="absolute w-screen h-screen bg-yellow-gradient transform -skew-y-12 -translate-y-1/4"></div>
+        <div class="absolute w-screen h-screen bg-purple-gradient transform -skew-y-12 -translate-y-1/4"></div>
     </header>
 
     <section>
@@ -83,18 +83,55 @@
         </div>
     </section>
 
-    <footer id="landing-footer" class="bg-gray-900 shadow-inner">
-        <div class="container mx-auto py-20 px-2 md:px-12">
-            <p class="mb-4 text-xl text-gray-100">Sign up to stay in the loop on new features!</p>
-            <form class="flex border-2 border-gray-800 rounded" action="/subscribe" method="POST">
+    <section class="bubbles-left">
+        <div class="container mx-auto py-16 px-2 md:px-12 flex flex-col lg:flex-row items-center">
+            <div class="text-center lg:text-left w-full lg:w-96 m-0 lg:mr-8 flex-none">
+                <h2 class="text-4xl leading-tight mb-6 w-full">Use it the way that works best for you.</h2>
+                <p class="mb-4 text-gray-300 text-xl leading-relaxed w-full">
+                    Making enough money to make this project worthwhile is an important part of delivering something great. That being said, I want the pricing to be extremely reasonable.
+                </p>
+            </div>
+
+            <div class="w-full md:w-40rem flex flex-col sm:flex-row flex-grow -mx-4">
+                <div class="flex-grow sm:w-1/2 m-2 p-4 bg-gray-700 rounded-sm shadow-md">
+                    <div class="inline-block mb-8 text-sm bg-purple-700 rounded-lg px-2 py-1">Available now</div>
+                    <div class="mb-1 text-purple-400 uppercase text-5xl">Free</div>
+                    <div class="mb-6 text-lg text-gray-300">Basic</div>
+                    <div class="text-lg">
+                        All of the important features will be free forever. Advanced features will be available in the premium plan.
+                    </div>
+                </div>
+                <div class="flex-grow sm:w-1/2 m-2 p-4 bg-gray-700 rounded-sm shadow-md">
+                    <div class="inline-block mb-8 text-sm bg-gray-600 rounded-lg px-2 py-1">Coming soon</div>
+                    <div class="mb-1 text-5xl">$2<small class="text-base pl-2">per month</small></div>
+                    <div class="mb-6 text-lg text-gray-300">Premium</div>
+                    <div class="text-lg">
+                        <p class="mb-2">Offers advanced features including:</p>
+                        <ul class="leading-loose pl-5 list-disc">
+                            <li>Advanced Filtering</li>
+                            <li>Unlimited galleries</li>
+                            <li>To be determined</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="landing-footer" class="bubbles-bottom">
+        <div class="container mx-auto pt-10 pb-20 md:py-20 px-2 md:px-12">
+            <p class="mb-4 text-xl text-gray-100 w-full md:w-40rem">
+                Sign up for updates on major feature releases and to be notified when the Premium subscription plan becomes available.
+            </p>
+            <form class="flex rounded shadow-md" action="/subscribe" method="POST">
                 @csrf
                 <input type="email" class="text-gray-900 flex-grow rounded-l-sm p-6 text-lg focus:outline-none" name="email" placeholder="your-email@example.com" value="{{ old('email') }}">
-                <button id="subscribe" class="bg-purple-gradient hover:bg-gray-700 text-white rounded-r-sm px-6 md:px-12 p-6 text-lg focus:outline-none">Subscribe</button>
+                <button id="subscribe" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-r-sm px-6 md:px-12 p-6 text-lg focus:outline-none">Subscribe</button>
             </form>
             <p id="subscribe-error" class="hidden mt-4 text-red-400 font-semibold text-lg">Looks like you are already subscribed!</p>
             <p id="subscribe-status" class="hidden mt-4 text-green-400 font-semibold text-lg">{{ session('subscribed') }}</p>
 
-            <div class="mt-16 text-gray-500">
+            <div class="mb-20 mt-10 text-gray-400">
                 {{-- <p>Winter Web Works LLC</p> --}}
                 <p>&copy; 2021. Resavma.com All Rights Reserved.</p>
             </div>

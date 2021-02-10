@@ -54,31 +54,31 @@ class LoginController extends Controller
     public function handleProviderCallback()
     {
         try {
-            $user = Socialite::driver('reddit')->user();
+            $redditUser = Socialite::driver('reddit')->user();
         } catch(Exception $e) {
             return redirect('/');
         }
 
-        $accessTokenResponseBody = $user->accessTokenResponseBody;
+        $accessTokenResponseBody = $redditUser->accessTokenResponseBody;
 
-        $ourUser = User::where('reddit_id', $user->getID())->first();
+        $user = User::where('reddit_id', $redditUser->getID())->first();
 
-        if ( !$ourUser ) {
-            $ourUser = new User;
-            $ourUser->name = $user->nickname;
-            $ourUser->reddit_id = $user->getId();
-            $ourUser->reddit_username = $user->nickname;
-            $ourUser->email = $user->getEmail();
-            $ourUser->access_token = $accessTokenResponseBody['access_token'];
-            $ourUser->refresh_token = $accessTokenResponseBody['refresh_token'];
-            $ourUser->save();
+        if (! $user) {
+            $user = new User;
+            $user->name = $redditUser->nickname;
+            $user->reddit_id = $redditUser->getId();
+            $user->reddit_username = $redditUser->nickname;
+            $user->email = $redditUser->getEmail();
+            $user->access_token = $accessTokenResponseBody['access_token'];
+            $user->refresh_token = $accessTokenResponseBody['refresh_token'];
+            $user->save();
         } else {
-            $ourUser->access_token = $accessTokenResponseBody['access_token'];
-            $ourUser->refresh_token = $accessTokenResponseBody['refresh_token'];
-            $ourUser->save();
+            $user->access_token = $accessTokenResponseBody['access_token'];
+            $user->refresh_token = $accessTokenResponseBody['refresh_token'];
+            $user->save();
         }
 
-        auth()->login($ourUser, true);
+        auth()->login($user, true);
 
         return redirect()->to('/home');
     }
