@@ -88,6 +88,10 @@ class SyncSavesAction
                 $result['body'] = $save['selftext_html'];
             }
 
+            unset($save['selftext_html'], $save['body_html'], $save['title'], $save['url'], $save['url_overriden_by_dest'], $save['thumbnail'], $save['permalink'], $save['link_title'], $save['media_metadata'], $save['selftext']);
+
+            $result['metadata'] = json_encode($save);
+
             return $result;
         })->toArray();
     }

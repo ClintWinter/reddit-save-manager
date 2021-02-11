@@ -57,9 +57,9 @@
                                             <x-save-icon :type="$save->type_id" class="pl-2 pr-4 text-2xl" />
 
                                             <div>
-                                                <h2 class="text-xl font-semibold leading-tight text-shadow" style="height:50px;">
-                                                    <a href="{{ $save->reddit_url }}" target="_blank" rel="noreferer noopener">
-                                                        {!! \Str::limit($save->title, 80) !!}
+                                                <h2 class="text-lg font-semibold leading-tight text-shadow overflow-ellipsis" style="height:50px;">
+                                                    <a href="/saves/{{ $save->id }}" class="overflow-ellipsis">
+                                                        {!! \Str::limit($save->title, 60) !!}
                                                     </a>
                                                 </h2>
 
@@ -69,33 +69,26 @@
                                             </div>
                                         </div>
 
-                                        @if($save->media_url)
-                                            @if(in_array(Str::afterLast($save->media_url, '.'), ['jpg', 'jpeg', 'png']))
-                                                <img class="w-full" src="{{ $save->media_url }}" />
-                                            @else
-                                                <div class="description shadow-inner flex-grow bg-gray-800 p-2 max-h-96 overflow-y-scroll text-sm rounded">
-                                                    <a href="{{ $save->media_url }}" target="_blank" rel="noopener noreferer">
-                                                        {{ $save->media_url }}
-                                                        <i class="fas fa-external-link-alt"></i>
-                                                    </a>
-                                                </div>
-                                            @endif
-                                        @elseif($save->body)
-                                            <div class="description shadow-inner flex-grow bg-gray-800 p-2 max-h-96 overflow-y-scroll text-sm rounded">
-                                                {!! html_entity_decode($save->body) !!}
+                                        <div class="relative mb-4 shadow-inner flex-grow bg-gray-800 p-2 h-80 overflow-y-hidden overflow-ellipsis text-sm rounded">
+                                            <div class="description h-full">
+                                                @if($save->media_url)
+                                                    @if(in_array(Str::afterLast($save->media_url, '.'), ['jpg', 'jpeg', 'png']))
+                                                        <img class="w-full" src="{{ $save->media_url }}" />
+                                                    @else
+                                                        <a href="{{ $save->media_url }}" target="_blank" rel="noopener noreferer">
+                                                            {{ $save->media_url }}
+                                                            <i class="fas fa-external-link-alt"></i>
+                                                        </a>
+                                                    @endif
+                                                @elseif($save->body)
+                                                    {!! html_entity_decode($save->body) !!}
+                                                @endif
                                             </div>
-                                        @endif
-                                    </div>
-
-                                    {{-- TODO: tags --}}
-                                    {{-- <div class="py-4 p-2 flex bg-gray-700 rounded-b">
-                                        <div class="tags flex flex-wrap mb-2">
-                                            @foreach($save->tags as $tag)
-                                                <div class="tag mr-2 px-3 py-1 rounded-full text-black shadow-md mb-2 leading-normal cursor-pointer bg-gray-100 hover:bg-gray-300 hover:text-gray-600 hover:line-through"
-                                                >{{ $tag->name }}</div>
-                                            @endforeach
+                                            <div class="absolute inset-x-0 bottom-0 py-2 text-center text-lg bg-gray-900">
+                                                <a href="/saves/{{ $save->id }}" class="hover:underline">View full post</a>
+                                            </div>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </div>
                         @endforeach

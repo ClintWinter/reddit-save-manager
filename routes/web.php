@@ -1,10 +1,8 @@
 <?php
 
 use App\Http\Livewire\Saves;
+use App\Http\Livewire\ShowSave;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SaveController;
-use App\Http\Controllers\SaveTagController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NewsletterController;
@@ -13,7 +11,8 @@ Auth::routes();
 
 Route::get('/', [WelcomeController::class, 'index']);
 
-Route::get('/home', Saves::class)->middleware('auth')->name('home');
+Route::get('/saves', Saves::class)->middleware('auth');
+Route::get('/saves/{save}', ShowSave::class)->middleware('auth');
 
 Route::post('/subscribe', [NewsletterController::class, 'subscribe']);
 
