@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/saves';
 
     /**
      * Create a new controller instance.
@@ -80,6 +80,6 @@ class LoginController extends Controller
 
         auth()->login($user, true);
 
-        return redirect()->to('/home');
+        return redirect()->to('/saves');
     }
 }

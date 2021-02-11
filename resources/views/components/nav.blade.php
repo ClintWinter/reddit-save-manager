@@ -1,9 +1,12 @@
 <nav class="flex justify-center py-4">
     <div class="w-full flex justify-between items-center py-2 px-4">
         {{-- left --}}
-        <div class="flex items-center text-xl">
+        <div class="flex items-center pt-2">
             {{-- <div class="mr-2" style="height: 40px; width: 40px;"><x-logo /></div> --}}
-            <h2 class="text-gray-100 leading-none pt-2 uppercase">Resavma</h2>
+            <h2 class="text-xl text-gray-100 leading-none uppercase">Resavma</h2>
+            <div class="pl-8 flex items-center leading-none">
+                <a href="/saves" class="p-1 mx-2 text-gray-300">My Saves</a>
+            </div>
         </div>
 
         {{-- right --}}

@@ -7,6 +7,7 @@ use Livewire\Component;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Auth;
 use App\Saves\Actions\SyncSavesAction;
+use App\Services\RedditService;
 
 class Saves extends Component
 {
@@ -20,10 +21,10 @@ class Saves extends Component
     ];
 
     public $savePipeline = [
-        \App\Saves\Pipes\Filter::class,
-        \App\Saves\Pipes\Search::class,
-        \App\Saves\Pipes\Order::class,
-        \App\Saves\Pipes\Paginate::class,
+        \App\Pipes\Saves\Filter::class,
+        \App\Pipes\Saves\Search::class,
+        \App\Pipes\Saves\Order::class,
+        \App\Pipes\Saves\Paginate::class,
     ];
 
     public function getPerPageProperty()
@@ -40,9 +41,9 @@ class Saves extends Component
         session(['perPage' => $count]);
     }
 
-    public function syncSaves()
+    public function syncSaves(RedditService $redditService)
     {
-        (new SyncSavesAction)(Auth::user());
+        $redditService->syncSaves(Auth::user());
     }
 
     private function pipeData()

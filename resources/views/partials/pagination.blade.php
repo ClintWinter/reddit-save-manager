@@ -28,7 +28,7 @@
         </div>
 
         <div class="block md:inline">
-            <form x-ref="perPageForm" method="GET" action="/home" class="inline">
+            <form x-ref="perPageForm" method="GET" action="/saves" class="inline">
                 @csrf
                 <select class="inline-block text-black" x-on:change="$wire.updatePerPage($event.target.value)">
                     <option @if($perPage === '15') selected @endif value="15">15</option>
