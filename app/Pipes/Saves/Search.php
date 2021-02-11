@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Saves\Pipes;
+namespace App\Pipes\Saves;
 
 use Closure;
 

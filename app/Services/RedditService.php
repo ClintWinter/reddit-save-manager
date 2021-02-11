@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Saves\Actions;
+namespace App\Services;
 
 use App\Save;
 use App\User;
 use App\Subreddit;
-use Carbon\Carbon;
 use App\Support\TypeEnum;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
-class SyncSavesAction
-{
-    public function __invoke(User $user)
+class RedditService {
+
+    public function syncSaves($user)
     {
         $user->handleToken();
 
