@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\RedditService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use Socialite;
@@ -51,7 +52,7 @@ class LoginController extends Controller
             ->redirect();
     }
 
-    public function handleProviderCallback()
+    public function handleProviderCallback(RedditService $redditService)
     {
         try {
             $redditUser = Socialite::driver('reddit')->user();
@@ -79,6 +80,8 @@ class LoginController extends Controller
         }
 
         auth()->login($user, true);
+
+        $redditService->syncSaves(auth()->user(), true);
 
         return redirect()->to('/saves');
     }
