@@ -9,6 +9,10 @@
     x-on:keydown.cmd.k.window="$dispatch('open-filters', {});"
     x-on:keydown.escape.window="filtersModal = false;"
     x-on:keydown.cmd.j.window="$refs.syncBtn.click();"
+    x-on:keydown.arrow-left.window="$refs.previousPage.click();"
+    x-on:keydown.arrow-right.window="$refs.nextPage.click();"
+    x-on:keydown.shift.arrow-left.window="$refs.firstPage.click();"
+    x-on:keydown.shift.arrow-right.window="$refs.lastPage.click();"
 >
     {{-- loading status --}}
     <div class="fixed inset-x-0 top-0 z-50 bg-blue-600 text-white px-8 py-1" wire:loading.delay wire:target="syncSaves">
@@ -34,7 +38,7 @@
     <main class="flex justify-center flex-grow">
         <div class="container">
             <div class="w-full flex flex-col pt-8 pb-20">
-                {{ $saves->links('partials.pagination', ['perPage' => $this->perPage]) }}
+                {{ $saves->links('partials.pagination', ['perPage' => $this->perPage, 'top' => true]) }}
 
                 @if (count($saves))
                     <section class="cards flex flex-wrap">
@@ -100,7 +104,7 @@
                     <div class="px-4 py-20 text-2xl italic text-center">No results!</div>
                 @endif
 
-                {{ $saves->links('partials.pagination', ['perPage' => $this->perPage]) }}
+                {{ $saves->links('partials.pagination', ['perPage' => $this->perPage, 'top' => false]) }}
             </div>
         </div>
     </main>

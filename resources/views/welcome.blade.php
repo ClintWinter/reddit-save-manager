@@ -33,7 +33,7 @@
             </a>
         </div>
 
-        <div class="absolute w-screen h-screen bg-purple-gradient transform -skew-y-12 -translate-y-1/4"></div>
+        <div class="absolute w-full h-screen bg-purple-gradient transform -skew-y-12 -translate-y-1/4"></div>
     </header>
 
     <section>
