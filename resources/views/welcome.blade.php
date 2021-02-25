@@ -77,7 +77,7 @@
                 <span class="font-display text-main-teal">Actively maintained</span> with more features planned.
             </h2>
             <p class="mb-8 text-white text-xl leading-relaxed w-full md:w-40rem">
-                I'm manually typing this date of <b>February 9, 2021</b> to let you know that I am actively maintaining this project. This won't be an old, slow, outdated project. I want to make this the ideal solution for you. Please reach out to me at <a class="underline" href="mailto:clint.resavma@gmail.com">clint.resavma@gmail.com</a> to request a feature!
+                I'm manually typing this date of <b>February 25, 2021</b> to let you know that I am actively maintaining this project. This won't be an old, slow, outdated project. I want to make this the ideal solution for you. Please reach out to me at <a class="underline" href="mailto:clint.resavma@gmail.com">clint.resavma@gmail.com</a> to request a feature!
             </p>
             <p class="leading-tight text-white opacity-50 w-full md:w-40rem">
                 <b>Upcoming features</b>: Export your saves. Light/Dark mode. Full profile page with settings. Tagging. Advanced filters. Public &amp; private galleries. Gallery sharing &amp; discovering. Gallery saving &amp; collecting. Gallery cloning &amp; modification.And more!
