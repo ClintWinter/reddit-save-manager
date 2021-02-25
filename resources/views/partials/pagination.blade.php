@@ -1,5 +1,5 @@
 <div class="flex justify-between items-center p-2">
-    <div class="@if($top) none @else flex justify-around @endif fixed inset-x-0 bottom-0 md:inline-block md:static md:inset-x-auto md:bottom-auto bg-gray-800 border-t border-gray-900 md:border-none">
+    <div class="@if($top) none @else flex justify-around @endif fixed inset-x-0 bottom-0 md:inline-block md:static md:inset-x-auto md:bottom-auto bg-main-vdark border-t border-main-dark md:border-none">
         <a x-ref="firstPage" class="text-3xl md:text-lg px-4 py-2 focus:outline-none hover:text-orange-500 @if($paginator->onFirstPage()) opacity-25 @endif" href="{{ $paginator->onFirstPage() ? 'javascript:void(0)' : $paginator->url(1) }}"><i class="fas fa-angle-double-left"></i></a>
 
         <a x-ref="previousPage" class="text-3xl md:text-lg px-4 py-2 focus:outline-none hover:text-orange-500 @if($paginator->onFirstPage()) opacity-25 @endif" href="{{ $paginator->onFirstPage() ? 'javascript:void(0)' : $paginator->previousPageUrl() }}"><i class="fas fa-angle-left"></i></a>

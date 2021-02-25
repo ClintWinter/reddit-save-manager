@@ -1,22 +1,22 @@
-<nav class="flex justify-center py-4">
+<nav class="container mx-auto flex justify-center py-4">
     <div class="w-full flex justify-between items-center py-2 px-4">
         {{-- left --}}
         <div class="flex items-center pt-2">
             {{-- <div class="mr-2" style="height: 40px; width: 40px;"><x-logo /></div> --}}
-            <h2 class="text-xl text-gray-100 leading-none uppercase">Resavma</h2>
+            <h2 class="text-xl font-black leading-none uppercase">Resavma</h2>
             <div class="pl-8 flex items-center leading-none">
-                <a href="/saves" class="p-1 mx-2 text-gray-300">My Saves</a>
+                <a href="/saves" class="p-1 mx-2 uppercase text-sm">Saves</a>
             </div>
         </div>
 
         {{-- right --}}
-        <div>
-            <button class="rounded m-0 text-white flex items-center text-shadow-dark-bg focus:outline-none" @click="navMenu=true">
-                <i class="fas fa-cog text-xl pr-2"></i>
+        <div class="relative">
+            <button class="relative flex items-center px-4 py-1 bg-white bg-opacity-10 rounded-sm focus:outline-none" @click="navMenu=true">
+                <span class="pr-4">Account</span>
                 <i class="fas fa-caret-down text-xl"></i>
             </button>
 
-            <div x-show="navMenu" @click.away="navMenu=false" class="bg-white rounded border-1 bg-gray-100 absolute top-3 right-0 mr-4 shadow-lg" x-cloak
+            <div x-show="navMenu" @click.away="navMenu=false" class="absolute w-72 top-3 right-0 bg-main-dark rounded-sm shadow-lg z-10" x-cloak
                 x-transition:enter="transition ease-out duration-150"
                 x-transition:enter-start="opacity-0 transform scale-90"
                 x-transition:enter-end="opacity-100 transform scale-100"
@@ -26,16 +26,16 @@
             >
                 <ul>
                     <li>
-                        <a x-ref="syncBtn" class="block rounded-t text-gray-900 hover:bg-yellow-400 px-8 py-2" href="javascript:;" wire:click="syncSaves" @click="open=false">
-                            Sync saves <kbd class="bg-gray-200 p-1 rounded-sm">cmd + j</kbd>
+                        <a x-ref="syncBtn" class="block rounded-t hover:bg-main-blue font-bold px-8 py-2" href="javascript:;" wire:click="syncSaves" @click="open=false">
+                            Sync saves <kbd class="bg-main-vdark p-1 rounded-sm">cmd + j</kbd>
                         </a>
                     </li>
                     <li>
-                        <a class="block rounded-b text-gray-900 hover:bg-yellow-400 px-8 py-2" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                        <a class="block hover:bg-main-blue font-bold px-8 py-2" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                             Sign Out
                         </a>
                     </li>
-                    <li class="px-8 py-2 pt-4 text-gray-500 text-sm">
+                    <li class="px-8 py-2 pt-4 text-gray-400 text-sm">
                         Signed in as {{ $user->name }}
                     </li>
                 </ul>

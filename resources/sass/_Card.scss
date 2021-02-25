@@ -2,7 +2,11 @@
     word-break: break-word;
 
     a {
-        @apply text-pink-200 underline;
+        @apply text-main-yellow;
+
+        &:hover {
+            @apply underline;
+        }
     }
 
     ul {
