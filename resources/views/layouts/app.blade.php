@@ -19,5 +19,6 @@
 
     @livewireScripts
     <script src="{{ mix('js/app.js') }}"></script>
+    <script src="https://frog.resavma.com/script.js" data-site="YDKPLLKC" defer></script>
 </body>
 </html>
